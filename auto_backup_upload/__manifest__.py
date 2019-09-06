@@ -11,7 +11,7 @@
         auto_backup module of yenthe
     """,
 
-    'author': "Aurel Balanay - Evanscor Technology Solutions Incc",
+    'author': "Aurel Balanay - Evanscor Technology Solutions Inc",
     'website': "http://www.evanscor.com",
 
     # Categories can be used to filter modules in modules listing
