@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_backup_conf_form_inherit">
+            <field name="name">Configure Backup</field>
+            <field name="model">db.backup</field>
+            <field name="inherit_id" ref="auto_backup.view_backup_conf_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[2]" position="after">
+                    <group col="4" colspan="4">
+                        <separator col="2" string="Google Drive Upload"/>
+                    </group>
+                    <group>
+                        <field name="is_upload"/>
+                        <field name="drive_folder_id" attrs="{'invisible':[('is_upload', '=', False)],'required':[('is_upload', '=', True)]}"/>
+                        <field name="gdrive_email_notif_ids" attrs="{'invisible':[('is_upload', '=', False)],'required':[('is_upload', '=', True)]}" widget="many2many_tags"/>
+                        <field name="drive_autoremove" attrs="{'invisible':[('is_upload', '=', False)]}"/>
+                        <field name="drive_to_remove" attrs="{'invisible': [('drive_autoremove','=',False)],'required':[('drive_autoremove', '=', True)]}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
