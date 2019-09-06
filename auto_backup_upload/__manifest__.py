@@ -22,7 +22,7 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base','google_drive','auto_backup'],
-    'images': ['static/description/overview.PNG','static/description/folder.PNG','static/description/integration.PNG'],
+    'images': ['static/description/screenshot1.PNG'],
 
     # always loaded
     'data': [
