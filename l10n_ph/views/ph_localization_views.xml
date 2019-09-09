@@ -1,0 +1,200 @@
+<odoo>
+    <data>
+        <!--Country Views-->
+        <record id="res_country_search" model="ir.ui.view">
+            <field name="name">res.country.search</field>
+            <field name="model">res.country</field>
+            <field name="arch" type="xml">
+                <search>
+                  <field name="code"/>
+                  <filter string="Country" name="search_default_code"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_ph_country" model="ir.actions.act_window">
+            <field name="name">Countries</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.country</field>
+            <field name="view_type">form</field>
+            <field name="context">{'search_default_code':"PH"}</field>
+            <field name="help">Display and manage the list of all countries that can be assigned to your partner records. You can create or delete countries to make sure the ones you are working on will be maintained.</field>
+        </record>
+
+    <!--Country State View-->
+        <record id="res_country_state_search" model="ir.ui.view">
+            <field name="name">res.country.state.search</field>
+            <field name="model">res.country.state</field>
+            <field name="arch" type="xml">
+                <search>
+                  <field name="name"/>
+                  <field name="country_code"/>
+                  <filter string="Country" name="search_default_country_code"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_ph_country_state" model="ir.actions.act_window">
+            <field name="name">States</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.country.state</field>
+            <field name="view_type">form</field>
+            <field name="context">{'search_default_country_code':"PH"}</field>
+            <field name="help">If you are working on the American market, you can manage the different federal states you are working on from here. Each state is attached to one country.</field>
+        </record>
+
+<!--State City Views      -->
+        <record id="res_state_city_search" model="ir.ui.view">
+            <field name="name">res.state.city.search</field>
+            <field name="model">res.state.city</field>
+            <field name="arch" type="xml">
+                <search>
+                  <field name="name"/>
+                  <field name="city_code"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="res_state_city_tree" model="ir.ui.view">
+            <field name="name">res.state.city.tree</field>
+            <field name="model">res.state.city</field>
+            <field name="arch" type="xml">
+                <tree>
+                  <field name="name"/>
+                  <field name="city_code"/>
+                  <field name="state_id"/>
+                  <field name="brgy_ids"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_state_city_form" model="ir.ui.view">
+            <field name="name">res.state.city.form</field>
+            <field name="model">res.state.city</field>
+            <field name="arch" type="xml">
+                <form>
+                  <sheet>
+                      <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-check">
+                            <field name="active" widget="boolean_button" options='{"terminology": "active"}'/>
+                        </button>
+                      </div>
+                      <h1 class="d-none d-md-block">
+                          <field name="display_name"/>
+                      </h1>
+                      <group>
+                          <field name="name"/>
+                          <field name="city_code"/>
+                          <field name="state_id"/>
+                      </group>
+                       <group string="Barangays">
+                          <field name="brgy_ids" nolabel="1">
+                              <tree>
+                                  <field name="name"/>
+                                  <field name="brgy_code"/>
+                              </tree>
+
+                          </field>
+                      </group>
+                  </sheet>
+                  <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                  </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="res_state_city_action">
+            <field name="name">City / Municipality</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.state.city</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">search,tree,form</field>
+        </record>
+
+
+
+<!--City Barangay Views      -->
+        <record id="res_city_brgy_search" model="ir.ui.view">
+            <field name="name">res.city.brgy.search</field>
+            <field name="model">res.city.barangay</field>
+            <field name="arch" type="xml">
+                <search>
+                  <field name="name"/>
+                  <field name="city_id"/>
+                  <field name="state_id"/>
+                  <separator/>
+                  <group expand="0" name="group_by" string="Group By">
+                       <filter name="City" string="City/Municipality" context="{'group_by' : 'city_id'}" />
+                       <filter name="State/Province" string="State/Province" context="{'group_by': 'state_id'}"/>
+                  </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="res_city_brgy_tree" model="ir.ui.view">
+            <field name="name">res.city.brgy.tree</field>
+            <field name="model">res.city.barangay</field>
+            <field name="arch" type="xml">
+                <tree>
+                  <field name="name"/>
+                  <field name="city_id"/>
+                  <field name="state_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_city_brgy_form" model="ir.ui.view">
+            <field name="name">res.city.brgy.form</field>
+            <field name="model">res.city.barangay</field>
+            <field name="arch" type="xml">
+                <form>
+                  <sheet>
+                      <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-check">
+                            <field name="active" widget="boolean_button" options='{"terminology": "active"}'/>
+                        </button>
+                      </div>
+                      <h1 class="d-none d-md-block">
+                          <field name="display_name"/>
+                      </h1>
+                      <group>
+                          <group>
+                              <field name="name"/>
+                              <field name="brgy_code"/>
+                          </group>
+                          <group>
+                              <field name="city_id"/>
+                              <field name="state_id"/>
+                          </group>
+
+                      </group>
+                  </sheet>
+                  <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                  </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="res_city_brgy_action">
+            <field name="name">Barangays</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.city.barangay</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">search,tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_dashboard">
+            <field name="name">Places</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.city.barangay</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">search,tree,form</field>
+        </record>
+
+    </data>
+</odoo>
+

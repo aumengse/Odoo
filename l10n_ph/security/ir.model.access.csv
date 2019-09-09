@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_province_city_menu,res_state_city_menu_admin,model_res_state_city,base.group_system,1,1,1,1
+access_res_city_brgy_menu,res_city_brgy_menu_admin,model_res_city_barangay,base.group_system,1,1,1,1
