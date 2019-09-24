@@ -32,7 +32,7 @@
                   action="action_ph_country_state"/>
 
         <menuitem id="menu_ph_city"
-                  name="City"
+                  name="City/Municipality"
                   action="res_state_city_action"
                   parent="menu_localization_det"
                   sequence="15"/>
