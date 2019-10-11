@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="auto_backup_upload.list">
+      <field name="name">auto_backup_upload list</field>
+      <field name="model">auto_backup_upload.auto_backup_upload</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="auto_backup_upload.action_window">
+      <field name="name">auto_backup_upload window</field>
+      <field name="res_model">auto_backup_upload.auto_backup_upload</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="auto_backup_upload.action_server">
+      <field name="name">auto_backup_upload server</field>
+      <field name="model_id" ref="model_auto_backup_upload_auto_backup_upload"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="auto_backup_upload" id="auto_backup_upload.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="auto_backup_upload.menu_1" parent="auto_backup_upload.menu_root"/>
+    <menuitem name="Menu 2" id="auto_backup_upload.menu_2" parent="auto_backup_upload.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="auto_backup_upload.menu_1_list" parent="auto_backup_upload.menu_1"
+              action="auto_backup_upload.action_window"/>
+    <menuitem name="Server to list" id="auto_backup_upload" parent="auto_backup_upload.menu_2"
+              action="auto_backup_upload.action_server"/>
+    -->
+  </data>
+</odoo>
