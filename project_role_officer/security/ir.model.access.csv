@@ -4,4 +4,4 @@ access_project_task_type_officer,project.task.type manager,project.model_project
 access_report_project_task_officer,report.project.task.user,project.model_report_project_task_user,project_role_officer.group_project_officer,1,1,1,1
 access_project_tags_officer,project.project_tags_manager,project.model_project_tags,project_role_officer.group_project_officer,1,1,1,1
 access_mail_alias_officer,mail.alias,mail.model_mail_alias,project_role_officer.group_project_officer,1,1,1,1
-access_mail_activity_type_project_officer,mail.activity.type.project.manager,mail.model_mail_activity_type,project_role_officer_officer.group_project_officer,1,1,1,1
+access_mail_activity_type_project_officer,mail.activity.type.project.manager,mail.model_mail_activity_type,project_role_officer.group_project_officer,1,1,1,1
