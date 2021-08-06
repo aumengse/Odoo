@@ -1,13 +1,7 @@
 from odoo import fields, http, _
-from odoo.exceptions import AccessError, MissingError
 from odoo.http import request
-from collections import OrderedDict
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager, get_records_pager
-from odoo.tools import date_utils, groupby as groupbyelem
-from operator import itemgetter
-
-from odoo.osv.expression import OR
-from odoo.addons.portal.controllers.mail import _message_post_helper
+from werkzeug.exceptions import NotFound
 
 
 class MemberContributionPortal(CustomerPortal):
@@ -15,7 +9,7 @@ class MemberContributionPortal(CustomerPortal):
         values = super(MemberContributionPortal, self)._prepare_portal_layout_values()
         contribution_count = request.env['member.contribution'].search([])
         values.update({
-            'contribution_count': contribution_count,
+            'contribution_count': len(contribution_count),
         })
         return values
 
@@ -30,3 +24,10 @@ class MemberContributionPortal(CustomerPortal):
             'contributions': contribution_ids,
         })
         return request.render("osynx_loan.portal_my_contributions", values)
+
+    @http.route('''/submit/contribution''', type='http', auth="public", website=True, sitemap=True)
+    def submit_contribution(self, **kwargs):
+
+        return request.render("osynx_loan.submit_member_contribution", {
+            'job': [],
+        })

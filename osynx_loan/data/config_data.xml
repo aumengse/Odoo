@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="osynx_loan.model_member_contribution" model="ir.model">
+            <field name="website_form_key">submit_contribution</field>
+            <field name="website_form_default_field_id" ref="osynx_loan.field_member_contribution__name" />
+            <field name="website_form_access">True</field>
+            <field name="website_form_label">Submit Contribution</field>
+        </record>
+
+        <function model="ir.model.fields" name="formbuilder_whitelist">
+            <value>member.contribution</value>
+            <value eval="[
+                'name',
+                'date',
+                'amount',
+            ]"/>
+        </function>
+    </data>
+</odoo>

@@ -9,6 +9,7 @@
           <field name="name"/>
           <field name="date"/>
           <field name="amount"/>
+          <field name="state"/>
         </tree>
       </field>
     </record>
@@ -18,6 +19,9 @@
       <field name="model">member.contribution</field>
       <field name="arch" type="xml">
         <form>
+          <header>
+             <field name="state" widget="statusbar"/>
+          </header>
           <sheet>
             <group>
               <field name="name"/>

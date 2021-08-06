@@ -20,14 +20,16 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','website_form'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'data/config_data.xml',
         'views/member_contribution_views.xml',
         'views/menuitem.xml',
         'views/portal_templates.xml',
+        'views/website_submit_contribution_template.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

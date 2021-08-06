@@ -14,4 +14,4 @@ class MemberContribution(models.Model):
     state = fields.Selection([('draft',"Draft"),
                               ('process', "Processing"),
                               ('validate', "Validated")
-                              ])
+                              ],default='draft')
