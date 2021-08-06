@@ -1,0 +1,18 @@
+<odoo>
+  <data>
+    <menuitem
+            id="menu_loan"
+            name="Loan"
+            sequence="2"
+            web_icon="osynx_loan,static/description/icon.png"
+    />
+
+    <menuitem
+            id="menu_loan_member_contribution"
+            name="Member Contribution"
+            sequence="1"
+            parent="menu_loan"
+            action="action_member_contribution"
+    />
+  </data>
+</odoo>
