@@ -2,9 +2,10 @@ from odoo import models, fields, api
 
 class MemberContribution(models.Model):
     _name = 'member.contribution'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Member Contributions'
 
-    name = fields.Many2one('res.partner',string="Name")
+    name = fields.Many2one('res.partner',string="Name",default=lambda self: self.env.user.partner_id.id)
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     currency_id = fields.Many2one(
         'res.currency', string='Currency',

@@ -26,9 +26,10 @@
     'data': [
         'security/ir.model.access.csv',
         'data/config_data.xml',
+        'data/website_page.xml',
         'views/member_contribution_views.xml',
         'views/menuitem.xml',
-        'views/portal_templates.xml',
+        'views/website_contributions.xml',
         'views/website_submit_contribution_template.xml',
     ],
     # only loaded in demonstration mode

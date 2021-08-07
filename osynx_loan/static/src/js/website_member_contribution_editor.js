@@ -9,6 +9,11 @@ var _t = core._t;
 FormEditorRegistry.add('submit_contribution', {
     formFields: [
     {
+        type: 'many2one',
+        name: 'name',
+        string: 'Name',
+    }, {
+
         type: 'float',
         name: 'amount',
         string: 'Amount',

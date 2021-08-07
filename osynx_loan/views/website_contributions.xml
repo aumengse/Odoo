@@ -28,30 +28,22 @@
                         <div class="float-right">
                             <a role="button" t-attf-href="/submit/contribution" class="btn btn-primary btn-md float-right">Submit Contribution</a>
                         </div>
-                      <!--  <button class="btn btn-primary btn-sm" name='create_new_timeoff' data-toggle="modal" data-target=".modal_create_new_timeoff" title="Create New Time Off" aria-label="Create New Time Off">
-                            <i class="fa fa-plus"/> Create Contribution
-                        </button>-->
                     </div>
                 </t>
-
-                <t t-foreach="contributions" t-as="contri">
-                    <thead>
-                        <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
-                            <th>Date</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="contri" t-as="contributions">
-                            <tr>
-                                <td><span t-field="contri.date"/></td>
-                                <td><span t-field="contri.amount"/></td>
-                                <td><span t-field="contri.state"/></td>
-                            </tr>
-                        </t>
-                    </tbody>
-                </t>
+                <thead>
+                    <tr class="active">
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="contributions" t-as="contri">
+                        <td><span t-field="contri.date"/></td>
+                        <td><span t-field="contri.amount"/></td>
+                        <td><span t-field="contri.state"/></td>
+                    </tr>
+                </tbody>
             </t>
         </t>
     </template>
