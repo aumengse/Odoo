@@ -8,11 +8,39 @@
     />
 
     <menuitem
-            id="menu_loan_member_contribution"
-            name="Member Contribution"
+            id="menu_loan_member_account"
+            name="Accounts"
             sequence="1"
             parent="menu_loan"
+            action="action_member_account"
+    />
+    <menuitem
+            id="menu_loan_member_contribution"
+            name="Contribution"
+            sequence="2"
+            parent="menu_loan"
             action="action_member_contribution"
+    />
+    <menuitem
+            id="menu_loan_loan_account"
+            name="Loans"
+            sequence="3"
+            parent="menu_loan"
+            action="action_loan_account"
+    />
+
+      <menuitem
+            id="menu_loan_configuration"
+            name="Configuration"
+            sequence="10"
+            parent="menu_loan"
+    />
+    <menuitem
+            id="menu_loan_configuration_interest"
+            name="Interest"
+            sequence="10"
+            parent="menu_loan_configuration"
+            action="action_loan_interest"
     />
   </data>
 </odoo>

@@ -1,0 +1,74 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="member_account_tree">
+      <field name="name">member.account.tree</field>
+      <field name="model">member.account</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="partner_id"/>
+          <field name="date_from"/>
+          <field name="date_to"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="member_account_form">
+      <field name="name">member.account.form</field>
+      <field name="model">member.account</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only"/>
+              <h1>
+                <field name="name" placeholder="00001" readonly="1"/>
+              </h1>
+            </div>
+            <group>
+              <group>
+                <field name="partner_id"/>
+              </group>
+              <group>
+                <label for="date_from" string="Period"/>
+                <div>
+                  <field name="date_from" class="oe_inline"/>
+                  <span> to </span>
+                  <field name="date_to" class="oe_inline"/>
+                </div>
+              </group>
+            </group>
+            <notebook>
+              <page string="Contributions">
+                <group>
+                  <field name="line_ids" nolabel="1" readonly="1">
+                    <tree>
+                      <field name="date"/>
+                      <field name="amount"/>
+                    </tree>
+                  </field>
+                </group>
+
+              </page>
+            </notebook>
+          </sheet>
+          <div class="o_attachment_preview"/>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" groups="base.group_user"/>
+            <field name="activity_ids"/>
+            <field name="message_ids"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="action_member_account">
+      <field name="name">Member Account</field>
+      <field name="res_model">member.account</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+  </data>
+</odoo>

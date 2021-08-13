@@ -1,0 +1,25 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="loan_interest_tree">
+      <field name="name">loan.interest.tree</field>
+      <field name="model">loan.interest</field>
+      <field name="arch" type="xml">
+        <tree editable="top">
+          <field name="name"/>
+          <field name="interest"/>
+          <field name="coop_rate"/>
+          <field name="guarantor_rate"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="action_loan_interest">
+      <field name="name">Loan Interest</field>
+      <field name="res_model">loan.interest</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+  </data>
+</odoo>

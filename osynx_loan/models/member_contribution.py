@@ -6,6 +6,7 @@ class MemberContribution(models.Model):
     _description = 'Member Contributions'
 
     name = fields.Many2one('res.partner',string="Name",default=lambda self: self.env.user.partner_id.id)
+    member_account_id = fields.Many2one('member.account', string="Account")
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     currency_id = fields.Many2one(
         'res.currency', string='Currency',

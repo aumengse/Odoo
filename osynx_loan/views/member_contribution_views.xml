@@ -7,6 +7,7 @@
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
+          <field name="member_account_id"/>
           <field name="date"/>
           <field name="amount"/>
           <field name="state"/>
@@ -24,9 +25,14 @@
           </header>
           <sheet>
             <group>
-              <field name="name"/>
-              <field name="date"/>
-              <field name="amount"/>
+              <group>
+                <field name="name"/>
+                <field name="member_account_id" domain="[('partner_id', '=', name)]"/>
+              </group>
+              <group>
+                <field name="date"/>
+                <field name="amount"/>
+              </group>
             </group>
           </sheet>
           <div class="o_attachment_preview"/>
