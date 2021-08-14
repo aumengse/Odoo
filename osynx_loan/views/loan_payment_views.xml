@@ -21,9 +21,6 @@
       <field name="model">loan.account</field>
       <field name="arch" type="xml">
         <form>
-          <header>
-            <field name="state" widget="statusbar"/>
-          </header>
           <sheet>
             <div class="oe_title">
               <label for="name" class="oe_edit_only"/>
@@ -36,10 +33,10 @@
                 <field name="borrower_id"/>
                 <field name="partner_id"/>
                 <field name="principal"/>
+                <field name="term"/>
                 <field name="interest"/>
               </group>
               <group>
-                <field name="term"/>
                 <label for="date_from" string="Period"/>
                 <div>
                   <field name="date_from" class="oe_inline"/>
@@ -48,20 +45,19 @@
                 </div>
               </group>
             </group>
-            <notebook>
-              <page string="Loan Schedule">
+           <!-- <notebook>
+              <page string="Contributions">
                 <group>
                   <field name="line_ids" nolabel="1" readonly="1">
                     <tree>
                       <field name="date"/>
                       <field name="amount"/>
-                      <field name="state"/>
                     </tree>
                   </field>
                 </group>
 
               </page>
-            </notebook>
+            </notebook>-->
           </sheet>
           <div class="o_attachment_preview"/>
           <div class="oe_chatter">
