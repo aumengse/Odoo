@@ -8,10 +8,12 @@
         <tree>
           <field name="name"/>
           <field name="borrower_id"/>
-          <field name="partner_id"/>
-          <field name="principal"/>
+          <field name="guarantor_id"/>
           <field name="date_from"/>
           <field name="date_to"/>
+          <field name="total_loan"/>
+          <field name="total_payment"/>
+          <field name="total_balance"/>
         </tree>
       </field>
     </record>
@@ -23,6 +25,7 @@
         <form>
           <header>
             <field name="state" widget="statusbar"/>
+            <button name="action_compute_installment" string="Compute Installment" type="object" class="btn-primary"/>
           </header>
           <sheet>
             <div class="oe_title">
@@ -34,9 +37,12 @@
             <group>
               <group>
                 <field name="borrower_id"/>
-                <field name="partner_id"/>
-                <field name="principal"/>
-                <field name="interest"/>
+                <field name="guarantor_id"/>
+                <field name="principal" widget="monetary"/>
+                <field name="interest_id"/>
+                <field name="monthly_interest"/>
+                <field name="coop_earning"/>
+                <field name="guarantor_earning"/>
               </group>
               <group>
                 <field name="term"/>
@@ -50,16 +56,33 @@
             </group>
             <notebook>
               <page string="Loan Schedule">
-                <group>
-                  <field name="line_ids" nolabel="1" readonly="1">
-                    <tree>
-                      <field name="date"/>
-                      <field name="amount"/>
-                      <field name="state"/>
-                    </tree>
-                  </field>
+                <!--                <group>-->
+                <field name="line_ids" nolabel="1" readonly="1">
+                  <tree>
+                    <field name="date"/>
+                    <field name="description" sum="total"/>
+                    <field name="company_earning" sum="total"/>
+                    <field name="guarantor_earning" sum="total"/>
+                    <field name="amount" sum="total"/>
+                    <field name="state"/>
+                  </tree>
+                </field>
+                <!--                </group>-->
+                <group class="oe_subtotal_footer oe_right">
+                  <field name="total_loan"  />
+                  <field name="total_payment" />
+                  <field name="total_balance" class="oe_subtotal_footer_separator" />
                 </group>
 
+              </page>
+              <page string="Loan Payments">
+                <field name="payment_ids" nolabel="1" readonly="1">
+                  <tree>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="amount" sum="total"/>
+                  </tree>
+                </field>
               </page>
             </notebook>
           </sheet>
@@ -77,6 +100,65 @@
     <record model="ir.actions.act_window" id="action_loan_account">
       <field name="name">Loan Account</field>
       <field name="res_model">loan.account</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="loan_account_payment_tree">
+      <field name="name">loan.account.payment.tree</field>
+      <field name="model">loan.account.payment</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="date"/>
+          <field name="member_id"/>
+          <field name="amount"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="loan_account_payment_form">
+      <field name="name">loan.account.payment.form</field>
+      <field name="model">loan.account.payment</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <!--  <field name="state" widget="statusbar"/>
+              <button name="action_compute_installment" string="Compute Installment" type="object" class="btn-primary"/>-->
+          </header>
+          <sheet>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only"/>
+              <h1>
+                <field name="name" placeholder="00001" readonly="1"/>
+              </h1>
+            </div>
+            <group>
+              <group>
+                <field name="member_id"/>
+                <field name="loan_id"/>
+              </group>
+              <group>
+                <field name="date"/>
+                <field name="amount"/>
+              </group>
+            </group>
+          </sheet>
+          <div class="o_attachment_preview"/>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" groups="base.group_user"/>
+            <field name="activity_ids"/>
+            <field name="message_ids"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="action_loan_account_payment">
+      <field name="name">Loan Payment</field>
+      <field name="res_model">loan.account.payment</field>
       <field name="view_mode">tree,form</field>
     </record>
 

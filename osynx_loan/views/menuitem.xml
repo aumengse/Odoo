@@ -8,28 +8,50 @@
     />
 
     <menuitem
+            id="menu_loan_member"
+            name="Member"
+            sequence="1"
+            parent="menu_loan"
+    />
+
+    <menuitem
             id="menu_loan_member_account"
             name="Accounts"
             sequence="1"
-            parent="menu_loan"
+            parent="menu_loan_member"
             action="action_member_account"
     />
     <menuitem
             id="menu_loan_member_contribution"
             name="Contribution"
             sequence="2"
-            parent="menu_loan"
+            parent="menu_loan_member"
             action="action_member_contribution"
     />
+
     <menuitem
-            id="menu_loan_loan_account"
+            id="menu_loan_loans"
             name="Loans"
-            sequence="3"
+            sequence="2"
             parent="menu_loan"
-            action="action_loan_account"
     />
 
-      <menuitem
+    <menuitem
+            id="menu_loan_loan_account"
+            name="Loan Account"
+            sequence="1"
+            parent="menu_loan_loans"
+            action="action_loan_account"
+    />
+    <menuitem
+            id="menu_loan_loan_payment"
+            name="Payments"
+            sequence="1"
+            parent="menu_loan_loans"
+            action="action_loan_account_payment"
+    />
+
+    <menuitem
             id="menu_loan_configuration"
             name="Configuration"
             sequence="10"

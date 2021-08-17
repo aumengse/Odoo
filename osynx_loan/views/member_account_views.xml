@@ -41,15 +41,25 @@
             </group>
             <notebook>
               <page string="Contributions">
-                <group>
-                  <field name="line_ids" nolabel="1" readonly="1">
-                    <tree>
-                      <field name="date"/>
-                      <field name="amount"/>
-                    </tree>
-                  </field>
-                </group>
-
+                <field name="line_ids" nolabel="1" readonly="1">
+                  <tree>
+                    <field name="date"/>
+                    <field name="amount" sum="total"/>
+                  </tree>
+                </field>
+              </page>
+              <page string="Loans">
+                <field name="loan_ids" nolabel="1" readonly="1">
+                  <tree>
+                    <field name="name"/>
+                    <field name="borrower_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="total_loan"/>
+                    <field name="total_payment"/>
+                    <field name="total_balance"/>
+                  </tree>
+                </field>
               </page>
             </notebook>
           </sheet>

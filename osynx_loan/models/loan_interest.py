@@ -8,3 +8,6 @@ class LoanInterest(models.Model):
     interest = fields.Float(string="Interest")
     coop_rate = fields.Float(string="Coop Rate")
     guarantor_rate = fields.Float(string="Guarantor Rate")
+    type = fields.Selection([('member', "Member"),
+                              ('nonmember', "Non-Member"),
+                              ], string="Type")

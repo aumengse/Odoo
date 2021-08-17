@@ -7,6 +7,7 @@
       <field name="arch" type="xml">
         <tree editable="top">
           <field name="name"/>
+          <field name="type"/>
           <field name="interest"/>
           <field name="coop_rate"/>
           <field name="guarantor_rate"/>
