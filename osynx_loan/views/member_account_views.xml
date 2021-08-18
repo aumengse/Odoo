@@ -47,6 +47,11 @@
                     <field name="amount" sum="total"/>
                   </tree>
                 </field>
+                <group class="oe_subtotal_footer oe_right">
+                  <field name="total_capital"  />
+                  <field name="total_commission"  />
+                  <field name="total_earning" class="oe_subtotal_footer_separator" />
+                </group>
               </page>
               <page string="Loans">
                 <field name="loan_ids" nolabel="1" readonly="1">
@@ -55,6 +60,7 @@
                     <field name="borrower_id"/>
                     <field name="date_from"/>
                     <field name="date_to"/>
+                    <field name="total_guarantor_earning"/>
                     <field name="total_loan"/>
                     <field name="total_payment"/>
                     <field name="total_balance"/>

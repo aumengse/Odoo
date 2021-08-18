@@ -67,7 +67,6 @@
                     <field name="state"/>
                   </tree>
                 </field>
-                <!--                </group>-->
                 <group class="oe_subtotal_footer oe_right">
                   <field name="total_loan"  />
                   <field name="total_payment" />
@@ -80,9 +79,15 @@
                   <tree>
                     <field name="name"/>
                     <field name="date"/>
+                    <field name="company_earning"/>
+                    <field name="member_earning"/>
                     <field name="amount" sum="total"/>
                   </tree>
                 </field>
+                <group class="oe_subtotal_footer oe_right">
+                  <field name="total_company_earning"  />
+                  <field name="total_guarantor_earning" />
+                </group>
               </page>
             </notebook>
           </sheet>
@@ -113,6 +118,8 @@
           <field name="name"/>
           <field name="date"/>
           <field name="member_id"/>
+          <field name="company_earning"/>
+          <field name="member_earning"/>
           <field name="amount"/>
         </tree>
       </field>
@@ -138,10 +145,13 @@
               <group>
                 <field name="member_id"/>
                 <field name="loan_id"/>
+                <field name="amount"/>
               </group>
               <group>
                 <field name="date"/>
-                <field name="amount"/>
+                <field name="company_earning"/>
+                <field name="member_earning"/>
+
               </group>
             </group>
           </sheet>

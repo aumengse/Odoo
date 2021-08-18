@@ -15,6 +15,24 @@ class MemberAccount(models.Model):
     active = fields.Boolean(string="Active", default=True)
     line_ids = fields.One2many('member.contribution','member_account_id',string="Contributions")
     loan_ids = fields.One2many('loan.account','guarantor_id',string="Loans")
+    total_capital = fields.Float(string="Total Capital", compute='compute_total_capital')
+    total_commission = fields.Float(string="Total Commission", compute='compute_total_commission')
+    total_earning = fields.Float(string="Total Earning", compute='compute_total_profit')
+
+    @api.depends('line_ids')
+    def compute_total_capital(self):
+        for rec in self:
+            rec.total_capital = sum(r.amount for r in rec.line_ids)\
+
+    @api.depends('loan_ids')
+    def compute_total_commission(self):
+        for rec in self:
+            rec.total_commission = sum(r.total_guarantor_earning for r in rec.loan_ids)\
+
+    @api.depends('total_capital','total_commission')
+    def compute_total_profit(self):
+        for rec in self:
+            rec.total_earning = rec.total_capital + rec.total_commission
 
     @api.depends('name','partner_id')
     def compute_display_name(self):

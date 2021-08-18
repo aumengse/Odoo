@@ -32,6 +32,8 @@ class LoanAccount(models.Model):
     total_loan = fields.Monetary(string="Total Loan", currency_field='currency_id', compute='compute_totals')
     total_payment = fields.Monetary(string="Total Payment", currency_field='currency_id', compute='compute_totals')
     total_balance = fields.Monetary(string="Balance", currency_field='currency_id', compute='compute_totals')
+    total_company_earning = fields.Monetary(string="Total Company Earning", currency_field='currency_id', compute='compute_total_earning')
+    total_guarantor_earning = fields.Monetary(string="Total Guarantor Earning", currency_field='currency_id', compute='compute_total_earning')
 
     @api.onchange('borrower_id')
     def onchange_borrower_id(self):
@@ -61,7 +63,14 @@ class LoanAccount(models.Model):
         for rec in self:
             rec.total_loan = sum(r.amount for r in rec.line_ids)
             rec.total_payment = sum(r.amount for r in rec.payment_ids)
-            rec.total_balance = rec.total_loan - rec.total_payment
+            rec.total_balance = rec.total_loan - rec.total_payment\
+
+    @api.depends('payment_ids')
+    def compute_total_earning(self):
+        for rec in self:
+            rec.total_guarantor_earning = sum(r.member_earning for r in rec.payment_ids)
+            rec.total_company_earning = sum(r.company_earning for r in rec.payment_ids)
+
     @api.model
     def create(self, vals):
         name = self.env['ir.sequence'].next_by_code('loan.account.sequence')
@@ -124,6 +133,14 @@ class LoanAccountPayment(models.Model):
     amount = fields.Float(string="Amount")
     member_id = fields.Many2one('member.account', string="Member")
     loan_id = fields.Many2one('loan.account', string="Loan", domain="[('guarantor_id','=','member_id')]")
+    company_earning = fields.Float(string="Company Earning", compute='compute_total_earning')
+    member_earning = fields.Float(string="Member Earning", compute='compute_total_earning')
+
+    @api.depends('amount')
+    def compute_total_earning(self):
+        for rec in self:
+            rec.member_earning = (rec.amount * (rec.loan_id.interest_id.guarantor_rate / 100))
+            rec.company_earning = (rec.amount * (rec.loan_id.interest_id.coop_rate / 100))
 
     @api.model
     def create(self, vals):
