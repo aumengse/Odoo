@@ -1,11 +1,15 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 class LoanAccount(models.Model):
     _name = 'loan.account'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Loan Account'
 
+    _rec_name = 'display_name'
+
+    display_name = fields.Char(string="Account Name", compute="compute_display_name")
     name = fields.Char(string="Name")
     active = fields.Boolean(string="Active", default=True)
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
@@ -62,14 +66,19 @@ class LoanAccount(models.Model):
     def compute_totals(self):
         for rec in self:
             rec.total_loan = sum(r.amount for r in rec.line_ids)
-            rec.total_payment = sum(r.amount for r in rec.payment_ids)
-            rec.total_balance = rec.total_loan - rec.total_payment\
+            rec.total_payment = sum(r.amount for r in rec.payment_ids.filtered(lambda r: r.state == 'validate'))
+            rec.total_balance = rec.total_loan - rec.total_payment
 
     @api.depends('payment_ids')
     def compute_total_earning(self):
         for rec in self:
             rec.total_guarantor_earning = sum(r.member_earning for r in rec.payment_ids)
             rec.total_company_earning = sum(r.company_earning for r in rec.payment_ids)
+
+    @api.depends('name', 'borrower_id')
+    def compute_display_name(self):
+        for rec in self:
+            rec.display_name = "%s - %s" % (rec.borrower_id.name, rec.name)
 
     @api.model
     def create(self, vals):
@@ -105,6 +114,12 @@ class LoanAccount(models.Model):
         lines.append(principal_val)
         self.line_ids = lines
 
+    def action_queue(self):
+        self.state = 'queue'
+
+    def action_approve(self):
+        self.state = 'approve'
+
 class LoanAccountLine(models.Model):
     _name = 'loan.account.line'
     _description = 'Loan Account Line'
@@ -121,6 +136,7 @@ class LoanAccountLine(models.Model):
     loan_id = fields.Many2one('loan.account', string="Loan")
     borrower_id = fields.Many2one(related='loan_id.borrower_id')
     guarantor_id = fields.Many2one(related='loan_id.borrower_id')
+    active = fields.Boolean(string="Active", default=True)
 
 
 class LoanAccountPayment(models.Model):
@@ -129,18 +145,29 @@ class LoanAccountPayment(models.Model):
     _description = 'Loan Account Payment'
 
     name = fields.Char(string="Name")
-    date = fields.Date(string="Date")
+    active = fields.Boolean(string="Active", default=True)
+    date = fields.Date(string="Date",default=datetime.today().date())
     amount = fields.Float(string="Amount")
     member_id = fields.Many2one('member.account', string="Member")
-    loan_id = fields.Many2one('loan.account', string="Loan", domain="[('guarantor_id','=','member_id')]")
+    loan_id = fields.Many2one('loan.account', string="Loan", domain="[('guarantor_id','=','member_id'),('state','=','approve')]")
     company_earning = fields.Float(string="Company Earning", compute='compute_total_earning')
     member_earning = fields.Float(string="Member Earning", compute='compute_total_earning')
+    type = fields.Selection([('interest', "Interest"),
+                             ('Principal', "Principal"),
+                             ], string="Payment Type")
+    state = fields.Selection([('draft', "Draft"),
+                              ('process', "Processing"),
+                              ('validate', "Validated")
+                              ], default='draft')
 
-    @api.depends('amount')
+    @api.depends('amount','type')
     def compute_total_earning(self):
         for rec in self:
-            rec.member_earning = (rec.amount * (rec.loan_id.interest_id.guarantor_rate / 100))
-            rec.company_earning = (rec.amount * (rec.loan_id.interest_id.coop_rate / 100))
+            rec.member_earning = 0.00
+            rec.company_earning = 0.00
+            if rec.type == 'interest':
+                rec.member_earning = (rec.amount * (rec.loan_id.interest_id.guarantor_rate / 100))
+                rec.company_earning = (rec.amount * (rec.loan_id.interest_id.coop_rate / 100))
 
     @api.model
     def create(self, vals):
@@ -150,3 +177,9 @@ class LoanAccountPayment(models.Model):
         })
         res = super(LoanAccountPayment, self).create(vals)
         return res
+
+    def action_submit(self):
+        self.state = 'process'
+
+    def action_validate(self):
+        self.state = 'validate'

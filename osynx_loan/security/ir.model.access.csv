@@ -6,3 +6,4 @@ access_loan_account_base,loan.account.base,model_loan_account,base.group_user,1,
 access_loan_account_line_base,loan.account.line.base,model_loan_account_line,base.group_user,1,1,1,1
 access_loan_account_payment_base,loan.account.payment.base,model_loan_account_payment,base.group_user,1,1,1,1
 access_loan_interest_base,loan.interest.base,model_loan_interest,base.group_user,1,1,1,1
+access_loan_penalty_base,loan.penalty.base,model_loan_penalty,base.group_user,1,1,1,1

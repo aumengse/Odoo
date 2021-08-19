@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="loan_interest_nonmember" model="loan.interest">
+            <field name="name">10%</field>
+            <field name="type">nonmember</field>
+            <field name="type">nonmember</field>
+            <field name="interest" eval="10"/>
+            <field name="coop_rate" eval="9"/>
+            <field name="guarantor_rate" eval="1"/>
+        </record>
+        <record id="loan_interest_member" model="loan.interest">
+            <field name="name">7%</field>
+            <field name="type">member</field>
+            <field name="type">member</field>
+            <field name="interest" eval="7"/>
+            <field name="coop_rate" eval="7"/>
+            <field name="guarantor_rate" eval="0"/>
+        </record>
+    </data>
+</odoo>

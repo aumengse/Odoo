@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from datetime import datetime
 
 class MemberContribution(models.Model):
     _name = 'member.contribution'
@@ -11,9 +12,14 @@ class MemberContribution(models.Model):
     currency_id = fields.Many2one(
         'res.currency', string='Currency',
         related='company_id.currency_id', readonly=True)
-    date = fields.Date(string="Date")
+    date = fields.Date(string="Date", default=datetime.today().date())
     amount = fields.Monetary(currency_field='currency_id')
     state = fields.Selection([('draft',"Draft"),
                               ('process', "Processing"),
                               ('validate', "Validated")
                               ],default='draft')
+
+    def action_submit(self):
+        self.state = 'process'
+    def action_validate(self):
+        self.state = 'validate'

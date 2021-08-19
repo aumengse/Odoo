@@ -14,6 +14,7 @@
           <field name="total_loan"/>
           <field name="total_payment"/>
           <field name="total_balance"/>
+          <field name="state"/>
         </tree>
       </field>
     </record>
@@ -25,7 +26,9 @@
         <form>
           <header>
             <field name="state" widget="statusbar"/>
-            <button name="action_compute_installment" string="Compute Installment" type="object" class="btn-primary"/>
+            <button name="action_compute_installment" string="Compute Installment" type="object" class="btn-primary" states="draft"/>
+            <button name="action_queue" string="Queue" type="object" class="btn-primary" states="draft"/>
+            <button name="action_approve" string="Approve" type="object" class="btn-primary" states="queue"/>
           </header>
           <sheet>
             <div class="oe_title">
@@ -121,6 +124,7 @@
           <field name="company_earning"/>
           <field name="member_earning"/>
           <field name="amount"/>
+          <field name="state"/>
         </tree>
       </field>
     </record>
@@ -131,8 +135,9 @@
       <field name="arch" type="xml">
         <form>
           <header>
-            <!--  <field name="state" widget="statusbar"/>
-              <button name="action_compute_installment" string="Compute Installment" type="object" class="btn-primary"/>-->
+            <field name="state" widget="statusbar"/>
+            <button name="action_submit" string="Submit" type="object" class="btn-primary"  states="draft"/>
+            <button name="action_validate" string="Validate" type="object" class="btn-primary"  states="process"/>
           </header>
           <sheet>
             <div class="oe_title">
@@ -145,6 +150,7 @@
               <group>
                 <field name="member_id"/>
                 <field name="loan_id"/>
+                <field name="type"/>
                 <field name="amount"/>
               </group>
               <group>

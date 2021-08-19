@@ -46,9 +46,16 @@
     <menuitem
             id="menu_loan_loan_payment"
             name="Payments"
-            sequence="1"
+            sequence="2"
             parent="menu_loan_loans"
             action="action_loan_account_payment"
+    />
+    <menuitem
+            id="menu_loan_penalty"
+            name="Penalty"
+            sequence="3"
+            parent="menu_loan_loans"
+            action="action_loan_penalty"
     />
 
     <menuitem

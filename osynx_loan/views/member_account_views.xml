@@ -44,11 +44,13 @@
                 <field name="line_ids" nolabel="1" readonly="1">
                   <tree>
                     <field name="date"/>
+                    <field name="state"/>
                     <field name="amount" sum="total"/>
                   </tree>
                 </field>
                 <group class="oe_subtotal_footer oe_right">
                   <field name="total_capital"  />
+                  <field name="total_dividend"  />
                   <field name="total_commission"  />
                   <field name="total_earning" class="oe_subtotal_footer_separator" />
                 </group>
@@ -66,6 +68,21 @@
                     <field name="total_balance"/>
                   </tree>
                 </field>
+              </page>
+              <page string="Payments">
+                <field name="payment_ids" nolabel="1" readonly="1">
+                  <tree>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="type"/>
+                    <field name="company_earning"/>
+                    <field name="member_earning"/>
+                    <field name="amount"/>
+                  </tree>
+                </field>
+              </page>
+              <page string="Penalty">
+                <field name="penalty_ids" nolabel="1" readonly="1"/>
               </page>
             </notebook>
           </sheet>

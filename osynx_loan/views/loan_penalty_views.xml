@@ -1,23 +1,21 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-    <record model="ir.ui.view" id="member_contribution_tree">
-      <field name="name">member.contribution.tree</field>
-      <field name="model">member.contribution</field>
+    <record model="ir.ui.view" id="loan_penalty_tree">
+      <field name="name">loan.penalty.tree</field>
+      <field name="model">loan.penalty</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
-          <field name="member_account_id"/>
-          <field name="date"/>
+          <field name="type"/>
           <field name="amount"/>
-          <field name="state"/>
         </tree>
       </field>
     </record>
 
-    <record model="ir.ui.view" id="member_contribution_form">
-      <field name="name">member.contribution.form</field>
-      <field name="model">member.contribution</field>
+    <record model="ir.ui.view" id="loan_penalty_form">
+      <field name="name">loan.penalty.form</field>
+      <field name="model">loan.penalty</field>
       <field name="arch" type="xml">
         <form>
           <header>
@@ -29,11 +27,11 @@
             <group>
               <group>
                 <field name="name"/>
-                <field name="member_account_id" domain="[('partner_id', '=', name)]"/>
+                <field name="type"/>
+                <field name="amount"/>
               </group>
               <group>
                 <field name="date"/>
-                <field name="amount"/>
               </group>
             </group>
           </sheet>
@@ -48,9 +46,9 @@
     </record>
 
     <!-- actions opening views on models -->
-    <record model="ir.actions.act_window" id="action_member_contribution">
-      <field name="name">Member Contribution</field>
-      <field name="res_model">member.contribution</field>
+    <record model="ir.actions.act_window" id="action_loan_penalty">
+      <field name="name">Penalty</field>
+      <field name="res_model">loan.penalty</field>
       <field name="view_mode">tree,form</field>
     </record>
 
