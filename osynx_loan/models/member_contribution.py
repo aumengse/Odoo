@@ -17,9 +17,11 @@ class MemberContribution(models.Model):
     state = fields.Selection([('draft',"Draft"),
                               ('process', "Processing"),
                               ('validate', "Validated")
-                              ],default='draft')
+                              ],default='draft', string="State", tracking=True)
 
     def action_submit(self):
         self.state = 'process'
+
     def action_validate(self):
-        self.state = 'validate'
+        for rec in self:
+            rec.state = 'validate'

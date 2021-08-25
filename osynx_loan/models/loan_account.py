@@ -9,7 +9,7 @@ class LoanAccount(models.Model):
 
     _rec_name = 'display_name'
 
-    display_name = fields.Char(string="Account Name", compute="compute_display_name")
+    display_name = fields.Char(string="Account Name", compute="compute_display_name", store=True)
     name = fields.Char(string="Name")
     active = fields.Boolean(string="Active", default=True)
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
@@ -25,12 +25,14 @@ class LoanAccount(models.Model):
     term = fields.Integer(string="Term")
     interest_id = fields.Many2one('loan.interest',string="Interest Rate")
     monthly_interest = fields.Monetary(string="Monthly Interest", currency_field='currency_id', compute='compute_interest')
+    total_interest = fields.Monetary(string="Total Interest", currency_field='currency_id', compute='compute_interest')
+
     coop_earning = fields.Monetary(string="Company Earning", currency_field='currency_id', compute='compute_interest')
     guarantor_earning = fields.Monetary(string="Guarantor Earning", currency_field='currency_id', compute='compute_interest')
     state = fields.Selection([('draft', "Draft"),
                               ('queue', "On Queue"),
                               ('approve', "Approved")
-                              ], default='draft', string="State")
+                              ], default='draft', string="State", tracking=True)
     line_ids = fields.One2many('loan.account.line','loan_id',string="Loan Schedule")
     payment_ids = fields.One2many('loan.account.payment', 'loan_id', string="Loan Payment")
     total_loan = fields.Monetary(string="Total Loan", currency_field='currency_id', compute='compute_totals')
@@ -61,6 +63,7 @@ class LoanAccount(models.Model):
             rec.monthly_interest = (rec.principal * (rec.interest_id.interest / 100))
             rec.coop_earning = (rec.principal * (rec.interest_id.coop_rate / 100))
             rec.guarantor_earning = (rec.principal * (rec.interest_id.guarantor_rate / 100))
+            rec.total_interest = rec.monthly_interest * rec.term
 
     @api.depends('line_ids')
     def compute_totals(self):
@@ -118,7 +121,8 @@ class LoanAccount(models.Model):
         self.state = 'queue'
 
     def action_approve(self):
-        self.state = 'approve'
+        for rec in self:
+            rec.state = 'approve'
 
 class LoanAccountLine(models.Model):
     _name = 'loan.account.line'
@@ -148,8 +152,13 @@ class LoanAccountPayment(models.Model):
     active = fields.Boolean(string="Active", default=True)
     date = fields.Date(string="Date",default=datetime.today().date())
     amount = fields.Float(string="Amount")
-    member_id = fields.Many2one('member.account', string="Member")
-    loan_id = fields.Many2one('loan.account', string="Loan", domain="[('guarantor_id','=','member_id'),('state','=','approve')]")
+    member_id = fields.Many2one('member.account', string="Member", related='loan_id.guarantor_id')
+    # loan_id = fields.Many2one('loan.account', string="Loan", domain="[('guarantor_id','=','member_id'),('state','=','approve')]")
+    loan_id = fields.Many2one('loan.account', string="Loan")
+    currency_id = fields.Many2one(related='loan_id.currency_id')
+    principal = fields.Monetary(related='loan_id.principal')
+    monthly_interest = fields.Monetary(related='loan_id.monthly_interest')
+    total_interest = fields.Monetary(related='loan_id.total_interest')
     company_earning = fields.Float(string="Company Earning", compute='compute_total_earning')
     member_earning = fields.Float(string="Member Earning", compute='compute_total_earning')
     type = fields.Selection([('interest', "Interest"),
@@ -158,7 +167,7 @@ class LoanAccountPayment(models.Model):
     state = fields.Selection([('draft', "Draft"),
                               ('process', "Processing"),
                               ('validate', "Validated")
-                              ], default='draft')
+                              ], default='draft', tracking=True)
 
     @api.depends('amount','type')
     def compute_total_earning(self):
@@ -166,8 +175,11 @@ class LoanAccountPayment(models.Model):
             rec.member_earning = 0.00
             rec.company_earning = 0.00
             if rec.type == 'interest':
-                rec.member_earning = (rec.amount * (rec.loan_id.interest_id.guarantor_rate / 100))
-                rec.company_earning = (rec.amount * (rec.loan_id.interest_id.coop_rate / 100))
+                if rec.loan_id.interest_id.type == 'nonmember':
+                    rec.member_earning = (rec.amount * (rec.loan_id.interest_id.guarantor_rate / 100))
+                    rec.company_earning = (rec.amount * (rec.loan_id.interest_id.coop_rate / 100))
+                else:
+                    rec.company_earning = rec.amount
 
     @api.model
     def create(self, vals):
@@ -182,4 +194,5 @@ class LoanAccountPayment(models.Model):
         self.state = 'process'
 
     def action_validate(self):
-        self.state = 'validate'
+        for rec in self:
+            rec.state = 'validate'

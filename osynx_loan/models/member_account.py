@@ -6,7 +6,7 @@ class MemberAccount(models.Model):
     _description = 'Member Account'
     _rec_name = 'display_name'
 
-    display_name = fields.Char(string="Account Name", compute="compute_display_name")
+    display_name = fields.Char(string="Account Name", compute="compute_display_name", store=True)
     name = fields.Char(string="Name")
     partner_id = fields.Many2one('res.partner',string="Member")
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)

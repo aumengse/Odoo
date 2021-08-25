@@ -1,5 +1,21 @@
 <odoo>
   <data>
+     <record model="ir.ui.view" id="member_account_search">
+      <field name="name">member.account.search</field>
+      <field name="model">member.account</field>
+      <field name="arch" type="xml">
+        <search string="Search">
+          <field name="name" string="Name" filter_domain="[('partner_id','ilike',self)]"/>
+          <!--<field name="amount"/>
+          <separator/>
+          <field name="partner_id" operator="child_of"/>
+          <separator/>
+          <filter name="purchase_orders" string="Purchase Orders" domain="[('purchase_order_id', '!=', False)]"/>
+          <filter name="vendor_bills" string="Vendor Bills" domain="[('vendor_bill_id', '!=', False)]"/>-->
+        </search>
+      </field>
+    </record>
+
     <!-- explicit list view definition -->
     <record model="ir.ui.view" id="member_account_tree">
       <field name="name">member.account.tree</field>

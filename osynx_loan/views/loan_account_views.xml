@@ -1,5 +1,12 @@
 <odoo>
   <data>
+    <record model="ir.actions.act_window" id="action_loan_account_payment_domain">
+      <field name="name">Loan Payment</field>
+      <field name="res_model">loan.account.payment</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('loan_id', '=', active_id)]</field>
+    </record>
+
     <!-- explicit list view definition -->
     <record model="ir.ui.view" id="loan_account_tree">
       <field name="name">loan.account.tree</field>
@@ -31,6 +38,9 @@
             <button name="action_approve" string="Approve" type="object" class="btn-primary" states="queue"/>
           </header>
           <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button name="%(action_loan_account_payment_domain)d" icon="fa-money" class="oe_stat_button" string="Payments" type="action"/>
+            </div>
             <div class="oe_title">
               <label for="name" class="oe_edit_only"/>
               <h1>
@@ -44,8 +54,7 @@
                 <field name="principal" widget="monetary"/>
                 <field name="interest_id"/>
                 <field name="monthly_interest"/>
-                <field name="coop_earning"/>
-                <field name="guarantor_earning"/>
+                <field name="total_interest"/>
               </group>
               <group>
                 <field name="term"/>
@@ -55,6 +64,8 @@
                   <span> to </span>
                   <field name="date_to" class="oe_inline"/>
                 </div>
+                <field name="coop_earning"/>
+                <field name="guarantor_earning"/>
               </group>
             </group>
             <notebook>
@@ -112,6 +123,20 @@
     </record>
 
 
+    <record model="ir.ui.view" id="loan_account_payment_search">
+      <field name="name">loan.account.payment.search</field>
+      <field name="model">loan.account.payment</field>
+      <field name="arch" type="xml">
+        <search string="Search Reference Document">
+          <field name="name" string="Reference" filter_domain="[('loan_id','ilike',self)]"/>
+          <separator/>
+          <group expand="1" string="Group By">
+            <filter name="group_by_loan" context="{'group_by' : 'loan_id'}" string="Loan Account"/>
+          </group>
+        </search>
+      </field>
+    </record>
+
     <!-- explicit list view definition -->
     <record model="ir.ui.view" id="loan_account_payment_tree">
       <field name="name">loan.account.payment.tree</field>
@@ -120,6 +145,7 @@
         <tree>
           <field name="name"/>
           <field name="date"/>
+          <field name="loan_id"/>
           <field name="member_id"/>
           <field name="company_earning"/>
           <field name="member_earning"/>
@@ -148,13 +174,22 @@
             </div>
             <group>
               <group>
-                <field name="member_id"/>
                 <field name="loan_id"/>
+                <field name="member_id"/>
                 <field name="type"/>
                 <field name="amount"/>
               </group>
               <group>
                 <field name="date"/>
+                <field name="principal"/>
+                <!--<label for="monthly_interest" string="Interest"/>
+                <div>
+                  <field name="monthly_interest" class="oe_inline"/>
+                  <span> Total Interest </span>
+                  <field name="total_interest" class="oe_inline"/>
+                </div>-->
+                <field name="monthly_interest"/>
+                <field name="total_interest"/>
                 <field name="company_earning"/>
                 <field name="member_earning"/>
 
@@ -176,6 +211,7 @@
       <field name="name">Loan Payment</field>
       <field name="res_model">loan.account.payment</field>
       <field name="view_mode">tree,form</field>
+      <field name="context">{'search_default_group_by_loan': True}</field>
     </record>
 
   </data>
