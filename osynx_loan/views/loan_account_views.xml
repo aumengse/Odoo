@@ -7,6 +7,23 @@
       <field name="domain">[('loan_id', '=', active_id)]</field>
     </record>
 
+    <record model="ir.ui.view" id="loan_account_search">
+      <field name="name">loan.account.search</field>
+      <field name="model">loan.account</field>
+      <field name="arch" type="xml">
+        <search string="Search Reference Document">
+          <field name="name" string="Reference" filter_domain="[('display_name','ilike',self)]"/>
+          <separator/>
+          <group expand="1" string="Group By">
+            <filter name="group_by_guarantor" context="{'group_by' : 'guarantor_id'}" string="Guarantor"/>
+          </group>
+          <separator/>
+          <filter string="Active" name="active_loan" domain="[('state', '!=', 'paid')]"/>
+          <filter string="Fully Paid" name="paid_loan" domain="[('state', '=', 'paid')]"/>
+        </search>
+      </field>
+    </record>
+
     <!-- explicit list view definition -->
     <record model="ir.ui.view" id="loan_account_tree">
       <field name="name">loan.account.tree</field>
@@ -32,7 +49,7 @@
       <field name="arch" type="xml">
         <form>
           <header>
-            <field name="state" widget="statusbar"/>
+            <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
             <button name="action_compute_installment" string="Compute Installment" type="object" class="btn-primary" states="draft"/>
             <button name="action_queue" string="Queue" type="object" class="btn-primary" states="draft"/>
             <button name="action_approve" string="Approve" type="object" class="btn-primary" states="queue"/>
@@ -119,7 +136,8 @@
     <record model="ir.actions.act_window" id="action_loan_account">
       <field name="name">Loan Account</field>
       <field name="res_model">loan.account</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,form,search</field>
+      <field name="context">{'search_default_active_loan': True}</field>
     </record>
 
 
@@ -210,7 +228,7 @@
     <record model="ir.actions.act_window" id="action_loan_account_payment">
       <field name="name">Loan Payment</field>
       <field name="res_model">loan.account.payment</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,form,search</field>
       <field name="context">{'search_default_group_by_loan': True}</field>
     </record>
 

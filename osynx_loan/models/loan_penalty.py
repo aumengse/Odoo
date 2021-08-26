@@ -7,6 +7,7 @@ class LoanInterest(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Many2one('member.account',string="Member")
+    loan_id = fields.Many2one('loan.account',string="Reference Loan")
     date = fields.Date(string="Date", default=datetime.today().date())
     type = fields.Selection([('late_contribution', "Late Contribution"),
                               ('loan_expired', "Expired Loan"),

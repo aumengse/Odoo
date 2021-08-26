@@ -31,7 +31,8 @@ class LoanAccount(models.Model):
     guarantor_earning = fields.Monetary(string="Guarantor Earning", currency_field='currency_id', compute='compute_interest')
     state = fields.Selection([('draft', "Draft"),
                               ('queue', "On Queue"),
-                              ('approve', "Approved")
+                              ('approve', "Approved"),
+                              ('paid', "Fully Paid")
                               ], default='draft', string="State", tracking=True)
     line_ids = fields.One2many('loan.account.line','loan_id',string="Loan Schedule")
     payment_ids = fields.One2many('loan.account.payment', 'loan_id', string="Loan Payment")
@@ -71,6 +72,10 @@ class LoanAccount(models.Model):
             rec.total_loan = sum(r.amount for r in rec.line_ids)
             rec.total_payment = sum(r.amount for r in rec.payment_ids.filtered(lambda r: r.state == 'validate'))
             rec.total_balance = rec.total_loan - rec.total_payment
+
+            if rec.state != 'paid':
+                if rec.total_balance == 0.00:
+                    rec.state = 'paid'
 
     @api.depends('payment_ids')
     def compute_total_earning(self):
