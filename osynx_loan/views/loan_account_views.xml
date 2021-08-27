@@ -192,9 +192,9 @@
             </div>
             <group>
               <group>
-                <field name="loan_id"/>
-                <field name="member_id"/>
                 <field name="type"/>
+                <field name="loan_id" attrs="{'invisible': [('type', 'not in', ['principal','interest'])]}"/>
+                <field name="member_id"/>
                 <field name="amount"/>
               </group>
               <group>

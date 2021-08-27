@@ -5,6 +5,7 @@ class MemberContribution(models.Model):
     _name = 'member.contribution'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Member Contributions'
+    _order = 'date desc'
 
     name = fields.Many2one('res.partner',string="Name",default=lambda self: self.env.user.partner_id.id)
     member_account_id = fields.Many2one('member.account', string="Account")

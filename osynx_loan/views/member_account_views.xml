@@ -26,6 +26,10 @@
           <field name="partner_id"/>
           <field name="date_from"/>
           <field name="date_to"/>
+          <field name="total_capital"/>
+          <field name="total_commission"/>
+          <field name="total_dividend"/>
+          <field name="total_earning"/>
         </tree>
       </field>
     </record>

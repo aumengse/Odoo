@@ -157,7 +157,7 @@ class LoanAccountPayment(models.Model):
     active = fields.Boolean(string="Active", default=True)
     date = fields.Date(string="Date",default=datetime.today().date())
     amount = fields.Float(string="Amount")
-    member_id = fields.Many2one('member.account', string="Member", related='loan_id.guarantor_id')
+    member_id = fields.Many2one('member.account', string="Member")
     # loan_id = fields.Many2one('loan.account', string="Loan", domain="[('guarantor_id','=','member_id'),('state','=','approve')]")
     loan_id = fields.Many2one('loan.account', string="Loan")
     currency_id = fields.Many2one(related='loan_id.currency_id')
@@ -166,13 +166,29 @@ class LoanAccountPayment(models.Model):
     total_interest = fields.Monetary(related='loan_id.total_interest')
     company_earning = fields.Float(string="Company Earning", compute='compute_total_earning')
     member_earning = fields.Float(string="Member Earning", compute='compute_total_earning')
-    type = fields.Selection([('interest', "Interest"),
-                             ('Principal', "Principal"),
-                             ], string="Payment Type")
+    type = fields.Selection([
+        ('contribution', "Contribution"),
+        ('principal', "Principal"),
+        ('interest', "Interest"),
+        ('penalty', "Penalty"),
+    ], string="Payment Type")
     state = fields.Selection([('draft', "Draft"),
                               ('process', "Processing"),
                               ('validate', "Validated")
                               ], default='draft', tracking=True)
+
+    @api.onchange('type')
+    def onchange_type(self):
+        for rec in self:
+            rec.loan_id = False
+            rec.member_id = False
+
+    @api.onchange('loan_id')
+    def onchange_loan_id(self):
+        for rec in self:
+            if rec.type in ['principal','interest']:
+                rec.member_id = rec.loan_id.guarantor_id.id
+
 
     @api.depends('amount','type')
     def compute_total_earning(self):
@@ -201,3 +217,8 @@ class LoanAccountPayment(models.Model):
     def action_validate(self):
         for rec in self:
             rec.state = 'validate'
+
+    def set_type(self):
+        for rec in self:
+            if rec.type == 'Principal':
+                rec.type = 'principal'
