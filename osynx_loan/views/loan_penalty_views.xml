@@ -1,5 +1,36 @@
 <odoo>
   <data>
+    <record model="ir.ui.view" id="loan_penalty_search">
+      <field name="name">loan.penalty.search</field>
+      <field name="model">loan.penalty</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+          <separator/>
+          <filter name="current_month" string="Current Month" domain="[
+                    ('date', '&gt;=', (context_today()).strftime('%Y-%m-01')),
+                    ('date', '&lt;', (context_today() + relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+
+          <filter string="Last Month" name="last_month"
+                  domain="[('date','&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))]"/>
+
+          <filter string="Late Contribution" name="late_contribution"
+                  domain="[('type','=','late_contribution')]"/>
+
+          <filter string="Expired Loan" name="expired_loan"
+                  domain="[('type','=','loan_expired')]"/>
+
+          <separator/>
+          <group expand='0' string='Group by...'>
+            <filter string='Date' name="group_by_date" context="{'group_by': 'date:month'}"/>
+            <filter string='Member' name="group_by_name" context="{'group_by': 'name'}"/>
+            <filter string='Status' name="group_by_state" context="{'group_by': 'state'}"/>
+            <filter string='Type' name="group_by_type" context="{'group_by': 'type'}"/>
+          </group>
+        </search>
+      </field>
+    </record>
+
     <!-- explicit list view definition -->
     <record model="ir.ui.view" id="loan_penalty_tree">
       <field name="name">loan.penalty.tree</field>

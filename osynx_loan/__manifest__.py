@@ -30,6 +30,7 @@
         'data/website_page.xml',
         'data/ir_sequence.xml',
         'data/ir_actions_server.xml',
+        'data/ir_cron.xml',
         'data/loan_interest_data.xml',
         'views/loan_interest_views.xml',
         'views/member_account_views.xml',

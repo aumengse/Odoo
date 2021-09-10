@@ -10,7 +10,7 @@
                 <div class="app_settings_block" data-string="Facility" string="Loan" data-key="osynx_loan" groups="osynx_loan.group_loan_manager">
                     <h2>Loan Management</h2>
                     <div class="row mt16 o_settings_container" name="loan_setting_container">
-                        <div class="col-12 col-lg-6 o_setting_box" id="default_company_schedule_setting">
+                        <div class="col-12 col-lg-6 o_setting_box" id="company_details_settings">
                             <div class="o_setting_right_pane">
                                 <label for="contribution_due_day"/>
                                 <span class="fa fa-lg fa-calendar-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific."  groups="osynx_loan.group_loan_manager"/>
@@ -22,11 +22,30 @@
                                 <div class="content-group">
                                     <div class="mt16">
                                         <field name="contribution_due_day"
-                                            class="o_light_label"/>
+                                               class="o_light_label"/>
                                     </div>
                                 </div>
                             </div>
-                             <div class="o_setting_right_pane">
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="company_details_settings">
+                            <div class="o_setting_right_pane">
+                                <label for="contribution_late_fee"/>
+                                <span class="fa fa-lg fa-money" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific."  groups="osynx_loan.group_loan_manager"/>
+                                <div class="row">
+                                    <div class="text-muted col-lg-8">
+                                        Set Contribution Late fee
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="contribution_late_fee"
+                                               class="o_light_label"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="company_details_settings">
+                            <div class="o_setting_right_pane">
                                 <label for="grace_period"/>
                                 <span class="fa fa-lg fa-clock-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific."  groups="osynx_loan.group_loan_manager"/>
                                 <div class="row">
@@ -37,7 +56,7 @@
                                 <div class="content-group">
                                     <div class="mt16">
                                         <field name="grace_period"
-                                            class="o_light_label"/>
+                                               class="o_light_label"/>
                                     </div>
                                 </div>
                             </div>

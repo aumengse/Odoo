@@ -1,5 +1,7 @@
 from odoo import models, fields, api
-from datetime import datetime
+from datetime import datetime,date
+from dateutil.relativedelta import relativedelta
+import calendar
 
 class LoanInterest(models.Model):
     _name = 'loan.penalty'
@@ -10,8 +12,8 @@ class LoanInterest(models.Model):
     loan_id = fields.Many2one('loan.account',string="Reference Loan")
     date = fields.Date(string="Date", default=datetime.today().date())
     type = fields.Selection([('late_contribution', "Late Contribution"),
-                              ('loan_expired', "Expired Loan"),
-                              ], string="Type")
+                             ('loan_expired', "Expired Loan"),
+                             ], string="Type")
     amount = fields.Float(string="Amount")
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     active = fields.Boolean(string="Active", default=True)
@@ -26,3 +28,48 @@ class LoanInterest(models.Model):
 
     def action_validate(self):
         self.state = 'validate'
+
+    def action_cron_late_contribution_fee(self):
+        member_ids = self.env['member.account'].search([])
+        date_today = datetime.today().date()
+        company_id = self.env.company
+
+        prev_month = date_today + relativedelta(months=-1)
+
+        _, num_days = calendar.monthrange(prev_month.year, prev_month.month)
+
+        date_from = prev_month.replace(day=1)
+        date_to = date(prev_month.year, prev_month.month, num_days)
+
+        for member in member_ids:
+            contribution_id = self.env['member.contribution'].search([('member_account_id','=',member.id),
+                                                                      ('date','>=', date_from),
+                                                                      ('date','<=', date_to),
+                                                                      ('state','=', 'validate'),
+                                                                      ])
+
+            if contribution_id:
+                pass
+            else:
+                self.create({
+                    'type': 'late_contribution',
+                    'date': date_today,
+                    'name': member.id,
+                    'amount': company_id.contribution_late_fee,
+                })
+
+    def action_cron_expired_loan_fee(self):
+        date_today = datetime.today().date()
+
+        expired_loan_ids = self.env['loan.account'].search([
+            ('date_to', '<=', date_today),
+            ('state', '=', 'approve'),
+        ])
+
+        # for rec in expired_loan_ids:
+        #     if rec.date_to.day == date_today.day
+
+        print(expired_loan_ids)
+
+
+

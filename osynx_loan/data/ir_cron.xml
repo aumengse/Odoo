@@ -1,0 +1,22 @@
+<odoo>
+    <record id="ir_cron_late_contribution_fee" model="ir.cron">
+        <field name="name">Member Contribution : Late Contribution Fee</field>
+        <field name="model_id" ref="model_loan_penalty"/>
+        <field name="state">code</field>
+        <field name="code">model.action_cron_late_contribution_fee()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <record id="ir_cron_expired_loan_fee" model="ir.cron">
+        <field name="name">Expired Loan Fee</field>
+        <field name="model_id" ref="model_loan_penalty"/>
+        <field name="state">code</field>
+        <field name="code">model.action_cron_expired_loan_fee()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+</odoo>

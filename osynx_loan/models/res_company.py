@@ -40,4 +40,5 @@ class ResCompany(models.Model):
 
 
     contribution_due_day = fields.Selection(DAYS, string="Contribution Due Day")
+    contribution_late_fee = fields.Float(string="Contribution Late Fee")
     grace_period = fields.Selection(DAYS, string="Grace Period")
