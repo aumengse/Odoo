@@ -6,3 +6,5 @@ from . import member_account
 from . import loan_account
 from . import loan_interest
 from . import loan_penalty
+from . import res_company
+from . import res_config_settings

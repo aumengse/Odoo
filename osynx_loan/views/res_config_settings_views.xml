@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.hr</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="70"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Facility" string="Loan" data-key="osynx_loan" groups="osynx_loan.group_loan_manager">
+                    <h2>Loan Management</h2>
+                    <div class="row mt16 o_settings_container" name="loan_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box" id="default_company_schedule_setting">
+                            <div class="o_setting_right_pane">
+                                <label for="contribution_due_day"/>
+                                <span class="fa fa-lg fa-calendar-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific."  groups="osynx_loan.group_loan_manager"/>
+                                <div class="row">
+                                    <div class="text-muted col-lg-8">
+                                        Set Contribution Due Day
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="contribution_due_day"
+                                            class="o_light_label"/>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="o_setting_right_pane">
+                                <label for="grace_period"/>
+                                <span class="fa fa-lg fa-clock-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific."  groups="osynx_loan.group_loan_manager"/>
+                                <div class="row">
+                                    <div class="text-muted col-lg-8">
+                                        Set Grace Period of Loan/Contribution (Days)
+                                    </div>
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="grace_period"
+                                            class="o_light_label"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="loan_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'osynx_loan', 'bin_size': False}</field>
+    </record>
+</odoo>

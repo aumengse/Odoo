@@ -24,6 +24,7 @@
 
     # always loaded
     'data': [
+        'security/res_groups.xml',
         'security/ir.model.access.csv',
         'data/config_data.xml',
         'data/website_page.xml',
@@ -36,6 +37,7 @@
         'views/loan_account_views.xml',
         'views/loan_penalty_views.xml',
         'views/menuitem.xml',
+        'views/res_config_settings_views.xml',
         'views/website_contributions.xml',
         'views/website_submit_contribution_template.xml',
     ],
