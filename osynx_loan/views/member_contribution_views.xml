@@ -15,6 +15,28 @@
       </field>
     </record>
 
+    <record model="ir.ui.view" id="member_contribution_search">
+      <field name="name">member.contribution.search</field>
+      <field name="model">member.contribution</field>
+      <field name="arch" type="xml">
+        <search>
+          <filter name="current_month" string="Current Month" domain="[
+                    ('date', '&gt;=', (context_today()).strftime('%Y-%m-01')),
+                    ('date', '&lt;', (context_today() + relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+
+          <filter string="Last Month" name="last_month"
+                  domain="[('date','&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))]"/>
+
+          <separator/>
+          <group expand='0' string='Group by...'>
+            <filter string='Date' name="group_by_date" context="{'group_by': 'date:month'}"/>
+            <filter string='Member' name="group_by_member_account_id" context="{'group_by': 'member_account_id'}"/>
+            <filter string='Status' name="group_by_state" context="{'group_by': 'state'}"/>
+          </group>
+        </search>
+      </field>
+    </record>
+
     <record model="ir.ui.view" id="member_contribution_form">
       <field name="name">member.contribution.form</field>
       <field name="model">member.contribution</field>
@@ -52,6 +74,7 @@
       <field name="name">Member Contribution</field>
       <field name="res_model">member.contribution</field>
       <field name="view_mode">tree,form</field>
+      <field name="context">{"search_default_current_month":1}</field>
     </record>
 
   </data>
