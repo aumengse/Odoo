@@ -30,46 +30,58 @@ class LoanInterest(models.Model):
         self.state = 'validate'
 
     def action_cron_late_contribution_fee(self):
-        member_ids = self.env['member.account'].search([])
         date_today = datetime.today().date()
         company_id = self.env.company
 
-        prev_month = date_today + relativedelta(months=-1)
+        if date_today.day == (int(company_id.grace_period) + 1):
+            member_ids = self.env['member.account'].search([])
 
-        _, num_days = calendar.monthrange(prev_month.year, prev_month.month)
+            prev_month = date_today + relativedelta(months=-1)
 
-        date_from = prev_month.replace(day=1)
-        date_to = date(prev_month.year, prev_month.month, num_days)
+            _, num_days = calendar.monthrange(prev_month.year, prev_month.month)
 
-        for member in member_ids:
-            contribution_id = self.env['member.contribution'].search([('member_account_id','=',member.id),
-                                                                      ('date','>=', date_from),
-                                                                      ('date','<=', date_to),
-                                                                      ('state','=', 'validate'),
-                                                                      ])
+            date_from = prev_month.replace(day=1)
+            date_to = date(prev_month.year, prev_month.month, num_days)
 
-            if contribution_id:
-                pass
-            else:
-                self.create({
-                    'type': 'late_contribution',
-                    'date': date_today,
-                    'name': member.id,
-                    'amount': company_id.contribution_late_fee,
-                })
+            for member in member_ids:
+                contribution_id = self.env['member.contribution'].search([('member_account_id','=',member.id),
+                                                                          ('date','>=', date_from),
+                                                                          ('date','<=', date_to),
+                                                                          ('state','=', 'validate'),
+                                                                          ])
+
+                if contribution_id:
+                    pass
+                else:
+                    self.create({
+                        'type': 'late_contribution',
+                        'date': date_today,
+                        'name': member.id,
+                        'amount': company_id.contribution_late_fee,
+                    })
 
     def action_cron_expired_loan_fee(self):
         date_today = datetime.today().date()
+        company_id = self.env.company
 
         expired_loan_ids = self.env['loan.account'].search([
             ('date_to', '<=', date_today),
-            ('state', '=', 'approve'),
+            ('state', '=', 'approved'),
         ])
 
-        # for rec in expired_loan_ids:
-        #     if rec.date_to.day == date_today.day
+        for rec in expired_loan_ids:
+            if rec.date_to.day == date_today.day:
+                self.create({
+                    'type': 'loan_expired',
+                    'date': date_today,
+                    'name': rec.guarantor_id.id,
+                    'loan_id': rec.id,
+                    'amount': company_id.contribution_late_fee,
+                })
 
-        print(expired_loan_ids)
+                rec.write({
+                    'state': 'expired'
+                })
 
 
 

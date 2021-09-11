@@ -5,9 +5,10 @@ class MemberAccount(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Member Account'
     _rec_name = 'display_name'
+    _order = 'display_name'
 
     display_name = fields.Char(string="Account Name", compute="compute_display_name", store=True)
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Reference")
     partner_id = fields.Many2one('res.partner',string="Member")
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     active = fields.Boolean(string="Active", default=True)

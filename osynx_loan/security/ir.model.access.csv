@@ -9,18 +9,19 @@ access_loan_account_payment_base,loan.account.payment.base,model_loan_account_pa
 access_loan_interest_base,loan.interest.base,model_loan_interest,base.group_user,1,0,0,0
 access_loan_penalty_base,loan.penalty.base,model_loan_penalty,base.group_user,1,0,0,0
 
-access_member_contribution_base,member.contribution.base,model_member_contribution,osynx_loan.group_loan_user,1,1,1,0
-access_member_account_base,member.account.base,model_member_account,osynx_loan.group_loan_user,1,1,1,0
-access_loan_account_base,loan.account.base,model_loan_account,osynx_loan.group_loan_user,1,1,1,0
-access_loan_account_line_base,loan.account.line.base,model_loan_account_line,osynx_loan.group_loan_user,1,1,1,0
-access_loan_account_payment_base,loan.account.payment.base,model_loan_account_payment,osynx_loan.group_loan_user,1,1,1,0
-access_loan_interest_base,loan.interest.base,model_loan_interest,osynx_loan.group_loan_user,1,1,1,0
-access_loan_penalty_base,loan.penalty.base,model_loan_penalty,osynx_loan.group_loan_user,1,1,1,0
+access_member_contribution_user,member.contribution.user,model_member_contribution,osynx_loan.group_loan_user,1,1,1,0
+access_member_account_user,member.account.user,model_member_account,osynx_loan.group_loan_user,1,1,1,0
+access_loan_account_user,loan.account.user,model_loan_account,osynx_loan.group_loan_user,1,1,1,0
+access_loan_account_line_user,loan.account.line.user,model_loan_account_line,osynx_loan.group_loan_user,1,1,1,0
+access_loan_account_payment_user,loan.account.payment.user,model_loan_account_payment,osynx_loan.group_loan_user,1,1,1,0
+access_loan_interest_user,loan.interest.user,model_loan_interest,osynx_loan.group_loan_user,1,1,1,0
+access_loan_penalty_user,loan.penalty.user,model_loan_penalty,osynx_loan.group_loan_user,1,1,1,0
 
-access_member_contribution_base,member.contribution.base,model_member_contribution,osynx_loan.group_loan_manager,1,1,1,1
-access_member_account_base,member.account.base,model_member_account,osynx_loan.group_loan_manager,1,1,1,1
-access_loan_account_base,loan.account.base,model_loan_account,osynx_loan.group_loan_manager,1,1,1,1
-access_loan_account_line_base,loan.account.line.base,model_loan_account_line,osynx_loan.group_loan_manager,1,1,1,1
-access_loan_account_payment_base,loan.account.payment.base,model_loan_account_payment,osynx_loan.group_loan_manager,1,1,1,1
-access_loan_interest_base,loan.interest.base,model_loan_interest,osynx_loan.group_loan_manager,1,1,1,1
-access_loan_penalty_base,loan.penalty.base,model_loan_penalty,osynx_loan.group_loan_manager,1,1,1,1
+access_member_contribution_manager,member.contribution.manager,model_member_contribution,osynx_loan.group_loan_manager,1,1,1,1
+access_member_account_manager,member.account.manager,model_member_account,osynx_loan.group_loan_manager,1,1,1,1
+access_loan_account_manager,loan.account.manager,model_loan_account,osynx_loan.group_loan_manager,1,1,1,1
+access_loan_account_line_manager,loan.account.line.manager,model_loan_account_line,osynx_loan.group_loan_manager,1,1,1,1
+access_loan_account_payment_manager,loan.account.payment.manager,model_loan_account_payment,osynx_loan.group_loan_manager,1,1,1,1
+access_loan_interest_manager,loan.interest.manager,model_loan_interest,osynx_loan.group_loan_manager,1,1,1,1
+access_loan_penalty_manager,loan.penalty.manager,model_loan_penalty,osynx_loan.group_loan_manager,1,1,1,1
+access_loan_extend_wizard_manager,loan.extend.wizard.manager,model_loan_extend_wizard,osynx_loan.group_loan_manager,1,1,1,1

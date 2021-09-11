@@ -15,7 +15,7 @@
         <field name="state">code</field>
         <field name="code">model.action_cron_expired_loan_fee()</field>
         <field name="interval_number">1</field>
-        <field name="interval_type">months</field>
+        <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
     </record>
 

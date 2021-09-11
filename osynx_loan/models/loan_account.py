@@ -6,6 +6,7 @@ class LoanAccount(models.Model):
     _name = 'loan.account'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Loan Account'
+    _order = 'display_name'
 
     _rec_name = 'display_name'
 
@@ -20,9 +21,9 @@ class LoanAccount(models.Model):
     guarantor_id = fields.Many2one('member.account',string="Guarantor")
     borrower_id = fields.Many2one('res.partner',string="Borrower")
     date_from = fields.Date(string="Start")
-    date_to = fields.Date(string="End", compute='compute_date_to')
+    date_to = fields.Date(string="End", compute='compute_date_to', store=True, tracking=True)
     principal = fields.Monetary(string="Principal Amount", currency_field='currency_id')
-    term = fields.Integer(string="Term")
+    term = fields.Integer(string="Term", tracking=True)
     interest_id = fields.Many2one('loan.interest',string="Interest Rate")
     monthly_interest = fields.Monetary(string="Monthly Interest", currency_field='currency_id', compute='compute_interest')
     total_interest = fields.Monetary(string="Total Interest", currency_field='currency_id', compute='compute_interest')
@@ -32,12 +33,16 @@ class LoanAccount(models.Model):
     state = fields.Selection([('draft', "Draft"),
                               ('queue', "On Queue"),
                               ('approve', "Approved"),
+                              ('expired', "Expired"),
+                              ('extend', "Extended"),
                               ('paid', "Fully Paid")
                               ], default='draft', string="State", tracking=True)
     line_ids = fields.One2many('loan.account.line','loan_id',string="Loan Schedule")
     payment_ids = fields.One2many('loan.account.payment', 'loan_id', string="Loan Payment")
+    penalty_ids = fields.One2many('loan.penalty', 'loan_id', string="Penalty")
     total_loan = fields.Monetary(string="Total Loan", currency_field='currency_id', compute='compute_totals')
     total_payment = fields.Monetary(string="Total Payment", currency_field='currency_id', compute='compute_totals')
+    total_penalty = fields.Monetary(string="Total Penalty", currency_field='currency_id', compute='compute_totals')
     total_balance = fields.Monetary(string="Balance", currency_field='currency_id', compute='compute_totals')
     total_company_earning = fields.Monetary(string="Total Company Earning", currency_field='currency_id', compute='compute_total_earning')
     total_guarantor_earning = fields.Monetary(string="Total Guarantor Earning", currency_field='currency_id', compute='compute_total_earning')
@@ -71,7 +76,8 @@ class LoanAccount(models.Model):
         for rec in self:
             rec.total_loan = sum(r.amount for r in rec.line_ids)
             rec.total_payment = sum(r.amount for r in rec.payment_ids.filtered(lambda r: r.state == 'validate'))
-            rec.total_balance = rec.total_loan - rec.total_payment
+            rec.total_penalty = sum(r.amount for r in rec.penalty_ids.filtered(lambda r: r.type == 'loan_expired' and r.state == 'validate'))
+            rec.total_balance = (rec.total_loan + rec.total_penalty) - rec.total_payment
 
             if rec.state != 'paid':
                 if rec.total_balance == 0.00:
@@ -129,6 +135,15 @@ class LoanAccount(models.Model):
         for rec in self:
             rec.state = 'approve'
 
+    def action_extend(self):
+        context = self.env.context
+
+        if context.get('new_term'):
+            self.term += context.get('new_term')
+
+            self.state = 'extend'
+
+
 class LoanAccountLine(models.Model):
     _name = 'loan.account.line'
     _description = 'Loan Account Line'
@@ -153,11 +168,12 @@ class LoanAccountPayment(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Loan Account Payment'
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Reference")
     active = fields.Boolean(string="Active", default=True)
     date = fields.Date(string="Date",default=datetime.today().date())
     amount = fields.Float(string="Amount")
     member_id = fields.Many2one('member.account', string="Member")
+    penalty_id = fields.Many2one('loan.penalty', string="Penalty")
     # loan_id = fields.Many2one('loan.account', string="Loan", domain="[('guarantor_id','=','member_id'),('state','=','approve')]")
     loan_id = fields.Many2one('loan.account', string="Loan")
     currency_id = fields.Many2one(related='loan_id.currency_id')
@@ -166,7 +182,7 @@ class LoanAccountPayment(models.Model):
     total_interest = fields.Monetary(related='loan_id.total_interest')
     company_earning = fields.Float(string="Company Earning", compute='compute_total_earning')
     member_earning = fields.Float(string="Member Earning", compute='compute_total_earning')
-    type = fields.Selection([
+    payment_type = fields.Selection([
         ('contribution', "Contribution"),
         ('principal', "Principal"),
         ('interest', "Interest"),
@@ -177,25 +193,25 @@ class LoanAccountPayment(models.Model):
                               ('validate', "Validated")
                               ], default='draft', tracking=True)
 
-    @api.onchange('type')
+    @api.onchange('payment_type')
     def onchange_type(self):
         for rec in self:
             rec.loan_id = False
             rec.member_id = False
 
-    @api.onchange('loan_id')
-    def onchange_loan_id(self):
+    @api.onchange('penalty_id')
+    def onchange_penalty_id(self):
         for rec in self:
-            if rec.type in ['principal','interest']:
-                rec.member_id = rec.loan_id.guarantor_id.id
+            if rec.penalty_id:
+                rec.amount = rec.penalty_id.amount
 
 
-    @api.depends('amount','type')
+    @api.depends('amount','payment_type')
     def compute_total_earning(self):
         for rec in self:
             rec.member_earning = 0.00
             rec.company_earning = 0.00
-            if rec.type == 'interest':
+            if rec.payment_type == 'interest':
                 if rec.loan_id.interest_id.type == 'nonmember':
                     rec.member_earning = (rec.amount * (rec.loan_id.interest_id.guarantor_rate / 100))
                     rec.company_earning = (rec.amount * (rec.loan_id.interest_id.coop_rate / 100))

@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="loan_extend_wizard_form">
+            <field name="name">loan.extend.wizard.form</field>
+            <field name="model">loan.extend.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="extended_term"/>
+                            <field name="date_from" readonly="1"/>
+                            <field name="date_to"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_extend" string="Extend" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_loan_extend_wizard" model="ir.actions.act_window">
+            <field name="name">Extend Loan</field>
+            <field name="res_model">loan.extend.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Extend Loan
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

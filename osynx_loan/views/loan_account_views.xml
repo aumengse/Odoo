@@ -19,7 +19,9 @@
           </group>
           <separator/>
           <filter string="Active" name="active_loan" domain="[('state', '!=', 'paid')]"/>
+          <separator/>
           <filter string="Fully Paid" name="paid_loan" domain="[('state', '=', 'paid')]"/>
+          <filter string="Expired Loan" name="expired_loan" domain="[('state', '=', 'expired')]"/>
         </search>
       </field>
     </record>
@@ -29,13 +31,14 @@
       <field name="name">loan.account.tree</field>
       <field name="model">loan.account</field>
       <field name="arch" type="xml">
-        <tree>
+        <tree decoration-danger="state == 'expired'">
           <field name="name"/>
           <field name="borrower_id"/>
           <field name="guarantor_id"/>
           <field name="date_from"/>
           <field name="date_to"/>
           <field name="total_loan"/>
+          <field name="total_penalty"/>
           <field name="total_payment"/>
           <field name="total_balance"/>
           <field name="state"/>
@@ -53,6 +56,7 @@
             <button name="action_compute_installment" string="Compute Installment" type="object" class="btn-primary" states="draft"/>
             <button name="action_queue" string="Queue" type="object" class="btn-primary" states="draft"/>
             <button name="action_approve" string="Approve" type="object" class="btn-primary" states="queue"/>
+            <button name="%(action_loan_extend_wizard)d" string="Extend" type="action" class="btn-primary" states="expired"/>
           </header>
           <sheet>
             <div class="oe_button_box" name="button_box">
@@ -66,20 +70,20 @@
             </div>
             <group>
               <group>
-                <field name="borrower_id"/>
-                <field name="guarantor_id"/>
-                <field name="principal" widget="monetary"/>
-                <field name="interest_id"/>
-                <field name="monthly_interest"/>
-                <field name="total_interest"/>
+                <field name="borrower_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="guarantor_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="principal" widget="monetary" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="interest_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="monthly_interest" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="total_interest" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
               </group>
               <group>
-                <field name="term"/>
+                <field name="term" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
                 <label for="date_from" string="Period"/>
                 <div>
-                  <field name="date_from" class="oe_inline"/>
+                  <field name="date_from" class="oe_inline" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
                   <span> to </span>
-                  <field name="date_to" class="oe_inline"/>
+                  <field name="date_to" class="oe_inline" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
                 </div>
                 <field name="coop_earning"/>
                 <field name="guarantor_earning"/>
@@ -100,7 +104,8 @@
                 </field>
                 <group class="oe_subtotal_footer oe_right">
                   <field name="total_loan"  />
-                  <field name="total_payment" />
+                  <field name="total_penalty"  />
+                  <field name="total_payment" class="oe_subtotal_footer_separator"/>
                   <field name="total_balance" class="oe_subtotal_footer_separator" />
                 </group>
 
@@ -119,6 +124,16 @@
                   <field name="total_company_earning"  />
                   <field name="total_guarantor_earning" />
                 </group>
+              </page>
+              <page string="Penalty">
+                <field name="penalty_ids" nolabel="1" readonly="1">
+                  <tree>
+                    <field name="date"/>
+                    <field name="type"/>
+                    <field name="amount"/>
+                    <field name="state"/>
+                  </tree>
+                </field>
               </page>
             </notebook>
           </sheet>
@@ -179,7 +194,7 @@
       <field name="arch" type="xml">
         <form>
           <header>
-            <field name="state" widget="statusbar"/>
+            <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
             <button name="action_submit" string="Submit" type="object" class="btn-primary"  states="draft"/>
             <button name="action_validate" string="Validate" type="object" class="btn-primary"  states="process"/>
           </header>
@@ -192,20 +207,15 @@
             </div>
             <group>
               <group>
-                <field name="type"/>
-                <field name="loan_id" attrs="{'invisible': [('type', 'not in', ['principal','interest'])]}"/>
-                <field name="member_id"/>
-                <field name="amount"/>
+                <field name="payment_type" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="loan_id" attrs="{'invisible': [('payment_type', 'not in', ['principal','interest'])], 'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="member_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="penalty_id" domain="[('name','=',member_id)]" attrs="{'invisible': [('payment_type', 'not in', ['penalty'])],'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="amount" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
               </group>
               <group>
-                <field name="date"/>
-                <field name="principal"/>
-                <!--<label for="monthly_interest" string="Interest"/>
-                <div>
-                  <field name="monthly_interest" class="oe_inline"/>
-                  <span> Total Interest </span>
-                  <field name="total_interest" class="oe_inline"/>
-                </div>-->
+                <field name="date" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="principal" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
                 <field name="monthly_interest"/>
                 <field name="total_interest"/>
                 <field name="company_earning"/>

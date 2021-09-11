@@ -6,17 +6,18 @@
       <field name="arch" type="xml">
         <search>
           <field name="name"/>
+          <field name="loan_id"/>
           <separator/>
           <filter name="current_month" string="Current Month" domain="[
                     ('date', '&gt;=', (context_today()).strftime('%Y-%m-01')),
                     ('date', '&lt;', (context_today() + relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
-
+          <separator/>
           <filter string="Last Month" name="last_month"
                   domain="[('date','&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))]"/>
-
+          <separator/>
           <filter string="Late Contribution" name="late_contribution"
                   domain="[('type','=','late_contribution')]"/>
-
+          <separator/>
           <filter string="Expired Loan" name="expired_loan"
                   domain="[('type','=','loan_expired')]"/>
 
@@ -59,13 +60,13 @@
           <sheet>
             <group>
               <group>
-                <field name="name"/>
-                <field name="type"/>
-                <field name="amount"/>
+                <field name="name" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="type" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="amount" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
               </group>
               <group>
-                <field name="date"/>
-                <field name="loan_id" domain="[('guarantor_id','=',name)]"/>
+                <field name="date" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="loan_id" domain="[('guarantor_id','=',name)]" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
               </group>
             </group>
           </sheet>

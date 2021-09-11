@@ -53,12 +53,12 @@
           <sheet>
             <group>
               <group>
-                <field name="name"/>
-                <field name="member_account_id" domain="[('partner_id', '=', name)]"/>
+                <field name="name" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="member_account_id" domain="[('partner_id', '=', name)]" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
               </group>
               <group>
-                <field name="date"/>
-                <field name="amount"/>
+                <field name="date" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="amount" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
               </group>
             </group>
           </sheet>
