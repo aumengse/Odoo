@@ -163,6 +163,12 @@
         <search string="Search Reference Document">
           <field name="name" string="Reference" filter_domain="[('loan_id','ilike',self)]"/>
           <separator/>
+          <filter string="Contribution Payment" name="contribution_payment" domain="[('payment_type', '=', 'contribution')]"/>
+          <filter string="Principal Payment" name="principal_payment" domain="[('payment_type', '=', 'principal')]"/>
+          <filter string="Interest Payment" name="interest_payment" domain="[('payment_type', '=', 'interest')]"/>
+          <filter string="Penalty Payment" name="penalty_payment" domain="[('payment_type', '=', 'penalty')]"/>
+          <separator/>
+
           <group expand="1" string="Group By">
             <filter name="group_by_loan" context="{'group_by' : 'loan_id'}" string="Loan Account"/>
           </group>

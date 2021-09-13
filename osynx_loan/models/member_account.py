@@ -21,6 +21,7 @@ class MemberAccount(models.Model):
     total_capital = fields.Float(string="Total Capital", compute='compute_total_capital')
     total_commission = fields.Float(string="Total Commission", compute='compute_total_commission')
     total_dividend = fields.Float(string="Total Dividend", compute='compute_total_dividend')
+    total_penalty = fields.Float(string="Total Penalty", compute='compute_total_penalty')
     total_earning = fields.Float(string="Total Earning", compute='compute_total_profit')
 
     @api.depends('line_ids')
@@ -43,6 +44,15 @@ class MemberAccount(models.Model):
             if member_count:
                 total_payments = sum(r.company_earning for r in self.env['loan.account.payment'].search([('state','=','validate')]))
                 rec.total_dividend = total_payments / member_count
+
+    @api.depends('penalty_ids')
+    def compute_total_penalty(self):
+        for rec in self:
+            total_penalty = sum(r.amount for r in self.penalty_ids.search([
+                ('state','=','validate'),
+                ('type','=','late_contribution'),
+            ]))
+            rec.total_penalty = total_penalty
 
     @api.depends('total_capital','total_commission')
     def compute_total_profit(self):

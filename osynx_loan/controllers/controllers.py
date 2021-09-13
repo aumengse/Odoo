@@ -38,6 +38,39 @@ class MemberContributionPortal(CustomerPortal):
             'default_partner_id': default_partner_id,
         })
 
+class LoanPaymentPortal(CustomerPortal):
+    def _prepare_portal_layout_values(self):
+        values = super(LoanPaymentPortal, self)._prepare_portal_layout_values()
+        payment_count = request.env['loan.account.payment'].search([])
+        values.update({
+            'payment_count': len(payment_count),
+        })
+        return values
+
+    @http.route(['/my/loanpayments', '/my/loanpayments/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_my_loan_payments(self, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, search=None,
+                                search_in='all', groupby='none', **kw):
+        values = self._prepare_portal_layout_values()
+        loan_payment_ids = request.env['loan.account.payment'].search([])
+
+        values.update({
+            'page_name': 'loan_payments',
+            'loan_payments': loan_payment_ids,
+        })
+        return request.render("osynx_loan.portal_my_loan_payments", values)
+
+    @http.route('''/submit/payment''', type='http', auth="public", website=True, sitemap=True)
+    def submit_payment(self, **kwargs):
+        default_partner_id = request.env.user.partner_id
+
+        user_ids = request.env['res.users'].sudo().search([('id','!=', request.env.user.id)])
+        partner_ids = user_ids.mapped('partner_id')
+
+        return request.render("osynx_loan.submit_member_contribution", {
+            'partner_ids': partner_ids,
+            'default_partner_id': default_partner_id,
+        })
+
 class ContributionForm(Controller):
 
     @route(['/contribution/form'], type='http', auth='public', website=True)

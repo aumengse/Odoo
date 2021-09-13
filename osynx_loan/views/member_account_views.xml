@@ -71,6 +71,7 @@
                 <group class="oe_subtotal_footer oe_right">
                   <field name="total_capital"  />
                   <field name="total_dividend"  />
+                  <field name="total_penalty"  />
                   <field name="total_commission"  />
                   <field name="total_earning" class="oe_subtotal_footer_separator" />
                 </group>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_home_menu_member_contribution" name="Portal layout : Member menu entries" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'loan_payments'" t-attf-class="breadcrumb-item #{'active ' if not loan_payments else ''}">
+                <a t-if="loan_payments" t-attf-href="/my/contributions?{{ keep_query() }}">Loan Payments</a>
+                <t t-else="">Loan Payments</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_loan_payments" name="Show Loan Payments / Payment entries" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">My Loan Payments</t>
+                <t t-set="url" t-value="'/my/loanpayments'"/>
+                <t t-set="count" t-value="payment_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_loan_payments" name="My Loan Payments">
+        <t t-call="portal.portal_layout">
+            <t t-if="loan_payments" t-call="portal.portal_table">
+                <t t-call="portal.portal_searchbar">
+                    <div class="form-inline ml-lg-4">
+                        <t t-set="title">Loan Payments</t>
+                        <div class="float-right">
+                            <a role="button" t-attf-href="/submit/payment" class="btn btn-primary btn-md float-right">Submit Payment</a>
+                        </div>
+                    </div>
+                </t>
+                <thead>
+                    <tr class="active">
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="loan_payments" t-as="payment">
+                        <td><span t-field="payment.date"/></td>
+                        <td><span t-field="payment.payment_type"/></td>
+                        <td><span t-field="payment.amount"/></td>
+                        <td><span t-field="payment.state"/></td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+</odoo>
