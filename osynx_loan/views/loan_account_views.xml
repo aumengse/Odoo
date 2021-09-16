@@ -106,6 +106,9 @@
                   <field name="total_loan"  />
                   <field name="total_penalty"  />
                   <field name="total_payment" class="oe_subtotal_footer_separator"/>
+                  <field name="total_balance_principal" />
+                  <field name="total_balance_interest" />
+
                   <field name="total_balance" class="oe_subtotal_footer_separator" />
                 </group>
 
@@ -115,6 +118,7 @@
                   <tree>
                     <field name="name"/>
                     <field name="date"/>
+                    <field name="payment_type"/>
                     <field name="company_earning"/>
                     <field name="member_earning"/>
                     <field name="amount" sum="total"/>
@@ -221,14 +225,26 @@
               </group>
               <group>
                 <field name="date" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
-                <field name="principal" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
-                <field name="monthly_interest"/>
-                <field name="total_interest"/>
-                <field name="company_earning"/>
-                <field name="member_earning"/>
+
 
               </group>
             </group>
+            <notebook>
+              <page string="Loan Details">
+                <group>
+                  <group>
+                    <field name="principal"/>
+                    <field name="monthly_interest"/>
+                    <field name="company_earning"/>
+                    <field name="member_earning"/>
+                  </group>
+                  <group>
+
+                    <field name="total_interest"/>
+                  </group>
+                </group>
+              </page>
+            </notebook>
           </sheet>
           <div class="o_attachment_preview"/>
           <div class="oe_chatter">

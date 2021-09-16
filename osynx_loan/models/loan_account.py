@@ -47,6 +47,9 @@ class LoanAccount(models.Model):
     total_company_earning = fields.Monetary(string="Total Company Earning", currency_field='currency_id', compute='compute_total_earning')
     total_guarantor_earning = fields.Monetary(string="Total Guarantor Earning", currency_field='currency_id', compute='compute_total_earning')
 
+    total_balance_interest = fields.Monetary(string="Interest Balance", currency_field='currency_id', compute='compute_totals')
+    total_balance_principal = fields.Monetary(string="Principal Balance", currency_field='currency_id', compute='compute_totals')
+
     @api.onchange('borrower_id')
     def onchange_borrower_id(self):
         member_id = self.env['member.account'].search([('partner_id', '=', self.borrower_id.id)])
@@ -77,6 +80,10 @@ class LoanAccount(models.Model):
             rec.total_loan = sum(r.amount for r in rec.line_ids)
             rec.total_payment = sum(r.amount for r in rec.payment_ids.filtered(lambda r: r.state == 'validate'))
             rec.total_penalty = sum(r.amount for r in rec.penalty_ids.filtered(lambda r: r.type == 'loan_expired' and r.state == 'validate'))
+            rec.total_balance_interest = rec.total_interest - sum(r.amount for r in rec.payment_ids.filtered(lambda r: r.state == 'validate'
+                                                                                        and r.payment_type == 'interest'))
+            rec.total_balance_principal = rec.principal - sum(r.amount for r in rec.payment_ids.filtered(lambda r: r.state == 'validate'
+                                                                                        and r.payment_type == 'principal'))
             rec.total_balance = (rec.total_loan + rec.total_penalty) - rec.total_payment
 
             if rec.state != 'paid':
@@ -204,6 +211,21 @@ class LoanAccountPayment(models.Model):
         for rec in self:
             if rec.penalty_id:
                 rec.amount = rec.penalty_id.amount
+
+    @api.onchange('loan_id')
+    def onchange_loan_id(self):
+        for rec in self:
+            if rec.loan_id:
+                rec.member_id = rec.loan_id.guarantor_id.id
+
+                if rec.payment_type == 'interest':
+                    rec.amount = rec.loan_id.monthly_interest
+                elif rec.payment_type == 'principal':
+                    rec.amount = rec.loan_id.principal
+                elif rec.payment_type == 'contribution':
+                    rec.amount = 1000
+                else:
+                    rec.amount = 0
 
 
     @api.depends('amount','payment_type')
