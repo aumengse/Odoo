@@ -5,6 +5,10 @@
       <field name="res_model">loan.account.payment</field>
       <field name="view_mode">tree,form</field>
       <field name="domain">[('loan_id', '=', active_id)]</field>
+      <field name="context">{
+        'default_loan_id': active_id}
+        'default_payment_type': 'interest'}
+      </field>
     </record>
 
     <record model="ir.ui.view" id="loan_account_search">
@@ -233,14 +237,18 @@
               <page string="Loan Details">
                 <group>
                   <group>
-                    <field name="principal"/>
+
                     <field name="monthly_interest"/>
                     <field name="company_earning"/>
                     <field name="member_earning"/>
                   </group>
                   <group>
-
+                    <field name="principal"/>
+                    <field name="total_balance_principal"/>
                     <field name="total_interest"/>
+                    <field name="total_balance_interest"/>
+
+
                   </group>
                 </group>
               </page>

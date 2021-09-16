@@ -187,6 +187,8 @@ class LoanAccountPayment(models.Model):
     principal = fields.Monetary(related='loan_id.principal')
     monthly_interest = fields.Monetary(related='loan_id.monthly_interest')
     total_interest = fields.Monetary(related='loan_id.total_interest')
+    total_balance_interest = fields.Monetary(related='loan_id.total_balance_interest')
+    total_balance_principal = fields.Monetary(related='loan_id.total_balance_principal')
     company_earning = fields.Float(string="Company Earning", compute='compute_total_earning')
     member_earning = fields.Float(string="Member Earning", compute='compute_total_earning')
     payment_type = fields.Selection([
