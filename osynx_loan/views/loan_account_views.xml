@@ -6,9 +6,9 @@
       <field name="view_mode">tree,form</field>
       <field name="domain">[('loan_id', '=', active_id)]</field>
       <field name="context">{
-        'default_loan_id': active_id}
-        'default_payment_type': 'interest'}
-      </field>
+        'default_payment_type': 'interest',
+        'default_loan_id': active_id,
+        }</field>
     </record>
 
     <record model="ir.ui.view" id="loan_account_search">
@@ -176,7 +176,14 @@
           <filter string="Interest Payment" name="interest_payment" domain="[('payment_type', '=', 'interest')]"/>
           <filter string="Penalty Payment" name="penalty_payment" domain="[('payment_type', '=', 'penalty')]"/>
           <separator/>
+          <filter name="current_month" string="Current Month" domain="[
+                    ('date', '&gt;=', (context_today()).strftime('%Y-%m-01')),
+                    ('date', '&lt;', (context_today() + relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
 
+          <filter string="Last Month" name="last_month"
+                  domain="[('date','&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))]"/>
+
+          <separator/>
           <group expand="1" string="Group By">
             <filter name="group_by_loan" context="{'group_by' : 'loan_id'}" string="Loan Account"/>
           </group>
@@ -269,7 +276,9 @@
       <field name="name">Loan Payment</field>
       <field name="res_model">loan.account.payment</field>
       <field name="view_mode">tree,form,search</field>
-      <field name="context">{'search_default_group_by_loan': True}</field>
+      <field name="context">{
+        'search_default_group_by_loan': True,
+        }</field>
     </record>
 
   </data>

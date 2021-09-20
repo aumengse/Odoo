@@ -204,9 +204,12 @@ class LoanAccountPayment(models.Model):
 
     @api.onchange('payment_type')
     def onchange_type(self):
-        for rec in self:
-            rec.loan_id = False
-            rec.member_id = False
+        if self.env.context.get('default_loan_id'):
+            pass
+        else:
+            for rec in self:
+                rec.loan_id = False
+                rec.member_id = False
 
     @api.onchange('penalty_id')
     def onchange_penalty_id(self):
