@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+import uuid
 
 class LoanAccount(models.Model):
     _name = 'loan.account'
@@ -150,7 +151,6 @@ class LoanAccount(models.Model):
 
             self.state = 'extend'
 
-
 class LoanAccountLine(models.Model):
     _name = 'loan.account.line'
     _description = 'Loan Account Line'
@@ -169,11 +169,17 @@ class LoanAccountLine(models.Model):
     guarantor_id = fields.Many2one(related='loan_id.borrower_id')
     active = fields.Boolean(string="Active", default=True)
 
-
 class LoanAccountPayment(models.Model):
     _name = 'loan.account.payment'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['portal.mixin', 'mail.thread.cc', 'mail.activity.mixin']
     _description = 'Loan Account Payment'
+
+    def _get_default_access_token(self):
+        return str(uuid.uuid4())
+
+    def _compute_access_url(self):
+        for rec in self:
+            rec.access_url = '/my/loanpayment/%s' % rec.id
 
     name = fields.Char(string="Reference")
     active = fields.Boolean(string="Active", default=True)
@@ -201,6 +207,10 @@ class LoanAccountPayment(models.Model):
                               ('process', "Processing"),
                               ('validate', "Validated")
                               ], default='draft', tracking=True)
+
+
+    access_url = fields.Char('Portal Access URL', compute='_compute_access_url', help='Contract Portal URL')
+    access_token = fields.Char('Access Token', default=lambda self: self._get_default_access_token(), copy=False)
 
     @api.onchange('payment_type')
     def onchange_type(self):
