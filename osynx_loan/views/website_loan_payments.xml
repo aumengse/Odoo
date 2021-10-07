@@ -3,7 +3,7 @@
     <template id="portal_my_home_menu_member_contribution" name="Portal layout : Member menu entries" inherit_id="portal.portal_breadcrumbs" priority="20">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
             <li t-if="page_name == 'loan_payments'" t-attf-class="breadcrumb-item #{'active ' if not loan_payments else ''}">
-                <a t-if="loan_payments" t-attf-href="/my/contributions?{{ keep_query() }}">Loan Payments</a>
+                <a t-if="loan_payments" t-attf-href="/my/loanpayments?{{ keep_query() }}">Loan Payments</a>
                 <t t-else="">Loan Payments</t>
             </li>
         </xpath>
@@ -22,7 +22,6 @@
     <template id="portal_my_loan_payments" name="My Loan Payments">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
-
             <t t-call="portal.portal_searchbar">
                 <t t-set="title">Payments</t>
                 <div class="form-inline ml-lg-4">
@@ -43,6 +42,8 @@
                         <th>Reference</th>
                         <th>Date</th>
                         <th>Type</th>
+                        <th style="text-align: right">Amount</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,43 +59,17 @@
                             <t t-esc="dict(payment.fields_get(allfields=['payment_type'])['payment_type']['selection'])[payment.payment_type]"/>
 
                         </td>
+                        <td style="text-align: right">
+                            <t t-esc="payment.amount" t-options='{"widget": "float", "precision": 2}' />
+                        </td>
+                        <td>
+                            <t t-esc="dict(payment.fields_get(allfields=['state'])['state']['selection'])[payment.state]"/>
+                        </td>
                     </tr>
                 </tbody>
             </t>
         </t>
     </template>
-
-    <!--<template id="portal_my_loan_payments" name="My Loan Payments">
-        <t t-call="portal.portal_layout">
-            <t t-if="loan_payments" t-call="portal.portal_table">
-                <t t-set="breadcrumbs_searchbar" t-value="True"/>
-                <t t-call="portal.portal_searchbar">
-                    <div class="form-inline ml-lg-4">
-                        <t t-set="title">Loan Payments</t>
-                        <div class="float-right">
-                            <a role="button" t-attf-href="/submit/payment" class="btn btn-primary btn-md float-right">Submit Payment</a>
-                        </div>
-                    </div>
-                </t>
-                <thead>
-                    <tr class="active">
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr t-foreach="loan_payments" t-as="payment">
-                        <td><a t-attf-href="/my/loanpayment/#{payment.id}?{{ keep_query() }}"><span t-field="payment.date"/></a></td>
-                        <td><span t-field="payment.payment_type"/></td>
-                        <td><span t-field="payment.amount"/></td>
-                        <td><span t-field="payment.state"/></td>
-                    </tr>
-                </tbody>
-            </t>
-        </t>
-    </template>-->
 
     <template id="portal_my_loan_payment" name="My Loan Payment">
         <t t-call="portal.portal_layout">
@@ -120,12 +95,16 @@
                 </t>
                 <t t-set="card_body">
                     <div class="mb-1" >
-                        <strong>Datetime:</strong> <span t-field="payment.name"/>
-                    </div>
+                        <strong>Reference:</strong> <span t-field="payment.name"/> <br/>
+                        <strong>Loan Reference:</strong> <span t-field="payment.loan_id"/>
 
+                    </div>
+                    <br/>
                     <div class="row mb-4">
                         <div class="col-12 col-md-6 mb-1">
-                            <strong>Payment Type:</strong> <span t-esc="dict(payment.fields_get(allfields=['payment_type'])['payment_type']['selection'])[payment.payment_type]"/>
+                            <strong>Date:</strong> <span t-esc="payment.date"/><br/>
+                            <strong>Payment Type:</strong> <span t-esc="dict(payment.fields_get(allfields=['payment_type'])['payment_type']['selection'])[payment.payment_type]"/><br/>
+                            <strong>Amount:</strong> <span t-esc="payment.amount" t-options='{"widget": "float", "precision": 2}'/><br/>
                         </div>
                     </div>
                     <div class="row" t-if="payment.message_ids.attachment_ids">

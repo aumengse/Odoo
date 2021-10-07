@@ -68,6 +68,7 @@ class LoanPaymentPortal(CustomerPortal):
         searchbar_sortings = {
             'date': {'label': _('Newest'), 'order': 'date desc'},
             'old': {'label': _('Oldest'), 'order': 'date asc'},
+            'type': {'label': _('Type'), 'order': 'payment_type asc'},
         }
 
         searchbar_inputs = {
@@ -79,6 +80,10 @@ class LoanPaymentPortal(CustomerPortal):
         searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
             'today': {'label': _('Today'), 'domain': [("date", "=", today)]},
+            'interest': {'label': _('Interest Payment'), 'domain': [("payment_type", "=", 'interest')]},
+            'principal': {'label': _('Principal Payment'), 'domain': [("payment_type", "=", 'principal')]},
+            'contribution': {'label': _('Contribution Payment'), 'domain': [("payment_type", "=", 'contribution')]},
+            'penalty': {'label': _('Penalty Payment'), 'domain': [("payment_type", "=", 'penalty')]},
 
         }
         # default sort by value
@@ -127,7 +132,7 @@ class LoanPaymentPortal(CustomerPortal):
         try:
             loan_payment_sudo = self._document_check_access('loan.account.payment', payment_id, access_token)
         except (AccessError, MissingError):
-            return request.redirect('/my/loanpayments')
+            return request.redirect('/my')
 
         values = self._loan_payment_get_page_view_values(loan_payment_sudo, access_token, **kw)
         return request.render("osynx_loan.portal_my_loan_payment", values)
