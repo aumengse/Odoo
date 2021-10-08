@@ -6,6 +6,11 @@
                 <a t-if="loan_payments" t-attf-href="/my/loanpayments?{{ keep_query() }}">Loan Payments</a>
                 <t t-else="">Loan Payments</t>
             </li>
+            <li t-if="payment" class="breadcrumb-item active">
+                <a t-attf-href="/my/loanpayments?{{ keep_query() }}">
+                    <span t-field="payment.name"/>
+                </a>
+            </li>
         </xpath>
     </template>
 
@@ -27,7 +32,7 @@
                 <div class="form-inline ml-lg-4">
                     <t t-set="title">Contributions</t>
                     <div class="float-right">
-                        <a role="button" t-attf-href="/submit/contribution" class="btn btn-primary btn-md float-right">Submit Contribution</a>
+                        <a role="button" t-attf-href="/submit/payment" class="btn btn-primary btn-md float-right">Submit Payment</a>
                     </div>
                 </div>
             </t>
@@ -126,15 +131,15 @@
 
                 </t>
             </t>
-             <div class="mt32">
-                 <h4><strong>Message and communication history</strong></h4>
-                 <t t-call="portal.message_thread">
-                     <t t-set="object" t-value="payment"/>
-                     <!-- <t t-set="token" t-value="payment.access_token"/>
-                      <t t-set="pid" t-value="pid"/>
-                      <t t-set="hash" t-value="hash"/>-->
-                 </t>
-             </div>
+            <div class="mt32">
+                <h4><strong>Message and communication history</strong></h4>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="payment"/>
+                    <!-- <t t-set="token" t-value="payment.access_token"/>
+                     <t t-set="pid" t-value="pid"/>
+                     <t t-set="hash" t-value="hash"/>-->
+                </t>
+            </div>
         </t>
 
 

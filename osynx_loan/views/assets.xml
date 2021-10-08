@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="submit_payment_assets_frontend"  inherit_id="website.assets_frontend" name="Assets">
+      <xpath expr="." position="inside">
+        <script type="text/javascript" src="/osynx_loan/static/src/js/submit_payment.js"></script>
+        <!--<link rel="stylesheet" href="/employee_timeoff_portal/static/src/css/style.css" />-->
+      </xpath>
+    </template>
+</odoo>

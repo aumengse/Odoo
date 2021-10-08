@@ -6,17 +6,17 @@
            </xpath>
        </template>-->
 
-    <template id="submit_member_contribution">
+    <template id="submit_loan_payment">
         <t t-call="portal.portal_layout">
             <!-- <t t-call="website.layout">-->
-            <t t-set="additional_title">Contribution Form</t>
-            <form action="/contribution/form" method="post" enctype="multipart/form-data">
+            <t t-set="additional_title">Payment Form</t>
+            <form action="/payment/form" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                 <div id="wrap" class="container">
 
                     <div class="container">
                         <h1 class="text-center mt-2">
-                            Member Contribution Form
+                            Payment Form
                         </h1>
                         <div class="col-lg-12">
                             <div t-if="error_message" class="alert alert-danger" role="alert">
@@ -30,17 +30,54 @@
                                     <span class="s_website_form_mark"> *</span>
                                 </label>
                                 <div class="col-sm">
-                                    <select name="partner_id" class="form-control" required="True">
-                                        <t t-foreach="default_partner_id or []" t-as="default_partner_id">
-                                            <option t-att-value="default_partner_id.id" t-esc="default_partner_id.name"/>
+                                    <select name="member_id" class="form-control" required="True">
+                                        <t t-foreach="default_partner_id or []" t-as="default_member_id">
+                                            <option t-att-value="default_member_id.id" t-esc="default_member_id.name"/>
                                         </t>
-                                        <t t-foreach="partner_ids or []" t-as="partner">
-                                            <option t-att-value="partner.id" t-esc="partner.name"/>
+                                        <t t-foreach="member_ids or []" t-as="member">
+                                            <option t-att-value="member.id" t-esc="member.display_name"/>
                                         </t>
                                     </select>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="availability">
+                                    <span class="s_website_form_label_content">Type</span>
+                                    <span class="s_website_form_mark"> *</span>
+                                </label>
+                                <div class="col-sm">
+                                    <select id="payment_type" name="payment_type" class="form-control payment_type_select" required="True">
+                                        <option t-attf-value="contribution">Contribution</option>
+                                        <option t-attf-value="principal">Principal</option>
+                                        <option t-attf-value="interest">Interest</option>
+                                        <option t-attf-value="penalty">Penalty</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="loan_id">
+                                    <span class="s_website_form_label_content">Loan Reference</span>
+                                    <span class="s_website_form_mark"> *</span>
+                                </label>
+                                <div class="col-sm">
+                                    <select id="loan_id" name="loan_id" class="form-control" required="True">
+                                        <!-- <t t-foreach="default_partner_id or []" t-as="default_member_id">
+                                             <option t-att-value="default_member_id.id" t-esc="default_member_id.name"/>
+                                         </t>-->
+                                        <t t-foreach="loan_ids or []" t-as="loan">
+                                            <option t-att-value="loan.id" t-esc="member.display_name"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
                             <div class="row s_col_no_resize s_col_no_bgcolor">
                                 <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="availability">
