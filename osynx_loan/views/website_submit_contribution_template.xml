@@ -26,25 +26,6 @@
                         <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
                             <div class="row s_col_no_resize s_col_no_bgcolor">
                                 <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="availability">
-                                    <span class="s_website_form_label_content">Name</span>
-                                    <span class="s_website_form_mark"> *</span>
-                                </label>
-                                <div class="col-sm">
-                                    <select name="member_id" class="form-control" required="True">
-                                        <t t-foreach="default_partner_id or []" t-as="default_member_id">
-                                            <option t-att-value="default_member_id.id" t-esc="default_member_id.name"/>
-                                        </t>
-                                        <t t-foreach="member_ids or []" t-as="member">
-                                            <option t-att-value="member.id" t-esc="member.display_name"/>
-                                        </t>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
-                            <div class="row s_col_no_resize s_col_no_bgcolor">
-                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="availability">
                                     <span class="s_website_form_label_content">Type</span>
                                     <span class="s_website_form_mark"> *</span>
                                 </label>
@@ -58,20 +39,39 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
                             <div class="row s_col_no_resize s_col_no_bgcolor">
-                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="loan_id">
+                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="availability">
+                                    <span class="s_website_form_label_content">Name</span>
+                                    <span class="s_website_form_mark"> *</span>
+                                </label>
+                                <div class="col-sm">
+                                    <select name="member_id" class="form-control" required="True" t-on-change="changeMember">
+                                    <!--    <t t-foreach="default_partner_id or []" t-as="default_member_id">
+                                            <option t-att-value="default_member_id.id" t-esc="default_member_id.name"/>
+                                        </t>-->
+                                        <option style="display:none;">Select member...</option>
+                                        <t t-foreach="member_ids or []" t-as="member">
+                                            <option t-att-value="member.id" t-esc="member.display_name"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                <label id="loan_id_label" class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="loan_id">
                                     <span class="s_website_form_label_content">Loan Reference</span>
                                     <span class="s_website_form_mark"> *</span>
                                 </label>
                                 <div class="col-sm">
-                                    <select id="loan_id" name="loan_id" class="form-control" required="True">
+                                    <select id="loan_id" name="loan_id" class="form-control">
                                         <!-- <t t-foreach="default_partner_id or []" t-as="default_member_id">
                                              <option t-att-value="default_member_id.id" t-esc="default_member_id.name"/>
                                          </t>-->
+                                         <option style="display:none;">Select loan reference...</option>
                                         <t t-foreach="loan_ids or []" t-as="loan">
-                                            <option t-att-value="loan.id" t-esc="member.display_name"/>
+                                            <option t-att-value="loan.id" t-esc="loan.display_name"/>
                                         </t>
                                     </select>
                                 </div>

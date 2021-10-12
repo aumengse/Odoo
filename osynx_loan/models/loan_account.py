@@ -151,6 +151,10 @@ class LoanAccount(models.Model):
 
             self.state = 'extend'
 
+    @api.model
+    def get_loan_account_domain(self, val):
+        x = 0
+
 class LoanAccountLine(models.Model):
     _name = 'loan.account.line'
     _description = 'Loan Account Line'
