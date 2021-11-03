@@ -71,5 +71,13 @@
             parent="menu_loan_configuration"
             action="action_loan_interest"
     />
+
+    <menuitem
+            id="menu_loan_reports"
+            name="Reports"
+            sequence="5"
+            parent="menu_loan"
+            action="action_loan_report_wizard"
+    />
   </data>
 </odoo>

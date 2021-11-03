@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_loan_summary">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <center>
+                            <h3 style="text-transform: uppercase; font-weight: bold; font-family: Bahnschrift SemiBold">
+                                Summary Report
+                            </h3>
+                            <span style="font-weight:bold">As of:</span>
+                            <span style="margin-left:15px" t-field="o.date_to" t-options='{"format": "MMM d, yyyy"}'/>
+                        </center>
+
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <th style="width: 50%">
+                                    TOTAL CONTRIBUTION
+                                </th>
+                                <th class="text-right" style="width: 25%">
+                                    <span t-esc="records.get('total_contribution')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                                <th style="width: 25%"/>
+                            </tr>
+                            <tr>
+                                <th>
+                                    TOTAL LOAN PAYMENTS
+                                </th>
+                                <th class="text-right">
+                                    <span t-esc="records.get('total_payments')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                                <th/>
+                            </tr>
+                            <tr>
+                                <th/>
+                                <th/>
+                                <th class="text-right ">
+                                    <span t-esc="records.get('total_contri_payment')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                            </tr>
+                        </table>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

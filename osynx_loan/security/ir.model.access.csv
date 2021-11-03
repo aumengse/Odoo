@@ -25,3 +25,4 @@ access_loan_account_payment_manager,loan.account.payment.manager,model_loan_acco
 access_loan_interest_manager,loan.interest.manager,model_loan_interest,osynx_loan.group_loan_manager,1,1,1,1
 access_loan_penalty_manager,loan.penalty.manager,model_loan_penalty,osynx_loan.group_loan_manager,1,1,1,1
 access_loan_extend_wizard_manager,loan.extend.wizard.manager,model_loan_extend_wizard,osynx_loan.group_loan_manager,1,1,1,1
+access_loan_report_wizard_manager,loan.report.wizard.manager,model_loan_report_wizard,osynx_loan.group_loan_manager,1,1,1,1
