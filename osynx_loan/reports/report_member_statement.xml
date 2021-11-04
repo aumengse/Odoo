@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_member_statement">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <link rel='stylesheet' href="/osynx_loan/static/src/css/report_loan.css"/>
+                        <center>
+                            <h4 style="text-transform: uppercase; font-weight: bold; font-family: Bahnschrift SemiBold">
+                                Statement of Account
+                            </h4>
+                            <span style="font-weight:bold">As of:</span>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%B %d, %Y')"/>
+                        </center>
+                        <h5 style="font-weight: bold; font-family: Bahnschrift SemiBold; text-align:right; color:gray">
+                            <span t-esc="o.name"/>
+                        </h5>
+                        <table class="table table-sm table-bordered" name="statement_header">
+                            <tr>
+                                <th style="width:40%">
+                                    Member
+                                </th>
+                                <th style="width:60%">
+                                    <span t-esc="o.partner_id.name"/>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Contract
+                                </th>
+                                <th>
+                                    <span t-field="o.date_from" t-options='{"format": "MMM d, yyyy"}'/> - <span t-field="o.date_to" t-options='{"format": "MMM d, yyyy"}'/>
+                                </th>
+                            </tr>
+                        </table>
+
+                        <table class="table table-sm mt-3" name="member_contributions">
+                            <thead>
+                                <tr class="text-center">
+                                    <th colspan="2">Contributions</th>
+                                </tr>
+                                <tr>
+                                    <th style="width:40%">Month</th>
+                                    <th style="width:60%" class="text-right">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="total_contri" t-value="0.00"/>
+                                <tr t-foreach="o.line_ids" t-as="line">
+                                    <t t-set="total_contri" t-value="total_contri + line.amount" />
+                                    <td><span t-esc="line.date.strftime('%B %d, %Y')"/></td>
+                                    <td class="text-right"><span t-esc="line.amount" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="2" class="text-right">
+                                        <span t-esc="total_contri" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

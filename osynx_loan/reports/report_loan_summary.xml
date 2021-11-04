@@ -5,6 +5,7 @@
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.external_layout">
+                        <link rel='stylesheet' href="/osynx_loan/static/src/css/report_loan.css"/>
                         <center>
                             <h3 style="text-transform: uppercase; font-weight: bold; font-family: Bahnschrift SemiBold">
                                 Summary Report
@@ -13,22 +14,213 @@
                             <span style="margin-left:15px" t-field="o.date_to" t-options='{"format": "MMM d, yyyy"}'/>
                         </center>
 
-                        <table class="table table-sm table-bordered">
+                        <div id="row">
+                            <div id="column">
+                                <table class="table table-sm table-bordered" name="dividend_forecast_summary">
+                                    <tr class="text-center">
+                                        <th colspan="3">Forecasted Dividend Summary</th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Member Interest
+                                        </th>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_forecast.get('total_interest_member')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                        <th style="width: 25%"/>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Non-Member Interest
+                                        </th>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_forecast.get('total_interest_nonmember')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                        <th style="width: 25%"/>
+                                    </tr>
+                                    <tr class="border-black o_subtotal" >
+                                        <th style="width: 50%">
+                                            Member Commission
+                                        </th>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_forecast.get('total_interest_guarantor')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                        <th style="width: 25%"/>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Total Interest
+                                        </th>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_forecast.get('total_interest')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Penalty Profit
+                                        </th>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_forecast.get('total_penalty')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Less: Member Commission
+                                        </th>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            - <span t-esc="dividend_forecast.get('total_interest_guarantor')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                    </tr>
+                                    <tr style="color:red">
+                                        <th style="width: 50%">
+                                            Total COOP Earning
+                                        </th>
+                                        <t t-set="total_coop_earning"
+                                           t-value="(dividend_forecast.get('total_interest') + dividend_forecast.get('total_penalty')) - dividend_forecast.get('total_interest_guarantor') "/>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="total_coop_earning"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Total Member
+                                        </th>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_forecast.get('total_member')"/>
+                                        </th>
+                                    </tr>
+                                    <tr style="color:red">
+                                        <th style="width: 50%">
+                                            Member Dividend
+                                        </th>
+                                        <t t-set="member_dividend"
+                                           t-value="total_coop_earning / dividend_forecast.get('total_member')"/>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="member_dividend"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div id="column">
+                                <table class="table table-sm table-bordered" name="dividend_actual_summary">
+                                    <tr class="text-center">
+                                        <th colspan="3">Actual Dividend Summary</th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Member Interest
+                                        </th>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_actual.get('total_interest_member')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                        <th style="width: 25%"/>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Non-Member Interest
+                                        </th>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_actual.get('total_interest_nonmember')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                        <th style="width: 25%"/>
+                                    </tr>
+                                    <tr class="border-black o_subtotal" >
+                                        <th style="width: 50%">
+                                            Member Commission
+                                        </th>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_actual.get('total_interest_guarantor')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                        <th style="width: 25%"/>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Total Interest
+                                        </th>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_actual.get('total_interest')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Penalty Profit
+                                        </th>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_actual.get('total_penalty')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Less: Member Commission
+                                        </th>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            - <span t-esc="dividend_actual.get('total_interest_guarantor')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                    </tr>
+                                    <tr style="color:red">
+                                        <th style="width: 50%">
+                                            Total COOP Earning
+                                        </th>
+                                        <t t-set="total_coop_earning"
+                                           t-value="(dividend_actual.get('total_interest') + dividend_forecast.get('total_penalty')) - dividend_forecast.get('total_interest_guarantor') "/>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="total_coop_earning"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 50%">
+                                            Total Member
+                                        </th>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="dividend_actual.get('total_member')"/>
+                                        </th>
+                                    </tr>
+                                    <tr style="color:red">
+                                        <th style="width: 50%">
+                                            Member Dividend
+                                        </th>
+                                        <t t-set="member_dividend"
+                                           t-value="total_coop_earning / dividend_actual.get('total_member')"/>
+                                        <th style="width: 25%"/>
+                                        <th class="text-right" style="width: 25%">
+                                            <span t-esc="member_dividend"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm table-bordered" name="loanable_summary">
+                            <tr class="text-center">
+                                <th colspan="3">Loanable Amount Summary</th>
+                            </tr>
                             <tr>
                                 <th style="width: 50%">
-                                    TOTAL CONTRIBUTION
+                                    Total Contribution
                                 </th>
                                 <th class="text-right" style="width: 25%">
-                                    <span t-esc="records.get('total_contribution')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <span t-esc="summary_loanable.get('total_contribution')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                 </th>
                                 <th style="width: 25%"/>
                             </tr>
                             <tr>
                                 <th>
-                                    TOTAL LOAN PAYMENTS
+                                    Total Loan Payments
                                 </th>
                                 <th class="text-right">
-                                    <span t-esc="records.get('total_payments')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <span t-esc="summary_loanable.get('total_payments')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                 </th>
                                 <th/>
                             </tr>
@@ -36,7 +228,130 @@
                                 <th/>
                                 <th/>
                                 <th class="text-right ">
-                                    <span t-esc="records.get('total_contri_payment')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <span t-esc="summary_loanable.get('total_contri_payment')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                            </tr>
+                            <tr class="font-italic">
+                                <th>
+                                    Less: Total Principal Loans
+                                </th>
+                                <th/>
+                                <th class="text-right">
+                                    <span t-esc="summary_loanable.get('total_principal')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+
+                            </tr>
+                            <tr style="color: red">
+                                <th>
+                                    Total Loanable <span class="font-italic" style="font-size: 12px;">(On hand)</span>
+                                </th>
+                                <th/>
+                                <th class="text-right">
+                                    <span t-esc="summary_loanable.get('total_loanable')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                            </tr>
+
+                        </table>
+
+                        <table class="table table-sm table-bordered" name="receivable_summary">
+                            <tr class="text-center">
+                                <th colspan="3">Receivable Summary</th>
+                            </tr>
+                            <tr>
+                                <th style="width: 50%">
+                                    Total Loan Principal
+                                </th>
+                                <th class="text-right" style="width: 25%">
+                                    <span t-esc="summary_receivable.get('total_principal')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                                <th style="width: 25%"/>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Total Loan Interest
+                                </th>
+                                <th class="text-right">
+                                    <span t-esc="summary_receivable.get('total_interest')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                                <th/>
+                            </tr>
+                            <tr>
+                                <th/>
+                                <th/>
+                                <th class="text-right ">
+                                    <span t-esc="summary_receivable.get('total_loans')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                            </tr>
+                            <tr class="font-italic">
+                                <th>
+                                    Less: Total Payments
+                                </th>
+                                <th/>
+                                <th class="text-right">
+                                    <span t-esc="summary_receivable.get('total_payments')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+
+                            </tr>
+                            <tr style="color: red">
+                                <th>
+                                    Total Receivables
+                                </th>
+                                <th/>
+                                <th class="text-right">
+                                    <span t-esc="summary_receivable.get('total_receivable')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+
+                            </tr>
+
+                        </table>
+
+                        <table class="table table-sm table-bordered" name="profit_forecast_summary">
+                            <tr class="text-center">
+                                <th colspan="3">Forecasted Profit Summary</th>
+                            </tr>
+                            <tr>
+                                <th style="width: 50%">
+                                    Total Loans
+                                </th>
+                                <th class="text-right" style="width: 25%">
+                                    <span t-esc="summary_profit_forecast.get('total_loans')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                                <th style="width: 25%"/>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Less: Total Principal
+                                </th>
+                                <th class="text-right">
+                                    <span t-esc="summary_profit_forecast.get('total_principal')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                                <th/>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Total Interest Profit
+                                </th>
+                                <th/>
+                                <th class="text-right">
+                                    <span t-esc="summary_profit_forecast.get('total_interest_profit')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Total Penalty Profit
+                                </th>
+                                <th/>
+                                <th class="text-right">
+                                    <span t-esc="summary_profit_forecast.get('total_penalty')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </th>
+                            </tr>
+                            <tr style="color:red">
+                                <th>
+                                    Total Forecasted Profit
+                                </th>
+                                <th/>
+                                <th class="text-right">
+                                    <span t-esc="summary_profit_forecast.get('total_interest_profit')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                 </th>
                             </tr>
                         </table>
