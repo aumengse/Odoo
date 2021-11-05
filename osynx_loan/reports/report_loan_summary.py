@@ -4,13 +4,13 @@ class ReportLoanSummary(models.AbstractModel):
     _name = 'report.osynx_loan.report_loan_summary'
     _description = 'Employee Loan Summary'
 
-    def get_actual_dividend(self,docs):
+    def get_actual_dividend(self,date_to):
         nonmember_interest_id = self.env.ref('osynx_loan.loan_interest_nonmember')
         total_member = self.env['member.account'].search_count([])
         total_penalty = sum(
             r.amount for r in self.env['loan.account.payment'].search([
                 ('state', '=', 'validate'),
-                ('date', '<=', docs.date_to),
+                ('date', '<=', date_to),
                 ('payment_type', '=', 'penalty'),
                 ('loan_id.interest_id.type', '=', 'member'),
             ]))
@@ -18,14 +18,14 @@ class ReportLoanSummary(models.AbstractModel):
         total_interest_member = sum(
             r.amount for r in self.env['loan.account.payment'].search([
                 ('state', '=', 'validate'),
-                ('date', '<=', docs.date_to),
+                ('date', '<=', date_to),
                 ('payment_type', '=', 'interest'),
                 ('loan_id.interest_id.type', '=', 'member'),
             ]))
         total_interest_nonmember = sum(
             r.amount for r in self.env['loan.account.payment'].search([
                 ('state', '=', 'validate'),
-                ('date', '<=', docs.date_to),
+                ('date', '<=', date_to),
                 ('payment_type', '=', 'interest'),
                 ('loan_id.interest_id.type', '=', 'nonmember'),
             ])) * (nonmember_interest_id.coop_rate / 100)
@@ -33,18 +33,24 @@ class ReportLoanSummary(models.AbstractModel):
         total_interest_guarantor = sum(
             r.amount for r in self.env['loan.account.payment'].search([
                 ('state', '=', 'validate'),
-                ('date', '<=', docs.date_to),
+                ('date', '<=', date_to),
                 ('payment_type', '=', 'interest'),
                 ('loan_id.interest_id.type', '=', 'nonmember'),
             ])) * (nonmember_interest_id.guarantor_rate / 100)
+
+        total_interest = total_interest_member + total_interest_nonmember + total_interest_guarantor
+        total_coop_earning = (total_interest + total_penalty) - total_interest_guarantor
+        member_dividend = total_coop_earning / total_member
 
         dividend_actual = {
             'total_interest_member': total_interest_member,
             'total_interest_nonmember': total_interest_nonmember,
             'total_interest_guarantor': total_interest_guarantor,
-            'total_interest': total_interest_member + total_interest_nonmember + total_interest_guarantor,
+            'total_coop_earning': total_coop_earning,
+            'total_interest': total_interest,
             'total_penalty': total_penalty,
             'total_member': total_member,
+            'member_dividend': member_dividend,
         }
 
         return dividend_actual
@@ -157,6 +163,6 @@ class ReportLoanSummary(models.AbstractModel):
             'summary_receivable': self.get_summary_receivable(docs),
             'summary_profit_forecast': self.get_summary_profit_forecast(docs),
             'dividend_forecast': self.get_forecast_dividend(docs),
-            'dividend_actual': self.get_actual_dividend(docs),
+            'dividend_actual': self.get_actual_dividend(docs.date_to),
             'report_type': data.get('report_type') if data else '',
         }

@@ -20,7 +20,8 @@ class LoanInterest(models.Model):
 
     state = fields.Selection([('draft', "Draft"),
                               ('process', "Processing"),
-                              ('validate', "Validated")
+                              ('validate', "Validated"),
+                              ('paid', "Paid")
                               ], default='draft')
 
     def action_submit(self):

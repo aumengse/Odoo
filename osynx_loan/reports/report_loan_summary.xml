@@ -171,11 +171,12 @@
                                         <th style="width: 50%">
                                             Total COOP Earning
                                         </th>
-                                        <t t-set="total_coop_earning"
-                                           t-value="(dividend_actual.get('total_interest') + dividend_forecast.get('total_penalty')) - dividend_forecast.get('total_interest_guarantor') "/>
+                                        <!--<t t-set="total_coop_earning"
+                                           t-value="(dividend_actual.get('total_interest') + dividend_forecast.get('total_penalty')) - dividend_forecast.get('total_interest_guarantor') "/>-->
                                         <th style="width: 25%"/>
                                         <th class="text-right" style="width: 25%">
-                                            <span t-esc="total_coop_earning"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                            <!--<span t-esc="total_coop_earning"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>-->
+                                            <span t-esc="dividend_actual.get('total_coop_earning')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                         </th>
                                     </tr>
                                     <tr>
@@ -191,11 +192,12 @@
                                         <th style="width: 50%">
                                             Member Dividend
                                         </th>
-                                        <t t-set="member_dividend"
-                                           t-value="total_coop_earning / dividend_actual.get('total_member')"/>
+                                        <!--<t t-set="member_dividend"
+                                           t-value="total_coop_earning / dividend_actual.get('total_member')"/>-->
                                         <th style="width: 25%"/>
                                         <th class="text-right" style="width: 25%">
-                                            <span t-esc="member_dividend"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                            <!--<span t-esc="member_dividend"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>-->
+                                            <span t-esc="dividend_actual.get('member_dividend')"  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                         </th>
                                     </tr>
                                 </table>
