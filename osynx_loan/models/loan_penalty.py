@@ -22,7 +22,7 @@ class LoanInterest(models.Model):
                               ('process', "Processing"),
                               ('validate', "Validated"),
                               ('paid', "Paid")
-                              ], default='draft')
+                              ], default='draft', tracking=True)
 
     def action_submit(self):
         self.state = 'process'

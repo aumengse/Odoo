@@ -80,7 +80,7 @@ class LoanAccount(models.Model):
         for rec in self:
             rec.total_loan = sum(r.amount for r in rec.line_ids)
             rec.total_payment = sum(r.amount for r in rec.payment_ids.filtered(lambda r: r.state == 'validate'))
-            rec.total_penalty = sum(r.amount for r in rec.penalty_ids.filtered(lambda r: r.type == 'loan_expired' and r.state == 'validate'))
+            rec.total_penalty = sum(r.amount for r in rec.penalty_ids.filtered(lambda r: r.type == 'loan_expired' and r.state in ['validate','paid']))
             rec.total_balance_interest = rec.total_interest - sum(r.amount for r in rec.payment_ids.filtered(lambda r: r.state == 'validate'
                                                                                         and r.payment_type == 'interest'))
             rec.total_balance_principal = rec.principal - sum(r.amount for r in rec.payment_ids.filtered(lambda r: r.state == 'validate'
@@ -229,6 +229,10 @@ class LoanAccountPayment(models.Model):
     def onchange_penalty_id(self):
         for rec in self:
             if rec.penalty_id:
+                if rec.payment_type == 'penalty':
+                    if rec.penalty_id.type == 'loan_expired':
+                        rec.loan_id = rec.penalty_id.loan_id.id
+
                 rec.amount = rec.penalty_id.amount
 
     @api.onchange('loan_id')
@@ -243,6 +247,8 @@ class LoanAccountPayment(models.Model):
                     rec.amount = rec.loan_id.principal
                 elif rec.payment_type == 'contribution':
                     rec.amount = 1000
+                elif rec.payment_type == 'penalty':
+                    rec.amount = rec.penalty_id.amount
                 else:
                     rec.amount = 0
 
@@ -273,6 +279,11 @@ class LoanAccountPayment(models.Model):
 
     def action_validate(self):
         for rec in self:
+            if rec.payment_type == 'penalty':
+                rec.penalty_id.write({
+                    'state': 'paid'
+                })
+
             rec.state = 'validate'
 
     def set_type(self):

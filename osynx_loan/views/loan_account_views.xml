@@ -134,7 +134,7 @@
                 </group>
               </page>
               <page string="Penalty">
-                <field name="penalty_ids" nolabel="1" readonly="1">
+                <field name="penalty_ids" nolabel="1" context="{'default_name': guarantor_id, 'default_loan_id': active_id, 'default_type': 'loan_expired'}">
                   <tree>
                     <field name="date"/>
                     <field name="type"/>
@@ -233,9 +233,9 @@
             <group>
               <group>
                 <field name="payment_type" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
-                <field name="loan_id" attrs="{'invisible': [('payment_type', 'not in', ['principal','interest'])], 'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="loan_id" attrs="{'invisible': [('payment_type', 'not in', ['principal','interest','penalty'])], 'readonly': [('state', 'not in', ['draft'])]}"/>
                 <field name="member_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
-                <field name="penalty_id" domain="[('name','=',member_id)]" attrs="{'invisible': [('payment_type', 'not in', ['penalty'])],'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="penalty_id" domain="[('name','=',member_id),('state','=','validate')]" attrs="{'invisible': [('payment_type', 'not in', ['penalty'])],'readonly': [('state', 'not in', ['draft'])]}"/>
                 <field name="amount" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
               </group>
               <group>

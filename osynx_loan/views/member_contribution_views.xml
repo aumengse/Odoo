@@ -30,16 +30,9 @@
           <filter
                   name="previous_month"
                   string="Previous Month"
-                  domain="[('date', '&gt;=', (datetime.date.today() - relativedelta(months=1)).strftime('%Y-%m-01')), ('date', '&lt;', datetime.date.today().strftime('%Y-%m-01'))]"
+                  domain="[('date', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01')), ('date', '&lt;', context_today().strftime('%Y-%m-01'))]"
           />
 
-          <!--<filter string="Last Month" name="last_month"
-                  domain="[('date','&gt;', (context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))]"/>-->
-          <filter
-                  name="previous_month"
-                  string="Previous Month"
-                  domain="[('date', '&gt;=', (datetime.date.today() - relativedelta(months=1)).strftime('%Y-%m-01')), ('date', '&lt;', datetime.date.today().strftime('%Y-%m-01'))]"
-          />
           <separator/>
           <group expand='0' string='Group by...'>
             <filter string='Date' name="group_by_date" context="{'group_by': 'date:month'}"/>

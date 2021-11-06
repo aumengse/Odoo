@@ -44,6 +44,7 @@
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
+          <field name="loan_id"/>
           <field name="date"/>
           <field name="type"/>
           <field name="amount"/>
@@ -58,7 +59,7 @@
       <field name="arch" type="xml">
         <form>
           <header>
-            <field name="state" widget="statusbar"/>
+            <field name="state" widget="statusbar" clickable="1"/>
             <button name="action_submit" string="Submit" type="object" class="btn-primary"  states="draft"/>
             <button name="action_validate" string="Validate" type="object" class="btn-primary"  states="process"/>
           </header>
