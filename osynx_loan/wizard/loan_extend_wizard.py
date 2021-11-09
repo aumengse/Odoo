@@ -39,6 +39,8 @@ class LoanExtendWizard(models.TransientModel):
             'new_term': self.extended_term
         }).action_extend()
 
+        loan_account_id.action_compute_installment()
+
         return {
             'effect': {
                 'fadeout': 'slow',
