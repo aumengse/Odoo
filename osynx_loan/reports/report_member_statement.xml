@@ -47,11 +47,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-                                <tr t-foreach="o.line_ids" t-as="line">
+                                <!--<tr t-foreach="o.line_ids" t-as="line">
                                     <t t-set="total_contri" t-value="total_contri + line.amount" />
                                     <td><span t-esc="line.date.strftime('%B %d, %Y')"/></td>
                                     <td class="text-right"><span t-esc="line.amount" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                                </tr>-->
+                                <tr t-foreach="o.payment_ids" t-as="line">
+                                    <t t-if="line.payment_type == 'contribution'">
+                                        <t t-set="total_contri" t-value="total_contri + line.amount" />
+                                        <td><span t-esc="line.date.strftime('%B %d, %Y')"/></td>
+                                        <td class="text-right"><span t-esc="line.amount" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                                    </t>
                                 </tr>
                             </tbody>
                             <thead>
@@ -118,10 +124,10 @@
                                         <td/>
                                         <td class="text-right">
                                             <span t-esc="payment.member_earning"
-                                                                       t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                                                  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                                         <td class="text-right">
                                             - <span t-esc="payment.amount"
-                                                                       t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                                                    t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                                     </tr>
                                     <t t-set="loan_receivable" t-value="loan_receivable + loan_balance"/>
                                     <tr>
@@ -198,7 +204,7 @@
                                     <td>Contribution</td>
                                     <td class="text-right">
                                         <span t-esc="total_contri"
-                                                                 t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     </td>
                                     <td/>
                                 </tr>
@@ -206,7 +212,7 @@
                                     <td>Dividend</td>
                                     <td class="text-right">
                                         <span t-esc="dividend.get('member_dividend')"
-                                                                 t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     </td>
                                     <td/>
                                 </tr>
@@ -214,7 +220,7 @@
                                     <td>Commission</td>
                                     <td class="text-right">
                                         <span t-esc="member_earning"
-                                                                 t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     </td>
                                     <td/>
                                 </tr>
@@ -223,14 +229,14 @@
                                     <td/>
                                     <td class="text-right">
                                         <span t-esc="total_contri + dividend.get('member_dividend') + member_earning"
-                                                                 t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Unpaid Loan</td>
                                     <td class="text-right">
                                         - <span t-esc="loan_receivable"
-                                                                    t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                                t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     </td>
                                     <td/>
                                 </tr>
@@ -238,7 +244,7 @@
                                     <td>Unpaid Penalty</td>
                                     <td class="text-right">
                                         - <span t-esc="total_unpaid_penalty"
-                                                                    t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                                t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     </td>
                                     <td/>
                                 </tr>
@@ -247,7 +253,7 @@
                                     <td/>
                                     <td class="text-right">
                                         <span t-esc="loan_receivable + total_unpaid_penalty"
-                                                                 t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     </td>
                                 </tr>
                             </tbody>
@@ -257,7 +263,7 @@
                                     <td/>
                                     <td class="text-right">
                                         <span t-esc="(total_contri + dividend.get('member_dividend') + member_earning) -  (loan_receivable + total_unpaid_penalty)"
-                                                                 t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     </td>
                                 </tr>
                             </thead>

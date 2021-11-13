@@ -190,6 +190,7 @@
           <separator/>
           <group expand="1" string="Group By">
             <filter name="group_by_loan" context="{'group_by' : 'loan_id'}" string="Loan Account"/>
+             <filter name="group_by_payment_type" context="{'group_by' : 'payment_type'}" string="Payment Type"/>
           </group>
         </search>
       </field>
@@ -205,9 +206,9 @@
           <field name="date"/>
           <field name="loan_id"/>
           <field name="member_id"/>
-          <field name="company_earning"/>
-          <field name="member_earning"/>
-          <field name="amount"/>
+          <field name="company_earning" sum="Total Company Earning"/>
+          <field name="member_earning" sum="Total Member Earning"/>
+          <field name="amount" sum="Total Amount"/>
           <field name="state"/>
         </tree>
       </field>

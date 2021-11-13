@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 class MemberAccount(models.Model):
     _name = 'member.account'
@@ -14,7 +14,8 @@ class MemberAccount(models.Model):
     active = fields.Boolean(string="Active", default=True)
     date_from = fields.Date(string="Start")
     date_to = fields.Date(string="End")
-    line_ids = fields.One2many('member.contribution','member_account_id',string="Contributions")
+    # line_ids = fields.One2many('member.contribution','member_account_id',string="Contributions")
+    payment_ids = fields.One2many('loan.account.payment', 'member_id', string="Payments")
     loan_ids = fields.One2many('loan.account','guarantor_id',string="Loans")
     payment_ids = fields.One2many('loan.account.payment','member_id',string="Payments")
     penalty_ids = fields.One2many('loan.penalty', 'name', string="Penalty")
@@ -24,11 +25,17 @@ class MemberAccount(models.Model):
     total_penalty = fields.Float(string="Total Penalty", compute='compute_total_penalty')
     total_earning = fields.Float(string="Total Earning", compute='compute_total_profit')
 
-    @api.depends('line_ids')
+    @api.depends('payment_ids')
     def compute_total_capital(self):
         for rec in self:
-            rec.total_capital = sum(r.amount for r in rec.line_ids.filtered(lambda r:
-                                                                            r.state == 'validate'))
+            rec.total_capital = sum(r.amount for r in self.env['loan.account.payment'].search([
+                ('state', '=', 'validate'),
+                ('payment_type', 'in', ['contribution']),
+                ('member_id', '=', rec.id),
+            ]))
+
+            # rec.total_capital = sum(r.amount for r in rec.line_ids.filtered(lambda r:
+            #                                                                 r.state == 'validate'))
 
     @api.depends('payment_ids')
     def compute_total_commission(self):
@@ -72,3 +79,63 @@ class MemberAccount(models.Model):
         })
         res = super(MemberAccount, self).create(vals)
         return res
+
+    def action_show_contributions(self):
+        return {
+            'name': _('Contributions'),
+            'view_mode': 'tree,form',
+            'res_model': 'loan.account.payment',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'domain': [('member_id', '=', self.id),
+                       ('payment_type', '=', 'contribution')],
+            'context': {
+                'default_payment_type': 'contribution',
+                'default_member_id': self.id,
+            }
+        }
+
+    def action_show_payments(self):
+        return {
+            'name': _('Payments'),
+            'view_mode': 'tree,form',
+            'res_model': 'loan.account.payment',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'domain': [('member_id', '=', self.id),
+                       ('payment_type', 'in', ['principal','interest'])],
+            'context': {
+                'default_payment_type': 'interest',
+                'default_member_id': self.id,
+            }
+        }
+
+    def action_show_loans(self):
+        return {
+            'name': _('Loans'),
+            'view_mode': 'tree,form',
+            'res_model': 'loan.account',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'domain': [
+                ('guarantor_id', '=', self.id),
+            ],
+            'context': {
+                'default_guarantor_id': self.id,
+            }
+        }
+
+    def action_show_penalties(self):
+        return {
+            'name': _('Penalties'),
+            'view_mode': 'tree,form',
+            'res_model': 'loan.penalty',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'domain': [
+                ('name', '=', self.id),
+            ],
+            'context': {
+                'name': self.id,
+            }
+        }

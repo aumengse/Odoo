@@ -1,128 +1,164 @@
 <odoo>
-  <data>
-     <record model="ir.ui.view" id="member_account_search">
-      <field name="name">member.account.search</field>
-      <field name="model">member.account</field>
-      <field name="arch" type="xml">
-        <search string="Search">
-          <field name="name" string="Name" filter_domain="[('partner_id','ilike',self)]"/>
-          <!--<field name="amount"/>
-          <separator/>
-          <field name="partner_id" operator="child_of"/>
-          <separator/>
-          <filter name="purchase_orders" string="Purchase Orders" domain="[('purchase_order_id', '!=', False)]"/>
-          <filter name="vendor_bills" string="Vendor Bills" domain="[('vendor_bill_id', '!=', False)]"/>-->
-        </search>
-      </field>
-    </record>
+    <data>
+        <record model="ir.ui.view" id="member_account_search">
+            <field name="name">member.account.search</field>
+            <field name="model">member.account</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" string="Name" filter_domain="[('partner_id','ilike',self)]"/>
+                    <!--<field name="amount"/>
+                    <separator/>
+                    <field name="partner_id" operator="child_of"/>
+                    <separator/>
+                    <filter name="purchase_orders" string="Purchase Orders" domain="[('purchase_order_id', '!=', False)]"/>
+                    <filter name="vendor_bills" string="Vendor Bills" domain="[('vendor_bill_id', '!=', False)]"/>-->
+                </search>
+            </field>
+        </record>
 
-    <!-- explicit list view definition -->
-    <record model="ir.ui.view" id="member_account_tree">
-      <field name="name">member.account.tree</field>
-      <field name="model">member.account</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="partner_id"/>
-          <field name="date_from"/>
-          <field name="date_to"/>
-          <field name="total_capital"/>
-          <field name="total_commission"/>
-          <field name="total_dividend"/>
-          <field name="total_earning"/>
-        </tree>
-      </field>
-    </record>
-
-    <record model="ir.ui.view" id="member_account_form">
-      <field name="name">member.account.form</field>
-      <field name="model">member.account</field>
-      <field name="arch" type="xml">
-        <form>
-          <sheet>
-            <div class="oe_title">
-              <label for="name" class="oe_edit_only"/>
-              <h1>
-                <field name="name" placeholder="00001" readonly="1"/>
-              </h1>
-            </div>
-            <group>
-              <group>
-                <field name="partner_id"/>
-              </group>
-              <group>
-                <label for="date_from" string="Period"/>
-                <div>
-                  <field name="date_from" class="oe_inline"/>
-                  <span> to </span>
-                  <field name="date_to" class="oe_inline"/>
-                </div>
-              </group>
-            </group>
-            <notebook>
-              <page string="Contributions">
-                <field name="line_ids" nolabel="1" readonly="1">
-                  <tree>
-                    <field name="date"/>
-                    <field name="state"/>
-                    <field name="amount" sum="total"/>
-                  </tree>
-                </field>
-                <group class="oe_subtotal_footer oe_right">
-                  <field name="total_capital"  />
-                  <field name="total_dividend"  />
-                  <field name="total_penalty"  />
-                  <field name="total_commission"  />
-                  <field name="total_earning" class="oe_subtotal_footer_separator" />
-                </group>
-              </page>
-              <page string="Loans">
-                <field name="loan_ids" nolabel="1" readonly="1">
-                  <tree>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="member_account_tree">
+            <field name="name">member.account.tree</field>
+            <field name="model">member.account</field>
+            <field name="arch" type="xml">
+                <tree>
                     <field name="name"/>
-                    <field name="borrower_id"/>
+                    <field name="partner_id"/>
                     <field name="date_from"/>
                     <field name="date_to"/>
-                    <field name="total_guarantor_earning"/>
-                    <field name="total_loan"/>
-                    <field name="total_payment"/>
-                    <field name="total_balance"/>
-                  </tree>
-                </field>
-              </page>
-              <page string="Payments">
-                <field name="payment_ids" nolabel="1" readonly="1">
-                  <tree>
-                    <field name="name"/>
-                    <field name="date"/>
-                    <field name="payment_type"/>
-                    <field name="company_earning"/>
-                    <field name="member_earning"/>
-                    <field name="amount"/>
-                  </tree>
-                </field>
-              </page>
-              <page string="Penalty">
-                <field name="penalty_ids" nolabel="1" readonly="1"/>
-              </page>
-            </notebook>
-          </sheet>
-          <div class="o_attachment_preview"/>
-          <div class="oe_chatter">
-            <field name="message_follower_ids" groups="base.group_user"/>
-            <field name="activity_ids"/>
-            <field name="message_ids"/>
-          </div>
-        </form>
-      </field>
-    </record>
+                    <field name="total_capital"/>
+                    <field name="total_commission"/>
+                    <field name="total_dividend"/>
+                    <field name="total_earning"/>
+                </tree>
+            </field>
+        </record>
 
-    <!-- actions opening views on models -->
-    <record model="ir.actions.act_window" id="action_member_account">
-      <field name="name">Member Account</field>
-      <field name="res_model">member.account</field>
-      <field name="view_mode">tree,form</field>
-    </record>
+        <record model="ir.ui.view" id="member_account_form">
+            <field name="name">member.account.form</field>
+            <field name="model">member.account</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_show_contributions" type="object"
+                                    class="oe_stat_button" icon="fa-book">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text"> Contributions</span>
+                                </div>
+                            </button>
+                            <button name="action_show_loans" type="object"
+                                    class="oe_stat_button" icon="fa-pencil-square-o">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text"> Loans</span>
+                                </div>
+                            </button>
+                            <button name="action_show_penalties" type="object"
+                                    class="oe_stat_button" icon="fa-credit-card">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text"> Penalties</span>
+                                </div>
+                            </button>
+                            <button name="action_show_payments" type="object"
+                                    class="oe_stat_button" icon="fa-money">
+                                <div class="o_stat_info">
+                                    <!--<field name="transactions_count" class="o_stat_value"/>-->
+                                    <span class="o_stat_text"> Payments</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="00001" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                            </group>
+                            <group>
+                                <label for="date_from" string="Period"/>
+                                <div>
+                                    <field name="date_from" class="oe_inline"/>
+                                    <span> to </span>
+                                    <field name="date_to" class="oe_inline"/>
+                                </div>
+                            </group>
+                        </group>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="total_capital"  />
+                            <field name="total_dividend"  />
+                            <field name="total_penalty"  />
+                            <field name="total_commission"  />
+                            <field name="total_earning" class="oe_subtotal_footer_separator" />
+                        </group>
+                        <!--<notebook>
+                            <page string="Contributions">
+                              <field name="line_ids" nolabel="1" readonly="1">
+                                <tree>
+                                  <field name="date"/>
+                                  <field name="state"/>
+                                  <field name="amount" sum="total"/>
+                                </tree>
+                              </field>
+                              <group class="oe_subtotal_footer oe_right">
+                                <field name="total_capital"  />
+                                <field name="total_dividend"  />
+                                <field name="total_penalty"  />
+                                <field name="total_commission"  />
+                                <field name="total_earning" class="oe_subtotal_footer_separator" />
+                              </group>
+                            </page>
+                            <page string="Loans">
+                                <field name="loan_ids" nolabel="1" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="borrower_id"/>
+                                        <field name="date_from"/>
+                                        <field name="date_to"/>
+                                        <field name="total_guarantor_earning"/>
+                                        <field name="total_loan"/>
+                                        <field name="total_payment"/>
+                                        <field name="total_balance"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Payments">
+                                &lt;!&ndash;                <field name="payment_ids" domain="[('payment_type','=','contribution')]">&ndash;&gt;
 
-  </data>
+                                <field name="payment_ids" nolabel="1" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="date"/>
+                                        <field name="payment_type"/>
+                                        <field name="company_earning"/>
+                                        <field name="member_earning"/>
+                                        <field name="amount"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Penalty">
+                                <field name="penalty_ids" nolabel="1" readonly="1"/>
+                            </page>
+                        </notebook>-->
+                    </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="action_member_account">
+            <field name="name">Member Account</field>
+            <field name="res_model">member.account</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
 </odoo>

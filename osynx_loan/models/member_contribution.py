@@ -26,3 +26,15 @@ class MemberContribution(models.Model):
     def action_validate(self):
         for rec in self:
             rec.state = 'validate'
+
+    def action_create_contribution_payment(self):
+        for rec in self:
+            payment_obj = self.env['loan.account.payment']
+
+            payment_obj.create({
+                'payment_type': 'contribution',
+                'member_id': rec.member_account_id.id,
+                'amount': rec.amount,
+                'date': rec.date,
+                'state': 'validate',
+            })

@@ -37,6 +37,7 @@
         'reports/report.xml',
         'reports/report_loan_summary.xml',
         'reports/report_member_statement.xml',
+        'reports/report_loan_account.xml',
         'views/assets.xml',
         'views/loan_interest_views.xml',
         'views/member_account_views.xml',

@@ -39,7 +39,7 @@
             </field>
         </record>
 
-          <record model="ir.actions.server" id="action_set_type">
+        <record model="ir.actions.server" id="action_set_type">
             <field name="name">Set Type</field>
             <field name="model_id" ref="model_loan_account_payment"/>
             <field name="binding_model_id" ref="model_loan_account_payment" />
@@ -49,6 +49,19 @@
             <field name="code">
                 if records:
                 action = records.set_type()
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="action_create_contribution_payment">
+            <field name="name">Create Contribution Payment</field>
+            <field name="model_id" ref="model_member_contribution"/>
+            <field name="binding_model_id" ref="model_member_contribution" />
+            <field name="binding_view_types">list</field>
+            <field name="groups_id" eval="[(4, ref('base.group_system'))]"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                action = records.action_create_contribution_payment()
             </field>
         </record>
     </data>

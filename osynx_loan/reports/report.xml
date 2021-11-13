@@ -20,5 +20,15 @@
             <field name="print_report_name">'Member Statement- %s' % (object.partner_id.name)</field>
             <field name="binding_model_id" ref="model_member_account"/>
         </record>
+        <record id="action_report_loan_account" model="ir.actions.report">
+            <field name="name">Loan Account</field>
+            <field name="model">loan.account</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">osynx_loan.report_loan_account</field>
+            <field name="report_file">osynx_loan.report_loan_account</field>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Loan Account- %s' % (object.borrower_id.name)</field>
+            <field name="binding_model_id" ref="model_loan_account"/>
+        </record>
     </data>
 </odoo>

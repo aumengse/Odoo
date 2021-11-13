@@ -127,9 +127,10 @@ class ReportLoanSummary(models.AbstractModel):
         return summary_receivable
 
     def get_summary_loanable(self,docs):
-        total_contribution = sum(r.amount for r in self.env['member.contribution'].search([
+        total_contribution = sum(r.amount for r in self.env['loan.account.payment'].search([
             ('state', '=', 'validate'),
             ('date', '<=', docs.date_to),
+            ('payment_type', 'in', ['contribution']),
         ]))
         total_payments = sum(r.amount for r in self.env['loan.account.payment'].search([
             ('state', '=', 'validate'),

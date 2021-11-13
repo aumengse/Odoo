@@ -45,11 +45,18 @@ class LoanInterest(models.Model):
             date_to = date(prev_month.year, prev_month.month, num_days)
 
             for member in member_ids:
-                contribution_id = self.env['member.contribution'].search([('member_account_id','=',member.id),
-                                                                          ('date','>=', date_from),
-                                                                          ('date','<=', date_to),
-                                                                          ('state','=', 'validate'),
-                                                                          ])
+                # contribution_id = self.env['member.contribution'].search([('member_account_id','=',member.id),
+                #                                                           ('date','>=', date_from),
+                #                                                           ('date','<=', date_to),
+                #                                                           ('state','=', 'validate'),
+                #                                                           ])
+
+                contribution_id = self.env['loan.account.payment'].search([
+                    ('state', '=', 'validate'),
+                    ('date', '>=', date_from),
+                    ('date', '<=', date_to),
+                    ('payment_type', 'in', ['contribution']),
+                ])
 
                 if contribution_id:
                     pass

@@ -223,7 +223,7 @@ class LoanAccountPayment(models.Model):
         else:
             for rec in self:
                 rec.loan_id = False
-                rec.member_id = False
+                # rec.member_id = False
 
     @api.onchange('penalty_id')
     def onchange_penalty_id(self):
