@@ -64,5 +64,31 @@
                 action = records.action_create_contribution_payment()
             </field>
         </record>
+
+        <record model="ir.actions.server" id="action_send_statements">
+            <field name="name">Send Statement</field>
+            <field name="model_id" ref="model_member_account"/>
+            <field name="binding_model_id" ref="model_member_account" />
+            <field name="binding_view_types">list</field>
+            <!--   <field name="groups_id" eval="[(4, ref('base.group_system'))]"/>-->
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                action = records.action_send()
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="action_send_loan_statements">
+            <field name="name">Send Loan Statement</field>
+            <field name="model_id" ref="model_loan_account"/>
+            <field name="binding_model_id" ref="model_loan_account" />
+            <field name="binding_view_types">list</field>
+            <!--   <field name="groups_id" eval="[(4, ref('base.group_system'))]"/>-->
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                action = records.action_send()
+            </field>
+        </record>
     </data>
 </odoo>

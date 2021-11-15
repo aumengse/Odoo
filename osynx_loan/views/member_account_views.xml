@@ -24,6 +24,8 @@
                 <tree>
                     <field name="name"/>
                     <field name="partner_id"/>
+                    <field name="email" optional="hide"/>
+                    <field name="mobile" optional="hide"/>
                     <field name="date_from"/>
                     <field name="date_to"/>
                     <field name="total_capital"/>
@@ -39,6 +41,9 @@
             <field name="model">member.account</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                         <button name="action_send" class="btn-primary" type="object" string="Send Statement"/>
+                    </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button name="action_show_contributions" type="object"
@@ -76,8 +81,11 @@
                         <group>
                             <group>
                                 <field name="partner_id"/>
+                                <field name="email"/>
+                                <field name="mobile"/>
                             </group>
                             <group>
+                                <field name="company_id" readonly="1"/>
                                 <label for="date_from" string="Period"/>
                                 <div>
                                     <field name="date_from" class="oe_inline"/>

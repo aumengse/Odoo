@@ -32,6 +32,7 @@
         'data/ir_actions_server.xml',
         'data/ir_cron.xml',
         'data/loan_interest_data.xml',
+        'data/mail_template.xml',
         'wizard/loan_extend_wizard_views.xml',
         'wizard/loan_report_wizard_views.xml',
         'reports/report.xml',

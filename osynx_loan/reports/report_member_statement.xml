@@ -33,6 +33,18 @@
                                     <span t-field="o.date_from" t-options='{"format": "MMM d, yyyy"}'/> - <span t-field="o.date_to" t-options='{"format": "MMM d, yyyy"}'/>
                                 </th>
                             </tr>
+                            <tr>
+                                <th style="width:40%">
+                                    Contact Details
+                                </th>
+                                <th style="width:60%">
+                                    <!--<span t-esc="o.partner_id.name"
+                                          t-options='{"widget": "contact", "fields": ["address", "name", "mobile"], "no_marker": True, "phone_icons": True}'/>-->
+                                    <div t-field="o.partner_id"
+                                         t-options='{"widget": "contact", "fields": ["address", "mobile"], "no_marker": True, "phone_icons": True}'/>
+
+                                </th>
+                            </tr>
                         </table>
 
                         <t t-set="total_contri" t-value="0.00"/>
@@ -114,20 +126,23 @@
                                     <t t-set="loan_balance" t-value="loan.total_loan"/>
 
                                     <tr t-foreach="loan.payment_ids" t-as="payment">
-                                        <t t-set="loan_balance" t-value="loan_balance - payment.amount"/>
+                                        <t t-if="payment.payment_type in ['principal','interest']">
+                                            <t t-set="loan_balance" t-value="loan_balance - payment.amount"/>
 
-                                        <td><span t-esc="payment.name"/></td>
-                                        <td><span t-field="payment.payment_type"/></td>
-                                        <td/>
-                                        <td><span t-esc="payment.date.strftime('%B %d, %Y')"/></td>
-                                        <td/>
-                                        <td/>
-                                        <td class="text-right">
-                                            <span t-esc="payment.member_earning"
-                                                  t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
-                                        <td class="text-right">
-                                            - <span t-esc="payment.amount"
-                                                    t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                                            <td><span t-esc="payment.name"/></td>
+                                            <td><span t-field="payment.payment_type"/></td>
+                                            <td/>
+                                            <td><span t-esc="payment.date.strftime('%B %d, %Y')"/></td>
+                                            <td/>
+                                            <td/>
+                                            <td class="text-right">
+                                                <span t-esc="payment.member_earning"
+                                                      t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                                            <td class="text-right">
+                                                - <span t-esc="payment.amount"
+                                                        t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+
+                                        </t>
                                     </tr>
                                     <t t-set="loan_receivable" t-value="loan_receivable + loan_balance"/>
                                     <tr>
@@ -225,12 +240,11 @@
                                     <td/>
                                 </tr>
                                 <tr>
-                                    <td>Total Earnings</td>
-                                    <td/>
-                                    <td class="text-right">
+                                    <th colspan="2">Total Earnings</th>
+                                    <th class="text-right">
                                         <span t-esc="total_contri + dividend.get('member_dividend') + member_earning"
                                               t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
-                                    </td>
+                                    </th>
                                 </tr>
                                 <tr>
                                     <td>Unpaid Loan</td>
@@ -249,22 +263,21 @@
                                     <td/>
                                 </tr>
                                 <tr >
-                                    <td>Total Deductions</td>
-                                    <td/>
-                                    <td class="text-right">
-                                        <span t-esc="loan_receivable + total_unpaid_penalty"
+                                    <th colspan="2">Total Deductions</th>
+                                    <th class="text-right">
+                                        - <span t-esc="loan_receivable + total_unpaid_penalty"
                                               t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
-                                    </td>
+                                    </th>
                                 </tr>
                             </tbody>
                             <thead>
                                 <tr style="background-color:#e6e6e6">
-                                    <td>Total Payout</td>
-                                    <td/>
-                                    <td class="text-right">
+                                    <th colspan="2">Total Payout</th>
+                                    <!--<th/>-->
+                                    <th class="text-right">
                                         <span t-esc="(total_contri + dividend.get('member_dividend') + member_earning) -  (loan_receivable + total_unpaid_penalty)"
                                               t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
-                                    </td>
+                                    </th>
                                 </tr>
                             </thead>
                         </table>

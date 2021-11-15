@@ -1,14 +1,15 @@
-from odoo import models, fields, api
+import base64
+from odoo import models, fields, api, _
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from odoo.tools.safe_eval import safe_eval
 import uuid
 
 class LoanAccount(models.Model):
     _name = 'loan.account'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Loan Account'
-    _order = 'display_name'
-
+    _order = 'date_from desc'
     _rec_name = 'display_name'
 
     display_name = fields.Char(string="Account Name", compute="compute_display_name", store=True)
@@ -121,8 +122,8 @@ class LoanAccount(models.Model):
             val = (0,0, {
                 'date': date_from,
                 'amount': self.monthly_interest,
-                'company_earning': self.coop_earning,
-                'guarantor_earning': self.guarantor_earning,
+                # 'company_earning': self.coop_earning,
+                # 'guarantor_earning': self.guarantor_earning,
                 'description': "Monthly Interest",
 
             })
@@ -155,6 +156,34 @@ class LoanAccount(models.Model):
     def get_loan_account_domain(self, val):
         x = 0
 
+    def action_send(self):
+        for loan in self:
+            report = self.env.ref('osynx_loan.action_report_loan_account', False)
+            pdf_content, content_type = report.sudo()._render_qweb_pdf(loan.id)
+
+            pdf_name = _("Loan Statement - %s" % loan.borrower_id.name)
+            # Sudo to allow payroll managers to create document.document without access to the
+            # application
+            attachment = self.env['ir.attachment'].sudo().create({
+                'name': pdf_name,
+                'type': 'binary',
+                'datas': base64.encodebytes(pdf_content),
+                'res_model': loan._name,
+                'res_id': loan.id
+            })
+            # Send email to employees
+            template = self.env.ref('osynx_loan.mail_template_loan_statement', raise_if_not_found=False)
+            if template:
+                email_values = {
+                    'attachment_ids': attachment,
+                }
+                template.send_mail(
+                    loan.id,
+                    email_values=email_values,
+                    notif_layout='mail.mail_notification_light',
+                    force_send=True
+                )
+
 class LoanAccountLine(models.Model):
     _name = 'loan.account.line'
     _description = 'Loan Account Line'
@@ -162,12 +191,7 @@ class LoanAccountLine(models.Model):
     name = fields.Date(string="Name", related='date')
     date = fields.Date(string="Due Date")
     amount = fields.Float(string="Amount")
-    company_earning = fields.Float(string="Company")
-    guarantor_earning = fields.Float(string="Guarantor")
     description = fields.Char(string="Description")
-    state = fields.Selection([('unpaid', "Unpaid"),
-                              ('paid', "Paid"),
-                              ], default='unpaid', string="State")
     loan_id = fields.Many2one('loan.account', string="Loan")
     borrower_id = fields.Many2one(related='loan_id.borrower_id')
     guarantor_id = fields.Many2one(related='loan_id.borrower_id')

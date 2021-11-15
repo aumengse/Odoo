@@ -61,6 +61,7 @@
             <button name="action_queue" string="Queue" type="object" class="btn-primary" states="draft"/>
             <button name="action_approve" string="Approve" type="object" class="btn-primary" states="queue"/>
             <button name="%(action_loan_extend_wizard)d" string="Extend" type="action" class="btn-primary" states="expired"/>
+            <button name="action_send" class="btn-primary" type="object" string="Send Statement"/>
           </header>
           <sheet>
             <div class="oe_button_box" name="button_box">
@@ -96,15 +97,24 @@
             <notebook>
               <page string="Loan Schedule">
                 <!--                <group>-->
-                <field name="line_ids" nolabel="1" readonly="1">
+                <field name="line_ids" nolabel="1">
                   <tree>
                     <field name="date"/>
                     <field name="description" sum="total"/>
-                    <field name="company_earning" sum="total"/>
-                    <field name="guarantor_earning" sum="total"/>
                     <field name="amount" sum="total"/>
-                    <field name="state"/>
                   </tree>
+                  <form>
+                    <group>
+                      <field name="date"/>
+                      <field name="description" sum="total"/>
+                      <field name="amount"/>
+                    </group>
+
+                    <group>
+                       <field name="borrower_id"/>
+                       <field name="guarantor_id"/>
+                    </group>
+                  </form>
                 </field>
                 <group class="oe_subtotal_footer oe_right">
                   <field name="total_loan"  />
@@ -190,7 +200,7 @@
           <separator/>
           <group expand="1" string="Group By">
             <filter name="group_by_loan" context="{'group_by' : 'loan_id'}" string="Loan Account"/>
-             <filter name="group_by_payment_type" context="{'group_by' : 'payment_type'}" string="Payment Type"/>
+            <filter name="group_by_payment_type" context="{'group_by' : 'payment_type'}" string="Payment Type"/>
           </group>
         </search>
       </field>

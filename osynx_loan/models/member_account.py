@@ -1,4 +1,7 @@
+import base64
+
 from odoo import models, fields, api, _
+from odoo.tools.safe_eval import safe_eval
 
 class MemberAccount(models.Model):
     _name = 'member.account'
@@ -10,6 +13,8 @@ class MemberAccount(models.Model):
     display_name = fields.Char(string="Account Name", compute="compute_display_name", store=True)
     name = fields.Char(string="Reference")
     partner_id = fields.Many2one('res.partner',string="Member")
+    email = fields.Char(related='partner_id.email')
+    mobile = fields.Char(related='partner_id.mobile')
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     active = fields.Boolean(string="Active", default=True)
     date_from = fields.Date(string="Start")
@@ -139,3 +144,31 @@ class MemberAccount(models.Model):
                 'name': self.id,
             }
         }
+
+    def action_send(self):
+        for member in self:
+            report = self.env.ref('osynx_loan.action_report_member_statement_of_account', False)
+            pdf_content, content_type = report.sudo()._render_qweb_pdf(member.id)
+
+            pdf_name = _("Member Statement - %s" %member.partner_id.name)
+            # Sudo to allow payroll managers to create document.document without access to the
+            # application
+            attachment = self.env['ir.attachment'].sudo().create({
+                'name': pdf_name,
+                'type': 'binary',
+                'datas': base64.encodebytes(pdf_content),
+                'res_model': member._name,
+                'res_id': member.id
+            })
+            # Send email to employees
+            template = self.env.ref('osynx_loan.mail_template_member_statement', raise_if_not_found=False)
+            if template:
+                email_values = {
+                    'attachment_ids': attachment,
+                }
+                template.send_mail(
+                    member.id,
+                    email_values=email_values,
+                    notif_layout='mail.mail_notification_light',
+                    force_send=True
+                )
