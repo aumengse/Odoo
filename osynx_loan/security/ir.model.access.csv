@@ -1,5 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_member_contribution_public,member.contribution.public,model_member_contribution,base.group_public,1,1,1,1
+access_member_contribution_public,member.contribution.public,model_member_contribution,base.group_portal,1,1,1,1
+access_loan_account_payment_portal,loan.account.payment.portal,model_loan_account_payment,base.group_portal,1,1,1,1
+access_member_account_portal,member.account.portal,model_member_account,base.group_portal,1,0,0,0
 
 access_member_contribution_base,member.contribution.base,model_member_contribution,base.group_user,1,0,0,0
 access_member_account_base,member.account.base,model_member_account,base.group_user,1,0,0,0

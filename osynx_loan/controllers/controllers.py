@@ -43,7 +43,10 @@ import base64
 class LoanPaymentPortal(CustomerPortal):
     def _prepare_portal_layout_values(self):
         values = super(LoanPaymentPortal, self)._prepare_portal_layout_values()
-        payment_count = request.env['loan.account.payment'].search([])
+
+        domain = [('member_id.partner_id', '=', request.env.user.partner_id.id)]
+
+        payment_count = request.env['loan.account.payment'].search(domain)
         values.update({
             'payment_count': len(payment_count),
         })
@@ -60,10 +63,9 @@ class LoanPaymentPortal(CustomerPortal):
     def portal_my_loan_payments(self, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, search=None,
                                 search_in='all', groupby='none', **kw):
         values = self._prepare_portal_layout_values()
-        loan_payment_sudo = request.env['loan.account.payment'].search([])
+        loan_payment_sudo = request.env['loan.account.payment'].sudo()
 
-        domain = []
-        # domain = [('member_id.partner_id.id', '=', request.env.user.partner_id.id)]
+        domain = [('member_id.partner_id', '=', request.env.user.partner_id.id)]
 
         searchbar_sortings = {
             'date': {'label': _('Newest'), 'order': 'date desc'},
@@ -139,15 +141,19 @@ class LoanPaymentPortal(CustomerPortal):
 
     @http.route('''/submit/payment''', type='http', auth="public", website=True, sitemap=True)
     def submit_payment(self, **kwargs):
-        default_member_id = request.env.user.partner_id
+        default_partner_id = request.env.user.partner_id
+        # default_member_id = request.env['member.account'].sudo().search([('partner_id','=',default_partner_id.id)])
 
-        member_ids = request.env['member.account'].sudo().search([])
-        loan_ids = request.env['loan.account'].sudo().search([])
+        member_ids = request.env['member.account'].sudo().search([('partner_id','=',default_partner_id.id)])
+        loan_ids = request.env['loan.account'].sudo().search([
+            ('state','not in',['draft','paid']),
+            ('guarantor_id','in',member_ids.ids)
+        ])
 
-        return request.render("osynx_loan.submit_loan_payment", {
+        return request.render("osynx_loan.submit_payment", {
             'member_ids': member_ids,
             'loan_ids': loan_ids,
-            'default_member_id': default_member_id,
+            # 'default_member_id': default_member_id,
         })
 
 class PaymentForm(Controller):

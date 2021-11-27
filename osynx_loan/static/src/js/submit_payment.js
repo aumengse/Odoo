@@ -1,7 +1,13 @@
 odoo.define('osynx_loan.submit_payment', function (require) {
     "use strict";
 
-         var rpc = require('web.rpc');
+        var core = require('web.core');
+        var publicWidget = require('web.public.widget');
+        var rpc = require('web.rpc');
+        var time = require('web.time');
+
+        var _t = core._t;
+         var Dialog = require('web.Dialog');
 
         $("#loan_id_label").hide();
         $("#loan_id").hide();
@@ -23,47 +29,87 @@ odoo.define('osynx_loan.submit_payment', function (require) {
         });
         // END
 
-       /* var Widget = require('web.Widget');
-        var Counter = require('myModule.Counter');
+        publicWidget.registry.submit_material = publicWidget.Widget.extend({
+        selector: '#wrapwrap:has(.submit_payment_form)',
+        events: {
+            /*'change select.uom_id' : function (e) {
+                e.preventDefault();
+                var self = this;
+                self._onChangeUOM(this.$('select.uom_id').val());
+            },*/
 
-        var MyWidget = Widget.extend({
-            custom_events: {
-                valuechange: 'changeMember'
-            },
-            start: function () {
-                this.counter = new Counter(this);
-                var def = this.counter.appendTo(this.$el);
-                return Promise.all([def, this._super.apply(this, arguments)]);
-            },
+            'click .submit_payment_form .action_create_payment': '_onCreatePayment',
+        },
+        //--------------------------------------------------------------------------
+        // Private
+        //--------------------------------------------------------------------------
 
-            changeMember(event){
-            this.change[event.target.name] = event.target.value;
+        /**
+         * @private
+         * @param {jQuery} $btn
+         * @param {function} callback
+         * @returns {Promise}
+         */
+        _buttonExec: function ($btn, callback) {
+            // TODO remove once the automatic system which does this lands in master
+            $btn.prop('disabled', true);
+            return callback.call(this).guardedCatch(function () {
+                $btn.prop('disabled', false);
+            });
+        },
+        /**
+         * @private
+         * @returns {Promise}
+         */
+
+        init: function (parent, options) {
+            this._super.apply(this, arguments);
+        },
+        start: function () {
             var self = this;
+            return Promise.all([
+                this._super(),
+            ])
+        },
+        _onCreatePayment: function(ev){
+            ev.preventDefault();
+            ev.stopPropagation();
+            var payment_type = $('.submit_payment_form .payment_type').val();
 
-            var member_id =  self.changes['member_id']
+            Dialog.confirm(self, _t("This will create payment. Do you still want to proceed ?"), {
+                confirm_callback: function() {
+                    self._onDeleteRequest(material_requisition_id);
+                },
+                title: _t('Create payment'),
+            });
 
-            rpc_result = rpc.query({
-				model: 'loan.account',
-				method: 'get_loan_account_domain',
-				args: [member_id],
-
-			}).then(function(output) {
-				my_user = partner_id['id']
-				total_amt = parseFloat(partner_id.wallet_balance) + parseFloat(entered_amount)
-				partner_id.wallet_balance = total_amt
-				$('.client-detail').find('#wallet_bal').html(total_amt);
-				$('.client-list .highlight').find('#bal').html(total_amt);
-				alert('Wallet is Successfully Recharge !!!!');
-				self.trigger('close-temp-screen');
-				self.trigger('close-popup');
-				self.showTempScreen('ClientListScreen');
-
-			});
-		}
-        });*/
-
-
-        }
-//        $('#loan_id').append($('<option>',{text: 'pippo', value: 'pippo', selected: true}))
-
+            if (!quantity) {
+                this.do_notify(false, _t("Please Enter Quantity"));
+                return;
+            }
+            this._buttonExec($(ev.currentTarget), this._createPayment);
+        },
+        _createPayment: function(){
+            return this._rpc({
+                model: 'account.loan.payment',
+                method: 'create_payment',
+                args: [{
+                    material_requisition_id: $('.submit_payment_form .material_requisition_id').val(),
+                    product_id: $('.submit_payment_form .product_id').val(),
+                    quantity: $('.submit_payment_form .quantity').val(),
+                   /* uom_id: $('.submit_payment_form .uom_id').val(),*/
+                }],
+            })
+            .then(function (response) {
+                if (response.errors) {
+                    $('#new-product-dialog .alert').remove();
+                    $('#new-product-dialog div:first').prepend('<div class="alert alert-danger">' + response.errors + '</div>');
+                    return Promise.reject(response);
+                } else {
+                    /*window.location = '/material/request/product/form/' + response.id + '?access_token=' + response.access_token;*/
+                    window.location = '/material/request/form/' + response.id;
+                }
+            });
+        },
+    });
 });

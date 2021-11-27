@@ -3,8 +3,8 @@
     <template id="portal_my_home_menu_member_contribution" name="Portal layout : Member menu entries" inherit_id="portal.portal_breadcrumbs" priority="20">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
             <li t-if="page_name == 'loan_payments'" t-attf-class="breadcrumb-item #{'active ' if not loan_payments else ''}">
-                <a t-if="loan_payments" t-attf-href="/my/loanpayments?{{ keep_query() }}">Loan Payments</a>
-                <t t-else="">Loan Payments</t>
+                <a t-if="loan_payments" t-attf-href="/my/loanpayments?{{ keep_query() }}">Payments</a>
+                <t t-else="">Payments</t>
             </li>
             <li t-if="payment" class="breadcrumb-item active">
                 <a t-attf-href="/my/loanpayments?{{ keep_query() }}">

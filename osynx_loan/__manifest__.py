@@ -49,7 +49,7 @@
         'views/res_config_settings_views.xml',
         # 'views/website_contributions.xml',
         'views/website_loan_payments.xml',
-        'views/website_submit_contribution_template.xml',
+        'views/website_submit_payment.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
