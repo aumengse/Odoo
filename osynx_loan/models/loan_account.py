@@ -201,6 +201,7 @@ class LoanAccountPayment(models.Model):
     _name = 'loan.account.payment'
     _inherit = ['portal.mixin', 'mail.thread.cc', 'mail.activity.mixin']
     _description = 'Loan Account Payment'
+    _order = 'date desc'
 
     def _get_default_access_token(self):
         return str(uuid.uuid4())

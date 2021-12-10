@@ -111,8 +111,8 @@
                     </group>
 
                     <group>
-                       <field name="borrower_id"/>
-                       <field name="guarantor_id"/>
+                      <field name="borrower_id"/>
+                      <field name="guarantor_id"/>
                     </group>
                   </form>
                 </field>
@@ -180,6 +180,7 @@
       <field name="arch" type="xml">
         <search string="Search Reference Document">
           <field name="name" string="Reference" filter_domain="[('loan_id','ilike',self)]"/>
+          <field name="member_id" string="Member" filter_domain="[('member_id','ilike',self)]"/>
           <separator/>
           <filter string="Contribution Payment" name="contribution_payment" domain="[('payment_type', '=', 'contribution')]"/>
           <filter string="Principal Payment" name="principal_payment" domain="[('payment_type', '=', 'principal')]"/>

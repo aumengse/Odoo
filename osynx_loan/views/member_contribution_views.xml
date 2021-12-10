@@ -9,8 +9,8 @@
           <field name="name"/>
           <field name="member_account_id"/>
           <field name="date"/>
-          <field name="amount"/>
-          <field name="state"/>
+          <field name="amount" sum="total"/>
+          <field name="state" />
         </tree>
       </field>
     </record>
