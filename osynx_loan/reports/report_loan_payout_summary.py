@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.addons.osynx_loan.reports.report_loan_summary import ReportLoanSummary
+from odoo.addons.osynx_loan.reports.report_summary import ReportSummary
 
 class ReportPayoutSummary(models.AbstractModel):
     _name = 'report.osynx_loan.report_payout_summary'
@@ -208,7 +208,7 @@ class ReportPayoutSummary(models.AbstractModel):
 
 
         records = []
-        dividend = ReportLoanSummary.get_actual_dividend(self, docs.date_to)
+        dividend = ReportSummary.get_actual_dividend(self, docs.date_to)
 
         for member in member_ids:
             earnings = self.compute_total_earning(docs, member, payment_obj, dividend)

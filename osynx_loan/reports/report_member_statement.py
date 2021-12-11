@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.addons.osynx_loan.reports.report_loan_summary import ReportLoanSummary
+from odoo.addons.osynx_loan.reports.report_summary import ReportSummary
 from datetime import datetime, timedelta
 
 class ReportMemberStatement(models.AbstractModel):
@@ -9,7 +9,7 @@ class ReportMemberStatement(models.AbstractModel):
     def _get_report_values(self, docids, data=None):
         docs = self.env['member.account'].browse(docids)
 
-        dividend = ReportLoanSummary.get_actual_dividend(self,docs.date_to)
+        dividend = ReportSummary.get_actual_dividend(self,docs.date_to)
         member_earning = sum(r.member_earning for r in self.env['loan.account.payment'].search([
             ('member_id','=',docs.id),
             ('date','<=',docs.date_to),

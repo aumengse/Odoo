@@ -1,7 +1,7 @@
 from odoo import models, fields, api, _
 
-class ReportLoanSummary(models.AbstractModel):
-    _name = 'report.osynx_loan.report_loan_summary'
+class ReportSummary(models.AbstractModel):
+    _name = 'report.osynx_loan.report_summary'
     _description = 'Employee Loan Summary'
 
     def get_actual_dividend(self,date_to):

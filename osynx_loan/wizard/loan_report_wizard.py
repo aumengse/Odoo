@@ -19,6 +19,6 @@ class LoanReportWizard(models.TransientModel):
             'form': self.read()[0],
         }
         if self.name == 'summary':
-            return self.env.ref('osynx_loan.action_report_loan_summary').report_action(self, data=data)
+            return self.env.ref('osynx_loan.action_report_summary').report_action(self, data=data)
         elif self.name == 'payout':
             return self.env.ref('osynx_loan.action_report_payout_summary').report_action(self, data=data)
