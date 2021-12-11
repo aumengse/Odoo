@@ -41,10 +41,11 @@
           <field name="guarantor_id"/>
           <field name="date_from"/>
           <field name="date_to"/>
-          <field name="total_loan"/>
-          <field name="total_penalty"/>
-          <field name="total_payment"/>
-          <field name="total_balance"/>
+          <field name="principal" optional="hide" sum="total"/>
+          <field name="total_loan" sum="total"/>
+          <field name="total_penalty" sum="total"/>
+          <field name="total_payment" sum="total"/>
+          <field name="total_balance" sum="total"/>
           <field name="state"/>
         </tree>
       </field>
@@ -217,6 +218,7 @@
           <field name="date"/>
           <field name="loan_id"/>
           <field name="member_id"/>
+          <field name="payment_type" optional="hide"/>
           <field name="company_earning" sum="Total Company Earning"/>
           <field name="member_earning" sum="Total Member Earning"/>
           <field name="amount" sum="Total Amount"/>

@@ -10,6 +10,15 @@
             <field name="binding_type">report</field>
             <field name="print_report_name">'Summary Report: As of - %s' % (object.date_to)</field>
         </record>
+        <record id="action_report_payout_summary" model="ir.actions.report">
+            <field name="name">Payout Summary</field>
+            <field name="model">loan.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">osynx_loan.report_payout_summary</field>
+            <field name="report_file">osynx_loan.report_payout_summary</field>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Payout Summary Report: As of - %s' % (object.date_to)</field>
+        </record>
         <record id="action_report_member_statement_of_account" model="ir.actions.report">
             <field name="name">Member Statement</field>
             <field name="model">member.account</field>
