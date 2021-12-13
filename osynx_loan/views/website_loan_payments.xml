@@ -31,9 +31,9 @@
                 <t t-set="title">Payments</t>
                 <div class="form-inline ml-lg-4">
                     <t t-set="title">Contributions</t>
-                    <div class="float-right">
+                   <!-- <div class="float-right">
                         <a role="button" t-attf-href="/submit/payment" class="btn btn-primary btn-md float-right">Submit Payment</a>
-                    </div>
+                    </div>-->
                 </div>
             </t>
             <t t-if="not loan_payment_ids">
@@ -72,6 +72,20 @@
                         </td>
                     </tr>
                 </tbody>
+            </t>
+            <t t-call="portal.portal_record_sidebar">
+                <t t-set="entries">
+                    <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                        <li class="list-group-item flex-grow-1">
+                            <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                                <div class="btn-group  flex-grow-2 mr-1 mb-1">
+                                    <a role="button"  t-attf-href="/submit/payment"
+                                       class="btn btn-secondary btn-md float-right fa fa-plus"> Submit Payment</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </t>
             </t>
         </t>
     </template>

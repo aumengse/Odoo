@@ -315,3 +315,23 @@ class LoanAccountPayment(models.Model):
         for rec in self:
             if rec.type == 'Principal':
                 rec.type = 'principal'
+
+    @api.model
+    def create_payment(self, values):
+        payment_obj = self.env['loan.account.payment'].sudo()
+
+        product_id = self.env['product.product'].sudo().browse(int(values.get('product_id')))
+
+        val = {
+            'product_id': values.get('product_id'),
+            'description': product_id.name,
+            'qty': values.get('quantity'),
+            'uom': product_id.uom_id.id,
+        }
+        payment_id = payment_obj.sudo().create(val)
+
+        return {
+            'id': payment_id.id,
+            'access_token': payment_id.sudo()._portal_ensure_token(),
+        }
+

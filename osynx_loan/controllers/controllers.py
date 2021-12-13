@@ -57,7 +57,7 @@ class LoanPaymentPortal(CustomerPortal):
             'page_name': 'loanpayment',
             'payment': loan_payment_sudo,
         }
-        return self._get_page_view_values(loan_payment_sudo, access_token, values, 'my_log_history', False, **kwargs)
+        return self._get_page_view_values(loan_payment_sudo, access_token, values, 'my_payment_history', False, **kwargs)
 
     @http.route(['/my/loanpayments', '/my/loanpayments/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_loan_payments(self, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, search=None,
@@ -75,6 +75,7 @@ class LoanPaymentPortal(CustomerPortal):
 
         searchbar_inputs = {
             'all': {'input': 'all', 'label': _('Search in All')},
+            'member_id': {'input': 'member_id', 'label': _('Search in Member')},
         }
 
         today = fields.Date.today()
@@ -94,24 +95,28 @@ class LoanPaymentPortal(CustomerPortal):
         order = searchbar_sortings[sortby]['order']
 
         if search and search_in:
-            domain += [('date', 'ilike', search)]
+            domain += [('name', 'ilike', search)]
 
         # default filter by value
         if not filterby:
             filterby = 'all'
         domain += searchbar_filters[filterby]['domain']
 
-        loan_payment_ids = loan_payment_sudo.search(domain, order=order, limit=self._items_per_page, )
+        payment_count = loan_payment_sudo.search_count(domain)
 
         # pager
         pager = portal_pager(
             url="/my/loanpayments",
             url_args={'sortby': sortby, 'search_in': search_in, 'search': search, 'filterby': filterby,
                       'groupby': groupby},
-            total=len(loan_payment_ids),
+            total=payment_count,
             page=page,
             step=self._items_per_page
         )
+        loan_payment_ids = loan_payment_sudo.search(domain, order=order, limit=self._items_per_page,
+                                                    offset=pager['offset'])
+
+        request.session['my_payment_history'] = loan_payment_ids.ids[:100]
 
         values.update({
             'loan_payment_ids': loan_payment_ids,

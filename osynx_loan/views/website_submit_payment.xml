@@ -96,7 +96,7 @@
                                     <span class="s_website_form_mark"> *</span>
                                 </label>
                                 <div class="col-sm">
-                                    <input id="recruitment1" type="text" class="form-control s_website_form_input" name="amount" required="True"/>
+                                    <input id="amount" type="text" class="form-control s_website_form_input" name="amount" required="True"/>
                                 </div>
                             </div>
                         </div>
@@ -113,11 +113,14 @@
                         </div>
                         <input type="hidden" name="redirect" t-att-value="redirect"/>
                         <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
-                            <button type="submit" class="btn btn-primary float-right mb32 ">
-                                Confirm
-                                <span class="fa fa-long-arrow-right" />
+                            <!--  <button type="submit" class="btn btn-primary float-right mb32 ">
+                                  Submit
+                                  <span class="fa fa-long-arrow-right" />
+                              </button>-->
+                            <button t-attf-class="btn btn-primary float-right mb32 action_create_payment">
+                                Submit
+                                <i class="fa fa-long-arrow-right"/>
                             </button>
-                            <button t-attf-class="btn btn-secondary action_create_payment">  <i class="fa fa-plus"/> Submit</button>
                         </div>
                     </div>
                 </div>

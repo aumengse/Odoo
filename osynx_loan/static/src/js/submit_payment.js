@@ -83,8 +83,8 @@ odoo.define('osynx_loan.submit_payment', function (require) {
                 title: _t('Create payment'),
             });
 
-            if (!quantity) {
-                this.do_notify(false, _t("Please Enter Quantity"));
+            if (!payment_type) {
+                this.do_notify(false, _t("Please Enter Payment Type"));
                 return;
             }
             this._buttonExec($(ev.currentTarget), this._createPayment);
@@ -94,10 +94,11 @@ odoo.define('osynx_loan.submit_payment', function (require) {
                 model: 'account.loan.payment',
                 method: 'create_payment',
                 args: [{
-                    material_requisition_id: $('.submit_payment_form .material_requisition_id').val(),
-                    product_id: $('.submit_payment_form .product_id').val(),
-                    quantity: $('.submit_payment_form .quantity').val(),
-                   /* uom_id: $('.submit_payment_form .uom_id').val(),*/
+                    payment_type: $('.submit_payment_form .payment_type').val();
+                    loan_id: $('.submit_payment_form .loan_id').val();
+                    date: $('.submit_payment_form .date').val();
+                    amount: $('.submit_payment_form .amount').val();
+                    attachment: $('.submit_payment_form .attachment').val();
                 }],
             })
             .then(function (response) {
