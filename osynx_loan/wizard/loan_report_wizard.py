@@ -12,6 +12,11 @@ class LoanReportWizard(models.TransientModel):
     ], string="Reports", required=True)
     date_to = fields.Date(string="Date To", required=True)
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
+    member_ids = fields.Many2many('member.account',
+                                  "wizard_member_rel",
+                                  "member_id",
+                                  "wizard_id",
+                                  'Members')
 
     def generate_summary_report(self):
         data = {

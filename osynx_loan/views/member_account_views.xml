@@ -5,7 +5,7 @@
             <field name="model">member.account</field>
             <field name="arch" type="xml">
                 <search string="Search">
-                    <field name="name" string="Name" filter_domain="[('partner_id','ilike',self)]"/>
+                    <field name="name" string="Name" filter_domain="['|',('partner_id','ilike',self),('name','ilike',self)]"/>
                     <!--<field name="amount"/>
                     <separator/>
                     <field name="partner_id" operator="child_of"/>

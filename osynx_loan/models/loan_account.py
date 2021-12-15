@@ -25,7 +25,7 @@ class LoanAccount(models.Model):
     date_from = fields.Date(string="Start")
     date_to = fields.Date(string="End", compute='compute_date_to', store=True, tracking=True)
     principal = fields.Monetary(string="Principal Amount", currency_field='currency_id')
-    term = fields.Integer(string="Term", tracking=True)
+    term = fields.Float(string="Term", tracking=True)
     interest_id = fields.Many2one('loan.interest',string="Interest Rate")
     monthly_interest = fields.Monetary(string="Monthly Interest", currency_field='currency_id', compute='compute_interest')
     total_interest = fields.Monetary(string="Total Interest", currency_field='currency_id', compute='compute_interest')
@@ -66,7 +66,8 @@ class LoanAccount(models.Model):
         for rec in self:
             rec.date_to = False
             if rec.date_from:
-                rec.date_to = rec.date_from + relativedelta(months=rec.term)
+                xx= int(rec.term)
+                rec.date_to = rec.date_from + relativedelta(months=int(rec.term))
 
     @api.depends('principal', 'interest_id')
     def compute_interest(self):
@@ -116,7 +117,7 @@ class LoanAccount(models.Model):
         self.line_ids.unlink()
         lines = []
         date_from = self.date_from
-        for rec in range(self.term):
+        for rec in range(int(self.term)):
             date_from += relativedelta(months=1)
 
             val = (0,0, {
