@@ -67,6 +67,7 @@ class ReportPayoutSummary(models.AbstractModel):
 
         records = []
         dividend = ReportSummary.get_actual_dividend(self, docs.date_to)
+        dividend_forecasted = ReportSummary.get_forecast_dividend(self, docs)
 
         for member in member_ids:
             earnings = self.compute_total_earning(docs, member, payment_obj, dividend)

@@ -125,6 +125,18 @@
                             </tbody>
                             <thead>
                                 <tr>
+                                    <td colspan="3">Principal Balance</td>
+                                    <td class="text-right">
+                                        <span t-esc="o.total_balance_principal"
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+                                </tr><tr>
+                                    <td colspan="3">Interest Balance</td>
+                                    <td class="text-right">
+                                        <span t-esc="o.total_balance_interest"
+                                              t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </td>
+                                </tr><tr>
                                     <th colspan="3">Balance</th>
                                     <th class="text-right">
                                         <span t-esc="loan_balance"

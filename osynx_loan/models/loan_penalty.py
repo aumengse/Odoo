@@ -91,5 +91,17 @@ class LoanInterest(models.Model):
                     'state': 'expired'
                 })
 
+    def action_paid(self):
+        for rec in self:
+            payment_obj = self.env['loan.account.payment']
 
+            payment_obj.create({
+                'payment_type': 'penalty',
+                'member_id': rec.name.id,
+                'penalty_id': rec.id,
+                'amount': rec.amount,
+                'date': rec.date,
+                'state': 'validate',
+            })
 
+            rec.state = 'paid'

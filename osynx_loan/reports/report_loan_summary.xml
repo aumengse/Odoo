@@ -8,7 +8,7 @@
                         <link rel='stylesheet' href="/osynx_loan/static/src/css/report_loan.css"/>
                         <center>
                             <h3 style="text-transform: uppercase; font-weight: bold; font-family: Bahnschrift SemiBold">
-                                Payout Summary Report
+                                Loan Summary Report
                             </h3>
                             <span style="font-weight:bold">As of:</span>
                             <span style="margin-left:15px" t-field="o.date_to" t-options='{"format": "MMM d, yyyy"}'/>
@@ -16,35 +16,44 @@
 
                         <table class="table table-sm table-bordered" name="payout_table">
                             <thead>
-                                <tr>
+                              <!--  <tr>
                                     <th colspan="3" style="text-align:center">Account</th>
                                     <th colspan="4" style="text-align:center">Earnings</th>
                                     <th colspan="3" style="text-align:center">Deductions</th>
                                     <th style="text-align:center">Total</th>
-                                </tr>
+                                </tr>-->
                                 <tr>
                                     <th>#</th>
                                     <th>Account</th>
-                                    <th>Name</th>
-                                    <th>Contribution</th>
-                                    <th>Dividend</th>
-                                    <th>Commission</th>
-                                    <th>Total Earnings</th>
-                                    <th>Unpaid Loan</th>
-                                    <th>Unpaid Penalty</th>
-                                    <th>Total Deductions</th>
-                                    <th>Total Payout</th>
+                                    <th>Borrower</th>
+                                    <th>Guarantor</th>
+                                    <th>Principal</th>
+                                    <th>Interest</th>
+                                    <th>Total Loan</th>
+                                    <th>Penalty</th>
+                                    <th>Total Payment</th>
+                                    <th>Principal Balance</th>
+                                    <th>Interest Balance</th>
+                                    <th>Balance</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <t t-set="count" t-value="0" />
-                                <tr t-foreach="records" t-as="rec">
+                                <tr t-foreach="loan_ids" t-as="rec">
                                     <t t-set="count" t-value="count + 1"/>
                                     <td><span t-esc="count"/></td>
-                                    <td t-esc="rec.get('account_number')"/>
-                                    <td t-esc="rec.get('account_name')"/>
-                                    <td class="text-right" t-esc="rec.get('total_contribution')" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
-                                    <td class="text-right" t-esc="rec.get('total_dividend')" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td t-esc="rec.name"/>
+                                    <td t-esc="rec.borrower_id.name"/>
+                                    <td t-esc="rec.guarantor_id.name"/>
+                                    <td class="text-right" t-esc="rec.principal" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td class="text-right" t-esc="rec.total_interest" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td class="text-right" t-esc="rec.total_loan" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td class="text-right" t-esc="rec.total_penalty" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td class="text-right" t-esc="rec.total_payment" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td class="text-right" t-esc="rec.total_balance_principal" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td class="text-right" t-esc="rec.total_balance_interest" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <th class="text-right" t-esc="rec.total_balance" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <!--<td class="text-right" t-esc="rec.get('total_dividend')" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     <td class="text-right" t-esc="rec.get('total_commission')" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     <th class="text-right" t-esc="rec.get('total_earnings')" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                                     <td class="text-right" t-esc="rec.get('total_unpaid_loan')" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
@@ -59,7 +68,7 @@
                                         <th class="text-right" t-esc="rec.get('total_payout')"
                                             t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'
                                             style="color:green"/>
-                                    </t>
+                                    </t>-->
                                 </tr>
                             </tbody>
 

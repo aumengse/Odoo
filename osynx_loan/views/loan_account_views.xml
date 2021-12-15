@@ -45,6 +45,8 @@
           <field name="total_loan" sum="total"/>
           <field name="total_penalty" sum="total"/>
           <field name="total_payment" sum="total"/>
+          <field name="total_balance_principal" sum="total" optional="hide"/>
+          <field name="total_balance_interest" sum="total" optional="hide"/>
           <field name="total_balance" sum="total"/>
           <field name="state"/>
         </tree>

@@ -8,6 +8,7 @@ class LoanReportWizard(models.TransientModel):
 
     name = fields.Selection([
         ('summary','Summary Report'),
+        ('loan','Loan Summary Report'),
         ('payout','Payout Summary Report'),
     ], string="Reports", required=True)
     date_to = fields.Date(string="Date To", required=True)
@@ -25,5 +26,7 @@ class LoanReportWizard(models.TransientModel):
         }
         if self.name == 'summary':
             return self.env.ref('osynx_loan.action_report_summary').report_action(self, data=data)
+        elif self.name == 'loan':
+            return self.env.ref('osynx_loan.action_report_loan_summary').report_action(self, data=data)
         elif self.name == 'payout':
             return self.env.ref('osynx_loan.action_report_payout_summary').report_action(self, data=data)

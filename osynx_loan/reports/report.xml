@@ -2,13 +2,22 @@
 <odoo>
     <data>
         <record id="action_report_summary" model="ir.actions.report">
-            <field name="name">Loan Summary</field>
+            <field name="name">Summary Report</field>
             <field name="model">loan.report.wizard</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">osynx_loan.report_summary</field>
             <field name="report_file">osynx_loan.report_summary</field>
             <field name="binding_type">report</field>
             <field name="print_report_name">'Summary Report: As of - %s' % (object.date_to)</field>
+        </record>
+        <record id="action_report_loan_summary" model="ir.actions.report">
+            <field name="name">Loan Summary</field>
+            <field name="model">loan.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">osynx_loan.report_loan_summary</field>
+            <field name="report_file">osynx_loan.report_loan_summary</field>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Loan Summary Report: As of - %s' % (object.date_to)</field>
         </record>
         <record id="action_report_payout_summary" model="ir.actions.report">
             <field name="name">Payout Summary</field>
