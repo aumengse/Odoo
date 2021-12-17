@@ -17,6 +17,7 @@
       <field name="arch" type="xml">
         <search string="Search Reference Document">
           <field name="name" string="Reference" filter_domain="[('display_name','ilike',self)]"/>
+          <field name="guarantor_id" string="Member" filter_domain="[('guarantor_id','ilike',self)]"/>
           <separator/>
           <group expand="1" string="Group By">
             <filter name="group_by_guarantor" context="{'group_by' : 'guarantor_id'}" string="Guarantor"/>
@@ -41,13 +42,17 @@
           <field name="guarantor_id"/>
           <field name="date_from"/>
           <field name="date_to"/>
+          <field name="interest_id" optional="hide" sum="total"/>
+          <field name="total_company_earning" optional="hide" sum="total"/>
+          <field name="total_guarantor_earning" optional="hide" sum="total"/>
           <field name="principal" optional="hide" sum="total"/>
-          <field name="total_loan" sum="total"/>
-          <field name="total_penalty" sum="total"/>
-          <field name="total_payment" sum="total"/>
+          <field name="total_interest" optional="hide" sum="total"/>
+          <field name="total_loan" optional="hide" sum="total"/>
+          <field name="total_penalty" optional="hide" sum="total"/>
+          <field name="total_payment" optional="hide" sum="total"/>
           <field name="total_balance_principal" sum="total" optional="hide"/>
           <field name="total_balance_interest" sum="total" optional="hide"/>
-          <field name="total_balance" sum="total"/>
+          <field name="total_balance" optional="hide" sum="total"/>
           <field name="state"/>
         </tree>
       </field>
@@ -83,7 +88,7 @@
                 <field name="principal" widget="monetary" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
                 <field name="interest_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
                 <field name="monthly_interest" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
-                <field name="total_interest" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+
               </group>
               <group>
                 <field name="term" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
@@ -93,8 +98,9 @@
                   <span> to </span>
                   <field name="date_to" class="oe_inline" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
                 </div>
-                <field name="coop_earning"/>
-                <field name="guarantor_earning"/>
+                <field name="total_interest" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="total_company_earning"/>
+                <field name="total_guarantor_earning"/>
               </group>
             </group>
             <notebook>
@@ -221,8 +227,8 @@
           <field name="loan_id"/>
           <field name="member_id"/>
           <field name="payment_type" optional="hide"/>
-          <field name="company_earning" sum="Total Company Earning"/>
-          <field name="member_earning" sum="Total Member Earning"/>
+          <field name="company_earning" sum="Total"/>
+          <field name="member_earning" sum="Total"/>
           <field name="amount" sum="Total Amount"/>
           <field name="state"/>
         </tree>

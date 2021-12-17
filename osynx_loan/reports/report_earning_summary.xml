@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_earning_summary">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <link rel='stylesheet' href="/osynx_loan/static/src/css/report_loan.css"/>
+                        <center>
+                            <h3 style="text-transform: uppercase; font-weight: bold; font-family: Bahnschrift SemiBold">
+                                Loan Earning Summary Report
+                            </h3>
+                            <span style="font-weight:bold">As of:</span>
+                            <span style="margin-left:15px" t-field="o.date_to" t-options='{"format": "MMM d, yyyy"}'/>
+                        </center>
+
+                        <table class="table table-sm table-bordered" name="payout_table">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th class="text-right">Guarantor Earning</th>
+                                    <th class="text-right">Company Earning</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="guarantor_earning" t-value="0" />
+                                <t t-set="company_earning" t-value="0" />
+
+                                <tr t-foreach="interests" t-as="interest">
+                                    <t t-set="guarantor_earning" t-value="guarantor_earning + interest.get('total_guarantor_earning')"/>
+                                    <t t-set="company_earning" t-value="company_earning + interest.get('total_company_earning')"/>
+
+
+                                    <td t-esc="interest.get('name')"/>
+                                    <td class="text-right" t-esc="interest.get('total_guarantor_earning')" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td class="text-right" t-esc="interest.get('total_company_earning')" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </tr>
+                            </tbody>
+                            <thead>
+                                <tr>
+                                    <th>Totals</th>
+                                    <th class="text-right" t-esc="guarantor_earning" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <th class="text-right" t-esc="company_earning" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </tr>
+                                <tr>
+                                    <th colspan="2">Member Count</th>
+                                    <th class="text-right" t-esc="member_count"/>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" style="color: green">Member Dividend</th>
+                                    <th style="color: green" class="text-right" t-esc="dividend" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </tr>
+                            </thead>
+                        </table>
+
+                        <table class="table table-sm table-bordered" name="payout_table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Account</th>
+                                    <th>Borrower</th>
+                                    <th>Guarantor</th>
+                                    <th>Rate</th>
+                                    <th>Principal</th>
+                                    <th>Interest</th>
+                                    <th>Total Loan</th>
+                                    <th>Guarantor Earning</th>
+                                    <th>Company Earning</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="count" t-value="0" />
+                                <t t-set="total_guarantor_earning" t-value="0" />
+                                <t t-set="total_company_earning" t-value="0" />
+
+
+                                <tr t-foreach="loan_ids" t-as="rec">
+                                    <t t-set="count" t-value="count + 1"/>
+                                    <t t-set="total_guarantor_earning" t-value="total_guarantor_earning + rec.total_guarantor_earning"/>
+                                    <t t-set="total_company_earning" t-value="total_company_earning + rec.total_company_earning"/>
+
+                                    <td><span t-esc="count"/></td>
+                                    <td t-esc="rec.name"/>
+                                    <td t-esc="rec.borrower_id.name"/>
+                                    <td t-esc="rec.guarantor_id.partner_id.name"/>
+                                    <td class="text-right" t-esc="rec.interest_id.name"/>
+                                    <td class="text-right" t-esc="rec.principal" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td class="text-right" t-esc="rec.total_interest" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td class="text-right" t-esc="rec.total_loan" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td class="text-right" t-esc="rec.total_guarantor_earning" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    <td class="text-right" t-esc="rec.total_company_earning" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </tr>
+                                <tr>
+                                    <thead>
+                                        <th>Totals</th>
+                                        <th colspan="8" class="text-right" t-esc="total_guarantor_earning" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                        <th class="text-right" t-esc="total_company_earning" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                    </thead>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

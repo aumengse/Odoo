@@ -29,6 +29,9 @@ class MemberAccount(models.Model):
     total_dividend = fields.Float(string="Total Dividend", compute='compute_total_dividend')
     total_penalty = fields.Float(string="Total Penalty", compute='compute_total_penalty')
     total_earning = fields.Float(string="Total Earning", compute='compute_total_profit')
+    state = fields.Selection([('running', "Running"),
+                              ('close', "Closed"),
+                              ], default='running', string="State", tracking=True)
 
     @api.depends('payment_ids')
     def compute_total_capital(self):

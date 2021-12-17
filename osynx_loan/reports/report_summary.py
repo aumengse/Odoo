@@ -40,7 +40,15 @@ class ReportSummary(models.AbstractModel):
 
         total_interest = total_interest_member + total_interest_nonmember + total_interest_guarantor
         total_coop_earning = (total_interest + total_penalty) - total_interest_guarantor
-        member_dividend = total_coop_earning / total_member
+
+        dividend = self.env['ir.config_parameter'].sudo().get_param('osynx_loan.dividend')
+
+        if dividend:
+            member_dividend = float(dividend)
+        else:
+            member_dividend = sum(loan.total_company_earning for loan in self.env['loan.account'].search([])) / total_member
+
+        # member_dividend = total_coop_earning / total_member
 
         dividend_actual = {
             'total_interest_member': total_interest_member,

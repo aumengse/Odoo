@@ -29,9 +29,11 @@
                     <field name="date_from"/>
                     <field name="date_to"/>
                     <field name="total_capital" sum="total"/>
-                    <field name="total_commission" sum="total"/>
-                    <field name="total_dividend" sum="total"/>
-                    <field name="total_earning" sum="total"/>
+                    <field name="total_commission" sum="total" optional="hide"/>
+                    <field name="total_dividend" sum="total" optional="hide"/>
+                    <field name="total_earning" sum="total" optional="hide"/>
+                    <field name="loan_ids" optional="hide"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -42,7 +44,8 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                         <button name="action_send" class="btn-primary" type="object" string="Send Statement"/>
+                        <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                        <button name="action_send" class="btn-primary" type="object" string="Send Statement"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
@@ -94,13 +97,13 @@
                                 </div>
                             </group>
                         </group>
-                        <group class="oe_subtotal_footer oe_right">
+                       <!-- <group class="oe_subtotal_footer oe_right">
                             <field name="total_capital"  />
                             <field name="total_dividend"  />
                             <field name="total_penalty"  />
                             <field name="total_commission"  />
                             <field name="total_earning" class="oe_subtotal_footer_separator" />
-                        </group>
+                        </group>-->
                         <!--<notebook>
                             <page string="Contributions">
                               <field name="line_ids" nolabel="1" readonly="1">
