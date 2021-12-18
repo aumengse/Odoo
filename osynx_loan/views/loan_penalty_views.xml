@@ -47,7 +47,7 @@
           <field name="loan_id"/>
           <field name="date"/>
           <field name="type"/>
-          <field name="amount"/>
+          <field name="amount" sum="Total"/>
           <field name="state"/>
         </tree>
       </field>
