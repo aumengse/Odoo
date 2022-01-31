@@ -19,6 +19,7 @@ class MemberContribution(models.Model):
                               ('process', "Processing"),
                               ('validate', "Validated")
                               ],default='draft', string="State", tracking=True)
+    active = fields.Boolean(string="Active", default=True)
 
     def action_submit(self):
         self.state = 'process'

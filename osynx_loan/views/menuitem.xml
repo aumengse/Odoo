@@ -7,6 +7,14 @@
             web_icon="osynx_loan,static/description/icon.png"
     />
 
+      <menuitem
+            id="menu_loan_loan_payment"
+            name="Payments"
+            sequence="2"
+            parent="menu_loan"
+            action="action_loan_account_payment"
+    />
+
     <menuitem
             id="menu_loan_member"
             name="Member"
@@ -42,13 +50,6 @@
             sequence="1"
             parent="menu_loan_loans"
             action="action_loan_account"
-    />
-    <menuitem
-            id="menu_loan_loan_payment"
-            name="Payments"
-            sequence="2"
-            parent="menu_loan_loans"
-            action="action_loan_account_payment"
     />
     <menuitem
             id="menu_loan_penalty"
