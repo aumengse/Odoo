@@ -1,0 +1,36 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="training_program_stage_tree">
+      <field name="name">training.program.stage.tree</field>
+      <field name="model">training.program.stage</field>
+      <field name="arch" type="xml">
+        <tree editable="top">
+          <field name="name" required="1"/>
+          <field name="code"/>
+          <field name="sequence"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record id="action_training_program_stage" model="ir.actions.act_window">
+      <field name="name">Training Program Stages</field>
+      <field name="res_model">training.program.stage</field>
+      <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem name="Configurations"
+              id="menu_training_program_configurations"
+              parent="menu_root_training_program"
+              sequence="10"
+    />
+
+    <menuitem name="Stages"
+              id="menu_training_program_configurations_stages"
+              parent="menu_training_program_configurations"
+              action="action_training_program_stage"
+    />
+
+  </data>
+</odoo>
