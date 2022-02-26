@@ -1,0 +1,48 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="training_program_stage_tree">
+      <field name="name">training.program.courses.tree</field>
+      <field name="model">training.program.courses</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" required="1"/>
+          <field name="description"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="training_program_stage_form">
+      <field name="name">training.program.courses.form</field>
+      <field name="model">training.program.courses</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <widget name="web_ribbon" title="Active" bg_color="bg-success" attrs="{'invisible': [('active', '=', False)]}"/>
+            <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+            <div class="oe_title oe_inline">
+              <label for="name"/>
+              <h1><field name="name" placeholder="e.g. 0001"/></h1>
+            </div>
+            <field name="company_id" groups="base.group_multi_company" options="{'no_create_edit': True}"/>
+            <field name="active" invisible="1"/>
+            <field name="description"/>
+          </sheet>
+            <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="message_ids" widget="mail_thread"/>
+            <field name="activity_ids"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+    <record id="action_training_program_course" model="ir.actions.act_window">
+      <field name="name">Training Courses</field>
+      <field name="res_model">training.program.courses</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+  </data>
+</odoo>

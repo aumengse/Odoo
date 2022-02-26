@@ -26,8 +26,12 @@
     'data': [
         'security/ir.model.access.csv',
         'data/training_program_stage_data.xml',
+        'data/ir_sequence.xml',
         'views/training_program_stage_views.xml',
+        'views/training_program_courses_views.xml',
+        'views/training_program_document_views.xml',
         'views/training_program_views.xml',
+        'views/menuitems.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode

@@ -9,6 +9,7 @@
           <field name="name" required="1"/>
           <field name="code"/>
           <field name="sequence"/>
+          <field name="company_id" groups="base.group_multi_company" options="{'no_create_edit': True}"/>
         </tree>
       </field>
     </record>
@@ -19,18 +20,5 @@
       <field name="res_model">training.program.stage</field>
       <field name="view_mode">tree</field>
     </record>
-
-    <menuitem name="Configurations"
-              id="menu_training_program_configurations"
-              parent="menu_root_training_program"
-              sequence="10"
-    />
-
-    <menuitem name="Stages"
-              id="menu_training_program_configurations_stages"
-              parent="menu_training_program_configurations"
-              action="action_training_program_stage"
-    />
-
   </data>
 </odoo>
