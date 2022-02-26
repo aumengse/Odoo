@@ -24,6 +24,7 @@
         <form>
           <header>
             <field name="stage_id" widget="statusbar" options="{'clickable': '1'}"/>
+            <button name="action_create_invoice" string="Create Invoice" type="object" class="btn btn-primary"/>
           </header>
           <sheet>
             <div class="oe_button_box" name="button_box">
@@ -56,7 +57,7 @@
             </group>
             <group>
               <notebook>
-                <page string="List of Participants">
+                <page string="List of Participants" name="participants">
                   <field name="employee_ids" nolabel="1"
                          domain="[('employee_type','=','trainee')]"
                          context="{'default_employee_type': 'trainee'}"
@@ -66,6 +67,17 @@
                       <field name="mobile_phone"/>
                       <field name="work_email"/>
                       <field name="department_id"/>
+                    </tree>
+                  </field>
+                </page>
+                <page string="Materials" name="materials">
+                  <field name="material_ids" nolabel="1"
+                         options="{'no_create_edit': True}">
+                    <tree editable="1">
+                      <field name="product_id"/>
+                      <field name="quantity"/>
+                      <field name="price" widget="monetary"/>
+                      <field name="subtotal" sum="total"/>
                     </tree>
                   </field>
                 </page>

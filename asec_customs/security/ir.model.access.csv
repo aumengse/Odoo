@@ -3,4 +3,5 @@ access_training_program_stage_base,training.program.stage.base,model_training_pr
 access_training_program_courses_base,training.program.courses.base,model_training_program_courses,base.group_user,1,1,1,0
 access_training_program_document_base,training.program.document.base,model_training_program_document,base.group_user,1,1,1,0
 access_training_program_document_type_base,training.program.document.type.base,model_training_program_document_type,base.group_user,1,1,1,0
+access_training_program_material_base,training.program.material.base,model_training_program_material,base.group_user,1,1,1,0
 access_training_program_base,training.program.base,model_training_program,base.group_user,1,1,1,1

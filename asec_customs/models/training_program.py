@@ -29,6 +29,7 @@ class TrainingProgram(models.Model):
     user_id = fields.Many2one('res.users', 'User',default=lambda self: self.env.uid)
     color = fields.Integer(string="Color")
     employee_ids = fields.Many2many('hr.employee', string="Participants")
+    material_ids = fields.One2many('training.program.material','program_id', string="Participants")
     document_ids = fields.One2many('training.program.document','program_id',string="Documents")
     document_count = fields.Integer(string="Document Count",  compute='compute_document_count')
 
@@ -56,3 +57,7 @@ class TrainingProgram(models.Model):
         if 'reference' not in vals or vals['reference'] == _('New'):
             vals['reference'] = self.env['ir.sequence'].next_by_code('training.program.sequence') or _('New')
         return super(TrainingProgram, self).create(vals)
+
+
+    def action_create_invoice(self):
+        x = 1
