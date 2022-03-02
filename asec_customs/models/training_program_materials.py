@@ -10,7 +10,7 @@ class TrainingProgramCourses(models.Model):
     company_currency = fields.Many2one("res.currency", string='Currency', related='company_id.currency_id',)
     program_id = fields.Many2one('training.program', 'Training Program')
     quantity = fields.Float(string="Quantity")
-    price = fields.Float(related='product_id.list_price', readonly=False, string="Price")
+    price = fields.Float(related='product_id.list_price', readonly=False, string="Price", store=True)
     subtotal = fields.Monetary(string="Subtotal", currency_field='company_currency', compute='compute_subtotal')
     program_id = fields.Many2one('training.program', 'Training Program')
 
