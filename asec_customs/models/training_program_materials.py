@@ -17,4 +17,7 @@ class TrainingProgramCourses(models.Model):
     @api.depends('quantity','price')
     def compute_subtotal(self):
         for rec in self:
-            rec.subtotal = rec.price * rec.quantity
+            if rec.quantity and rec.price:
+                rec.subtotal = rec.price * rec.quantity
+            else:
+                rec.subtotal = 0.00
