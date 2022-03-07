@@ -28,11 +28,25 @@
                   id="menu_training_program_configurations_stages"
                   parent="menu_training_program_configurations"
                   action="action_training_program_stage"
+                  sequence="1"
         />
         <menuitem name="Courses"
-                  id="menu_training_program_configurations_courses"
+                  id="action_training_program_course"
                   parent="menu_training_program_configurations"
                   action="action_training_program_course"
+                  sequence="2"
+        />
+        <menuitem name="Training Venue"
+                  id="menu_training_program_configurations_venues"
+                  parent="menu_training_program_configurations"
+                  action="action_training_program_venue"
+                  sequence="3"
+        />
+        <menuitem name="Document Type"
+                  id="menu_training_program_configurations_document_type"
+                  parent="menu_training_program_configurations"
+                  action="action_training_program_document_type"
+                  sequence="4"
         />
 
     </data>

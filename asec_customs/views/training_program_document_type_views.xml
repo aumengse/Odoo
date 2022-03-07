@@ -1,9 +1,9 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-    <record model="ir.ui.view" id="training_program_course_tree">
-      <field name="name">training.program.courses.tree</field>
-      <field name="model">training.program.courses</field>
+    <record model="ir.ui.view" id="training_program_document_type_tree">
+      <field name="name">training.program.document.tree</field>
+      <field name="model">training.program.document.type</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name" required="1"/>
@@ -12,9 +12,9 @@
       </field>
     </record>
 
-    <record model="ir.ui.view" id="training_program_course_form">
-      <field name="name">training.program.courses.form</field>
-      <field name="model">training.program.courses</field>
+    <record model="ir.ui.view" id="training_program_document_type_form">
+      <field name="name">training.program.document.form</field>
+      <field name="model">training.program.document.type</field>
       <field name="arch" type="xml">
         <form>
           <sheet>
@@ -22,7 +22,7 @@
             <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
             <div class="oe_title oe_inline">
               <label for="name"/>
-              <h1><field name="name" placeholder="Basic Training Course"/></h1>
+              <h1><field name="name" placeholder="Requirement"/></h1>
             </div>
             <group>
               <field name="company_id" groups="base.group_multi_company" options="{'no_create_edit': True}"/>
@@ -41,9 +41,9 @@
 
 
     <!-- actions opening views on models -->
-    <record id="action_training_program_course" model="ir.actions.act_window">
-      <field name="name">Training Courses</field>
-      <field name="res_model">training.program.courses</field>
+    <record id="action_training_program_document_type" model="ir.actions.act_window">
+      <field name="name">Document Type</field>
+      <field name="res_model">training.program.document.type</field>
       <field name="view_mode">tree,form</field>
     </record>
   </data>

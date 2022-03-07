@@ -24,6 +24,7 @@ class TrainingProgram(models.Model):
     partner_id = fields.Many2one('res.partner', string="Partner")
     employee_id = fields.Many2one('hr.employee', string="Instructor")
     course_id = fields.Many2one('training.program.courses', string="Course")
+    venue_id = fields.Many2one('training.program.venue', string="Venue")
     date_start = fields.Datetime(string="Training Start")
     date_end = fields.Datetime(string="Training End")
     user_id = fields.Many2one('res.users', 'User',default=lambda self: self.env.uid)

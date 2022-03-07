@@ -30,10 +30,3 @@ class TrainingProgramDocument(models.Model):
             })
 
         return res
-class TrainingProgramDocumentType(models.Model):
-    _name = 'training.program.document.type'
-    _description = 'Training Document Type'
-
-    name = fields.Char(string="Name")
-    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
-    active = fields.Boolean(string="Active", default=True)
