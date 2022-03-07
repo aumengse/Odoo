@@ -28,7 +28,7 @@ class TrainingProgram(models.Model):
     date_start = fields.Datetime(string="Training Start")
     date_end = fields.Datetime(string="Training End")
     user_id = fields.Many2one('res.users', 'User',default=lambda self: self.env.uid)
-    color = fields.Integer(string="Color")
+    color = fields.Integer(string="Color", related='course_id.id')
     employee_ids = fields.Many2many('hr.employee', string="Participants")
     material_ids = fields.One2many('training.program.material','program_id', string="Participants")
     document_ids = fields.One2many('training.program.document','program_id',string="Documents")
