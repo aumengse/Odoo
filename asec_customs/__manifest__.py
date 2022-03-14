@@ -27,6 +27,8 @@
         'security/ir.model.access.csv',
         'data/training_program_stage_data.xml',
         'data/ir_sequence.xml',
+        'reports/report_training_participant_draft.xml',
+        'reports/report.xml',
         'views/training_program_stage_views.xml',
         'views/training_program_courses_views.xml',
         'views/training_program_venue_views.xml',
