@@ -30,7 +30,7 @@ class TrainingProgram(models.Model):
     user_id = fields.Many2one('res.users', 'User',default=lambda self: self.env.uid)
     color = fields.Integer(string="Color", related='course_id.id')
     employee_ids = fields.Many2many('hr.employee', string="Participants")
-    material_ids = fields.One2many('training.program.material','program_id', string="Participants")
+    material_ids = fields.One2many('training.program.material','program_id', string="Materials")
     document_ids = fields.One2many('training.program.document','program_id',string="Documents")
     document_count = fields.Integer(string="Document Count",  compute='compute_document_count')
 
