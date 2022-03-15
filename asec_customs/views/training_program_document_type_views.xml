@@ -6,7 +6,8 @@
       <field name="model">training.program.document.type</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="name" required="1"/>
+          <field name="name"/>
+          <field name="type"/>
           <field name="description"/>
         </tree>
       </field>
@@ -25,9 +26,14 @@
               <h1><field name="name" placeholder="Requirement"/></h1>
             </div>
             <group>
-              <field name="company_id" groups="base.group_multi_company" options="{'no_create_edit': True}"/>
-              <field name="active" invisible="1"/>
-              <field name="description"/>
+              <group>
+                <field name="type" widget="radio"/>
+                <field name="description"/>
+              </group>
+              <group>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create_edit': True}"/>
+                <field name="active" invisible="1"/>
+              </group>
             </group>
           </sheet>
           <div class="oe_chatter">

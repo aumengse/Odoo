@@ -1,109 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="report_training_participant_draft">
+        <template id="report_training_participant_draft_template">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
                     <t t-call="web.external_layout">
+                        <h5 class="font-weight-bold">List of Participants (Draft)</h5>
                         <div>
-                            <span class="font-weight-bold">Company:</span> <span t-esc="doc.partner_id.name"/> <br/>
-                            <span class="font-weight-bold">Course Name:</span> <span t-esc="doc.course_id.name"/> <br/>
-                            <span class="font-weight-bold">Venue:</span> <span t-esc="doc.venue_id.name"/> <br/>
-                            <span class="font-weight-bold">Training Dates:</span> <span t-esc="doc.date_start"/> to <span t-esc="doc.date_end"/> <br/>
-                            <span class="font-weight-bold">Instructor:</span> <span t-esc="doc.employee_id.name"/> <br/>
+                            <span class="font-weight-bold">Company:</span> <span style="padding-left: 50px" t-esc="doc.partner_id.name"/> <br/>
+                            <span class="font-weight-bold">Course Name:</span> <span style="padding-left: 20px" t-esc="doc.course_id.name"/> <br/>
+                            <span class="font-weight-bold">Venue:</span> <span style="padding-left: 70px" t-esc="doc.venue_id.name"/> <br/>
+                            <span class="font-weight-bold">Training Dates:</span> <span style="padding-left: 13px" t-esc="context_timestamp(o.date_start).strftime('%d %b %Y')"/> to <span t-esc="context_timestamp(o.date_end).strftime('%d %b %Y')"/> <br/>
+                            <span class="font-weight-bold">Instructor:</span> <span style="padding-left: 45px" t-esc="doc.employee_id.name"/> <br/>
 
                         </div>
 
-                       <!-- <link rel="stylesheet" href="/fgp_hr_attendance/static/src/css/report_employee.css"/>-->
-                       <!-- <table class="table table-sm" style="margin-top:20px">
-                            <tr>
-                                <th>Name:</th>
-                                <t t-if="docs.is_alias">
-                                    <th><span t-esc="rec.get('employee').alias"/></th>
-                                </t>
-                                <t t-else="">
-                                    <th><span t-esc="rec.get('employee').name"/></th>
-                                </t>
-                                <th>Department:</th>
-                                <th><span t-esc="rec.get('employee').department_id.name"/></th>
-                            </tr>
-                            <tr>
-                                <th>Period:</th>
-                                <th><span t-esc="period"/></th>
-                                <th>Date:</th>
-                                <th><span t-esc="datetime.date.today()"/></th>
-                            </tr>
-                            <tr>
-                                <th>Schedule:</th>
-                                <th><span t-esc="rec.get('employee').resource_calendar_id.name"/></th>
-                                <th/>
-                                <th/>
-                            </tr>
-                        </table>
+                        <!-- <link rel="stylesheet" href="/fgp_hr_attendance/static/src/css/report_employee.css"/>-->
                         <table class="table table-sm" style="margin-top:20px">
                             <thead>
+
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Day</th>
-                                    <th>Time in</th>
-                                    <th>Time out</th>
-                                    <th style="text-align:right">Worked Hrs.</th>
-                                    <th style="text-align:right">ND Hrs.</th>
-                                    <th style="text-align:right">Holiday Hrs.</th>
-                                    <th style="text-align:right">Overtime Hrs.</th>
-                                    <th style="text-align:right">Late Hrs.</th>
-                                    <th style="text-align:right">Undertime Hrs.</th>
-                                    <th style="text-align:right">Total Hrs.</th>
-                                    <th style="text-align:center">Remarks</th>
+                                    <th rowspan="1">No.</th>
+                                    <th rowspan="1">Name of Participants</th>
+                                    <th rowspan="1">Gender</th>
+                                    <th rowspan="1">VALID LESP/ Security License</th>
+                                    <!-- <th colspan="1">
+                                         In the absence, of LESP/Security License
+                                     </th>-->
+                                    <th>VALID NBI Clearance</th>
+                                    <th>VALID Police Clearance</th>
+                                    <th rowspan="1">Ishihara Test</th>
+                                    <th rowspan="1">COE</th>
+                                    <th rowspan="1"> Remarks (Complete/Incomplete)</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <t t-set="total_worked_hrs" t-value="0" />
-                                <t t-set="total_nd_hrs" t-value="0" />
-                                <t t-set="total_hol_hrs" t-value="0" />
-                                <t t-set="total_ot_hrs" t-value="0" />
-                                <t t-set="total_late_hrs" t-value="0" />
-                                <t t-set="total_undertime_hrs" t-value="0" />
-                                <t t-set="total_grand_hrs" t-value="0" />
+                                <t t-set="count" t-value="0" />
 
-                                <tr t-foreach="rec.get('attendances')" t-as="attn">
-                                    <t t-set="total_worked_hrs" t-value="total_worked_hrs + attn.get('worked_hrs')"/>
-                                    <t t-set="total_nd_hrs" t-value="total_nd_hrs + attn.get('nd_hours')"/>
-                                    <t t-set="total_hol_hrs" t-value="total_hol_hrs + attn.get('hol_hours')"/>
-                                    <t t-set="total_ot_hrs" t-value="total_ot_hrs + attn.get('ot_hours')"/>
-                                    <t t-set="total_late_hrs" t-value="total_late_hrs + attn.get('late_hours')"/>
-                                    <t t-set="total_undertime_hrs" t-value="total_undertime_hrs + attn.get('undertime_hours')"/>
-                                    <t t-set="total_grand_hrs" t-value="total_grand_hrs + attn.get('total_hours')"/>
+                                <tr t-foreach="records" t-as="rec">
+                                    <t t-set="count" t-value="count + 1"/>
+                                    <td><span t-esc="count"/></td>
+                                    <td><span t-esc="rec.get('employee_id').name"/></td>
+                                    <td><span t-field="rec.get('employee_id').gender"/></td>
 
-                                    <td><span t-esc="attn.get('date')"/></td>
-                                    <td><span t-esc="attn.get('day')"/></td>
-                                    <td><span t-esc="attn.get('time_in')"/></td>
-                                    <td><span t-esc="attn.get('time_out')"/></td>
-                                    <td style="text-align:right"><span t-esc="attn.get('worked_hrs')" t-options='{"widget": "float_time"}'/></td>
-                                    <td style="text-align:right"><span t-esc="attn.get('nd_hours')"  t-options='{"widget": "float_time"}'/></td>
-                                    <td style="text-align:right"><span t-esc="attn.get('hol_hours')"  t-options='{"widget": "float_time"}'/></td>
-                                    <td style="text-align:right"><span t-esc="attn.get('ot_hours')"  t-options='{"widget": "float_time"}'/></td>
-                                    <td style="text-align:right"><span t-esc="attn.get('late_hours')"  t-options='{"widget": "float_time"}'/></td>
-                                    <td style="text-align:right"><span t-esc="attn.get('undertime_hours')"  t-options='{"widget": "float_time"}'/></td>
-                                    <td style="text-align:right"><span t-esc="attn.get('total_hours')"  t-options='{"widget": "float_time"}'/></td>
-                                    <td style="text-align:center"><span t-esc="attn.get('remarks')"/></td>
-                                </tr>
-                                <tr>
-                                    <th>Totals:</th>
-                                    <td/>
-                                    <td/>
-                                    <td/>
-                                    <th style="text-align:right"><span t-esc="total_worked_hrs"  t-options='{"widget": "float_time"}'/></th>
-                                    <th style="text-align:right"><span t-esc="total_nd_hrs"  t-options='{"widget": "float_time"}'/></th>
-                                    <th style="text-align:right"><span t-esc="total_hol_hrs"  t-options='{"widget": "float_time"}'/></th>
-                                    <th style="text-align:right"><span t-esc="total_ot_hrs"  t-options='{"widget": "float_time"}'/></th>
-                                    <th style="text-align:right"><span t-esc="total_late_hrs"  t-options='{"widget": "float_time"}'/></th>
-                                    <th style="text-align:right"><span t-esc="total_undertime_hrs"  t-options='{"widget": "float_time"}'/></th>
-                                    <th style="text-align:right"><span t-esc="total_grand_hrs"  t-options='{"widget": "float_time"}'/></th>
+                                    <td t-if="rec.get('document_security_licensed')" style="text-align:center">
+                                        <i class="fa fa-check"/>
+                                    </td>
+                                    <td t-else=""/>
+
+                                    <td t-if="rec.get('document_nbi_clearance')" style="text-align:center">
+                                        <i class="fa fa-check"/>
+                                    </td>
+                                    <td t-else=""/>
+
+                                    <td t-if="rec.get('document_police_clearance')" style="text-align:center">
+                                        <i class="fa fa-check"/>
+                                    </td>
+                                    <td t-else=""/>
+
+                                    <td t-if="rec.get('document_ishihara_test')" style="text-align:center">
+                                        <i class="fa fa-check"/>
+                                    </td>
+                                    <td t-else=""/>
+
+                                    <td t-if="rec.get('document_coe')" style="text-align:center">
+                                        <i class="fa fa-check"/>
+                                    </td>
+                                    <td t-else=""/>
+                                    <td style="text-align:center"><span t-esc="rec.get('remark')"/></td>
                                 </tr>
                             </tbody>
-                        </table>-->
+                        </table>
                     </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_training_participant_draft">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="inside_foreach_docs" t-value="o"/>
+                    <t t-call="asec_customs.report_training_participant_draft_template" t-lang="o.employee_id.sudo().address_home_id.lang"/>
                 </t>
             </t>
         </template>

@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<odoo>
+	<data noupdate="1">
+		<record id="training_program_document_type_security_licensed" model="training.program.document.type">
+			<field name="name">LESP/Security Licensed</field>
+			<field name="type">security_licensed</field>
+		</record>
+		<record id="training_program_document_type_nbi_clearance" model="training.program.document.type">
+			<field name="name">NBI Clearance</field>
+			<field name="type">nbi_clearance</field>
+		</record>
+		<record id="training_program_document_type_police_clearance" model="training.program.document.type">
+			<field name="name">Police Clearance</field>
+			<field name="type">police_clearance</field>
+		</record>
+		<record id="training_program_document_type_ishihara_tes" model="training.program.document.type">
+			<field name="name">Ishihara Test</field>
+			<field name="type">ishihara_tes</field>
+		</record>
+		<record id="training_program_document_type_coe" model="training.program.document.type">
+			<field name="name">Certificate of Employment</field>
+			<field name="type">coe</field>
+		</record>
+    </data>
+</odoo>
