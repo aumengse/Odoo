@@ -10,7 +10,7 @@
                             <span class="font-weight-bold">Company:</span> <span style="padding-left: 50px" t-esc="doc.partner_id.name"/> <br/>
                             <span class="font-weight-bold">Course Name:</span> <span style="padding-left: 20px" t-esc="doc.course_id.name"/> <br/>
                             <span class="font-weight-bold">Venue:</span> <span style="padding-left: 70px" t-esc="doc.venue_id.name"/> <br/>
-                            <span class="font-weight-bold">Training Dates:</span> <span style="padding-left: 13px" t-esc="context_timestamp(o.date_start).strftime('%d %b %Y')"/> to <span t-esc="context_timestamp(o.date_end).strftime('%d %b %Y')"/> <br/>
+                            <span class="font-weight-bold">Training Dates:</span> <span style="padding-left: 13px" t-esc="context_timestamp(doc.date_start).strftime('%d %b %Y')"/> to <span t-esc="context_timestamp(doc.date_end).strftime('%d %b %Y')"/> <br/>
                             <span class="font-weight-bold">Instructor:</span> <span style="padding-left: 45px" t-esc="doc.employee_id.name"/> <br/>
 
                         </div>
@@ -18,20 +18,21 @@
                         <!-- <link rel="stylesheet" href="/fgp_hr_attendance/static/src/css/report_employee.css"/>-->
                         <table class="table table-sm" style="margin-top:20px">
                             <thead>
-
                                 <tr>
-                                    <th rowspan="1">No.</th>
-                                    <th rowspan="1">Name of Participants</th>
-                                    <th rowspan="1">Gender</th>
-                                    <th rowspan="1">VALID LESP/ Security License</th>
-                                    <!-- <th colspan="1">
-                                         In the absence, of LESP/Security License
-                                     </th>-->
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center">#</th>
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center">Name</th>
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center">Gender</th>
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center">VALID LESP/ Security License</th>
+                                    <th colspan="2" style="vertical-align:middle; text-align:center">
+                                        In the absence, of LESP/Security License
+                                    </th>
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center">Ishihara Test</th>
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center">COE</th>
+                                    <th rowspan="2" style="vertical-align:middle; text-align:center">Remarks (Complete/Incomplete)</th>
+                                </tr>
+                                <tr>
                                     <th>VALID NBI Clearance</th>
                                     <th>VALID Police Clearance</th>
-                                    <th rowspan="1">Ishihara Test</th>
-                                    <th rowspan="1">COE</th>
-                                    <th rowspan="1"> Remarks (Complete/Incomplete)</th>
                                 </tr>
                             </thead>
                             <tbody>

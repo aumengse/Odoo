@@ -31,6 +31,7 @@
         'reports/report_training_participant_draft.xml',
         'reports/report_training_participant_final.xml',
         'reports/report.xml',
+        'views/hr_employee_views.xml',
         'views/training_program_stage_views.xml',
         'views/training_program_courses_views.xml',
         'views/training_program_venue_views.xml',

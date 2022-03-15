@@ -7,17 +7,31 @@ class ReportTrainingParticipantFinal(models.AbstractModel):
     _name = 'report.asec_customs.report_training_participant_final'
     _description = 'ReportTraining Participant Final'
 
-    @api.model
     def _get_report_values(self, docids, data=None):
-        model = self.env.context.get('active_model')
-        docs = self.env[model].browse(self.env.context.get('active_id'))
-        user_tz = pytz.timezone(self.env.user.tz or 'UTC')
+        docs = self.env['training.program'].browse(docids)
+
+        records = []
+        for rec in docs.mapped('employee_ids').sorted(key=lambda r: r.name):
+            document_ids = self.env['training.program.document'].search([('employee_id', '=', rec.id)])
+            document_local_clearance = document_ids.filtered(lambda r: r.document_type_id.type == 'local_clearance')
+            document_ots = document_ids.filtered(lambda r: r.document_type_id.type == 'ots_id')
+            document_certificate = document_ids.filtered(lambda r: r.document_type_id.type == 'certificate')
+            document_ishihara_test = document_ids.filtered(lambda r: r.document_type_id.type == 'ishihara_tes')
+            document_coe = document_ids.filtered(lambda r: r.document_type_id.type == 'coe')
+
+            records.append({
+                'employee_id': rec,
+                'document_local_clearance': document_local_clearance,
+                'document_ots': document_ots,
+                'document_certificate': document_certificate,
+                'document_ishihara_test': document_ishihara_test,
+                'document_coe': document_coe,
+            })
 
         return {
             'doc_ids': docids,
-            'doc_model': model,
             'docs': docs,
-            'period': "%s - %s" %(docs.date_from.strftime('%m/%d/%Y'),docs.date_to.strftime('%m/%d/%Y')),
+            'records': records,
             'type': type,
             'report_type': data.get('report_type') if data else '',
         }

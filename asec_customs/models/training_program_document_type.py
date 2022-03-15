@@ -13,7 +13,10 @@ class TrainingProgramDocumentType(models.Model):
         ('security_licensed', 'Security Licensed'),
         ('nbi_clearance', 'NBI Clearance'),
         ('police_clearance', 'Police Clearance'),
+        ('local_clearance', 'Local Clearance'),
         ('ishihara_tes', 'Ishihara Test'),
         ('coe', 'Certificate of Employment'),
+        ('certificate', 'Certificates'),
+        ('ots', 'OTS Identification'),
         ('other', 'Other')], string='Type',
         default='other', required=True)

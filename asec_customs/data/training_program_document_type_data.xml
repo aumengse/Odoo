@@ -13,6 +13,10 @@
 			<field name="name">Police Clearance</field>
 			<field name="type">police_clearance</field>
 		</record>
+		<record id="training_program_document_type_local_clearance" model="training.program.document.type">
+			<field name="name">Local Clearance</field>
+			<field name="type">local_clearance</field>
+		</record>
 		<record id="training_program_document_type_ishihara_tes" model="training.program.document.type">
 			<field name="name">Ishihara Test</field>
 			<field name="type">ishihara_tes</field>
@@ -20,6 +24,14 @@
 		<record id="training_program_document_type_coe" model="training.program.document.type">
 			<field name="name">Certificate of Employment</field>
 			<field name="type">coe</field>
+		</record>
+		<record id="training_program_document_type_certificate" model="training.program.document.type">
+			<field name="name">Certificates</field>
+			<field name="type">certificate</field>
+		</record>
+		<record id="training_program_document_type_ots" model="training.program.document.type">
+			<field name="name">OTS ID</field>
+			<field name="type">ots</field>
 		</record>
     </data>
 </odoo>
