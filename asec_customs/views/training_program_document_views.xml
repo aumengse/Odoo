@@ -24,9 +24,9 @@
       <field name="model">training.program.document</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="name" required="1"/>
-          <field name="document_type_id"/>
+          <field name="name"/>
           <field name="employee_id"/>
+          <field name="document_type_id"/>
         </tree>
       </field>
     </record>

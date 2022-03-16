@@ -8,8 +8,10 @@ class ReportTrainingParticipantDraft(models.AbstractModel):
         docs = self.env['training.program'].browse(docids)
 
         records = []
-        complete_count = 0
+
         for rec in docs.mapped('employee_ids').sorted(key=lambda r: r.name):
+            complete_count = 0
+
             document_ids = self.env['training.program.document'].search([('employee_id','=',rec.id)])
             document_security_licensed = document_ids.filtered(lambda r: r.document_type_id.type == 'security_licensed')
             document_nbi_clearance = document_ids.filtered(lambda r: r.document_type_id.type == 'nbi_clearance')
