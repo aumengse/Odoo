@@ -33,6 +33,15 @@ class TrainingProgram(models.Model):
     material_ids = fields.One2many('training.program.material','program_id', string="Materials")
     document_ids = fields.One2many('training.program.document','program_id',string="Documents")
     document_count = fields.Integer(string="Document Count",  compute='compute_document_count')
+    kanban_state = fields.Selection([('normal', 'In Progress'), ('done', 'Done'), ('blocked', 'Blocked')],
+                                    default='normal', copy=False)
+    date_notification_mail = fields.Date(string="Date of Notification by Email")
+    date_submission = fields.Date(string="Submission of Hard Copies")
+    date_loa_received = fields.Date(string="LOA received from OTS")
+    responsible_user_id = fields.Many2one('hr.employee', 'Responsible User')
+    changes_training_program = fields.Text(string="Changes in the Training Program")
+    findings = fields.Text(string="Findings")
+    compliance_findings = fields.Text(string="Compliance on any findings (Date/Corrective Action Plan) (CAP)")
 
     @api.depends('reference','course_id')
     def compute_name(self):

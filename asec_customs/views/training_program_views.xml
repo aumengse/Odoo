@@ -24,7 +24,7 @@
         <form>
           <header>
             <field name="stage_id" widget="statusbar" options="{'clickable': '1'}"/>
-            <button name="action_create_invoice" string="Create Invoice" type="object" class="btn btn-primary"/>
+            <!--<button name="action_create_invoice" string="Create Invoice" type="object" class="btn btn-primary"/>-->
           </header>
           <sheet>
             <div class="oe_button_box" name="button_box">
@@ -33,6 +33,10 @@
                 <field string="Documents" name="document_count" widget="statinfo"/>
               </button>
             </div>
+            <div class="float-right mr4">
+              <field name="kanban_state" widget="state_selection"/>
+            </div>
+
             <div class="oe_title oe_inline">
               <label for="name"/>
               <h1><field name="name" placeholder="e.g. 0001"/></h1>
@@ -71,7 +75,7 @@
                     </tree>
                   </field>
                 </page>
-                <page string="Materials" name="materials">
+                <!--<page string="Materials" name="materials">
                   <field name="material_ids" nolabel="1"
                          options="{'no_create_edit': True}">
                     <tree editable="1">
@@ -81,6 +85,21 @@
                       <field name="subtotal" sum="total"/>
                     </tree>
                   </field>
+                </page>-->
+                <page string="OTS Notification" name="notification">
+                  <group>
+                    <group>
+                      <field name="date_notification_mail"/>
+                      <field name="date_submission"/>
+                      <field name="date_loa_received"/>
+                      <field name="responsible_user_id"/>
+                    </group>
+                    <group>
+                      <field name="changes_training_program"/>
+                      <field name="findings"/>
+                      <field name="compliance_findings"/>
+                    </group>
+                  </group>
                 </page>
               </notebook>
             </group>
