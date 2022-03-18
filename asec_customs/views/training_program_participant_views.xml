@@ -1,0 +1,92 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="training_program_participant_search">
+      <field name="name">training.program.participant.search</field>
+      <field name="model">training.program.participant</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="employee_id"/>
+          <field name="program_id"/>
+          <group expand="0" string="Group By">
+            <filter string="Employee" name="group_employee" domain="[]" context="{'group_by':'employee_id'}" />
+            <filter string="Program" name="group_program" domain="[]" context="{'group_by':'program_id'}" />
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="training_program_participant_tree">
+      <field name="name">training.program.participant.tree</field>
+      <field name="model">training.program.participant</field>
+      <field name="arch" type="xml">
+        <tree create="0" edit="0" decoration-success="state == 'complete'" decoration-muted="state == 'disqualified'">
+          <field name="employee_id" domain="[('employee_type','=','trainee')]" required="1"/>
+          <field name="gender"/>
+          <field name="document_lesp_id"/>
+          <field name="document_nbi_id"/>
+          <field name="document_police_id"/>
+          <field name="document_ishihara_id"/>
+          <field name="ishihara_result" />
+          <field name="document_coe_id"/>
+          <field name="attendance_status" widget="state_selection"/>
+          <field name="remarks"/>
+          <field name="state" readonly="1" string="State"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="training_program_participant_form">
+      <field name="name">training.program.participant.form</field>
+      <field name="model">training.program.participant</field>
+      <field name="arch" type="xml">
+        <form create="0" edit="0">
+          <header>
+            <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+          </header>
+          <sheet>
+            <field name="active" invisible="1"/>
+            <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+            <div class="oe_title oe_inline">
+              <label for="name"/>
+              <h1><field name="name" placeholder="e.g. 0001"/></h1>
+            </div>
+            <group>
+              <group>
+                <field name="employee_id"/>
+                <field name="gender"/>
+              </group>
+              <group>
+                <field name="program_id"/>
+              </group>
+            </group>
+            <group string="Documents">
+              <group>
+                <field name="document_lesp_id"/>
+                <field name="document_nbi_id"/>
+                <field name="document_police_id"/>
+                <field name="document_ishihara_id"/>
+                <field name="document_coe_id"/>
+              </group>
+              <group>
+                <field name="ishihara_result"/>
+                <field name="attendance_status"/>
+                <field name="remarks"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+    <record id="action_training_program_participants" model="ir.actions.act_window">
+      <field name="name">Training participant</field>
+      <field name="res_model">training.program.participant</field>
+      <field name="view_mode">tree,form</field>
+      <field name="context">{'search_default_group_program': 1}</field>
+    </record>
+
+  </data>
+</odoo>

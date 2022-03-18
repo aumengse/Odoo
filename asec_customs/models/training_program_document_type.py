@@ -14,7 +14,7 @@ class TrainingProgramDocumentType(models.Model):
         ('nbi_clearance', 'NBI Clearance'),
         ('police_clearance', 'Police Clearance'),
         ('local_clearance', 'Local Clearance'),
-        ('ishihara_tes', 'Ishihara Test'),
+        ('ishihara_test', 'Ishihara Test Result'),
         ('coe', 'Certificate of Employment'),
         ('certificate', 'Certificates'),
         ('ots', 'OTS Identification'),

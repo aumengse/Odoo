@@ -45,10 +45,12 @@
             <group>
               <group>
                 <field name="document_type_id" options="{'no_create_edit': True}" required="1"/>
+                <field name="document_type_type" invisible="1"/>
                 <field name="program_id" options="{'no_create_edit': True}" />
                 <field name="employee_id" options="{'no_create_edit': True}" />
               </group>
               <group>
+                <field name="ishihara_result" attrs="{'invisible': [('document_type_type', '!=', 'ishihara_test')], 'required': [('document_type_type', '=', 'ishihara_test')]}"/>
                 <field name="date_expiry"/>
                 <field name="company_id" groups="base.group_multi_company" options="{'no_create_edit': True}"/>
                 <field name="active" invisible="1"/>

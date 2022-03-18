@@ -22,26 +22,27 @@ class TrainingProgram(models.Model):
                                group_expand='_read_group_stage_ids', tracking=True)
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
     partner_id = fields.Many2one('res.partner', string="Partner")
-    employee_id = fields.Many2one('hr.employee', string="Instructor")
-    course_id = fields.Many2one('training.program.courses', string="Course")
-    venue_id = fields.Many2one('training.program.venue', string="Venue")
-    date_start = fields.Datetime(string="Training Start")
-    date_end = fields.Datetime(string="Training End")
+    employee_id = fields.Many2one('hr.employee', string="Instructor", tracking=True)
+    course_id = fields.Many2one('training.program.courses', string="Course", tracking=True)
+    venue_id = fields.Many2one('training.program.venue', string="Venue", tracking=True)
+    date_start = fields.Datetime(string="Training Start", tracking=True)
+    date_end = fields.Datetime(string="Training End", tracking=True)
     user_id = fields.Many2one('res.users', 'User',default=lambda self: self.env.uid)
     color = fields.Integer(string="Color", related='course_id.id')
-    employee_ids = fields.Many2many('hr.employee', string="Participants")
+    # employee_ids = fields.Many2many('hr.employee', string="Participants")
     material_ids = fields.One2many('training.program.material','program_id', string="Materials")
+    participant_ids = fields.One2many('training.program.participant','program_id', string="Participants")
     document_ids = fields.One2many('training.program.document','program_id',string="Documents")
     document_count = fields.Integer(string="Document Count",  compute='compute_document_count')
     kanban_state = fields.Selection([('normal', 'In Progress'), ('done', 'Done'), ('blocked', 'Blocked')],
-                                    default='normal', copy=False)
-    date_notification_mail = fields.Date(string="Date of Notification by Email")
-    date_submission = fields.Date(string="Submission of Hard Copies")
-    date_loa_received = fields.Date(string="LOA received from OTS")
-    responsible_user_id = fields.Many2one('hr.employee', 'Responsible User')
-    changes_training_program = fields.Text(string="Changes in the Training Program")
-    findings = fields.Text(string="Findings")
-    compliance_findings = fields.Text(string="Compliance on any findings (Date/Corrective Action Plan) (CAP)")
+                                    default='normal', copy=False, tracking=True)
+    date_notification_mail = fields.Date(string="Notification by Email", tracking=True)
+    date_submission = fields.Date(string="Submission of Hard Copies", tracking=True)
+    date_loa_received = fields.Date(string="LOA received from OTS", tracking=True)
+    responsible_user_id = fields.Many2one('hr.employee', 'Responsible User', tracking=True)
+    changes_training_program = fields.Text(string="Training Program Changes", tracking=True)
+    findings = fields.Text(string="Findings", tracking=True)
+    compliance_findings = fields.Text(string="Compliance on any findings (Date/Corrective Action Plan) (CAP)", tracking=True)
 
     @api.depends('reference','course_id')
     def compute_name(self):
@@ -67,7 +68,3 @@ class TrainingProgram(models.Model):
         if 'reference' not in vals or vals['reference'] == _('New'):
             vals['reference'] = self.env['ir.sequence'].next_by_code('training.program.sequence') or _('New')
         return super(TrainingProgram, self).create(vals)
-
-
-    def action_create_invoice(self):
-        x = 1

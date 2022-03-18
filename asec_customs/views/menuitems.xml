@@ -12,11 +12,17 @@
                   action="action_training_program"
                   sequence="1"
         />
+        <menuitem name="Participants"
+                  id="menu_training_program_participants"
+                  parent="menu_training_program"
+                  action="action_training_program_participants"
+                  sequence="2"
+        />
         <menuitem name="Documents"
                   id="menu_training_program_documents"
                   parent="menu_training_program"
                   action="action_training_program_documents"
-                  sequence="2"
+                  sequence="3"
         />
 
         <menuitem name="Configurations"

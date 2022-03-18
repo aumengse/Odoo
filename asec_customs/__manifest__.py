@@ -37,6 +37,7 @@
         'views/training_program_venue_views.xml',
         'views/training_program_document_type_views.xml',
         'views/training_program_document_views.xml',
+        'views/training_program_participant_views.xml',
         'views/training_program_views.xml',
         'views/menuitems.xml',
         'views/templates.xml',

@@ -18,7 +18,7 @@
         </record>
 
         <record id="action_report_training_participant_draft" model="ir.actions.report">
-            <field name="name">List of Training Participants (Draft)</field>
+            <field name="name">List of Training Participants</field>
             <field name="model">training.program</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">asec_customs.report_training_participant_draft</field>
@@ -28,7 +28,7 @@
             <field name="binding_type">report</field>
             <field name="paperformat_id" ref="paperformat_euro_landscape"/>
         </record>
-        <record id="action_report_training_participant_final" model="ir.actions.report">
+        <!--<record id="action_report_training_participant_final" model="ir.actions.report">
             <field name="name">List of Training Participants (Final)</field>
             <field name="model">training.program</field>
             <field name="report_type">qweb-pdf</field>
@@ -38,6 +38,6 @@
             <field name="binding_model_id" ref="asec_customs.model_training_program"/>
             <field name="binding_type">report</field>
             <field name="paperformat_id" ref="paperformat_euro_landscape"/>
-        </record>
+        </record>-->
     </data>
 </odoo>

@@ -9,3 +9,4 @@ from . import training_program_document
 from . import training_program_document_type
 from . import training_program_materials
 from . import training_program
+from . import training_program_participant
