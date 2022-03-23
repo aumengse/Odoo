@@ -39,7 +39,7 @@
         <menuitem name="Courses"
                   id="action_training_program_course"
                   parent="menu_training_program_configurations"
-                  action="action_training_program_course"
+                  action="action_training_program_courses"
                   sequence="2"
         />
         <menuitem name="Training Venue"
